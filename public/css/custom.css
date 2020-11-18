@@ -1,0 +1,46 @@
+ul.suggestions{
+    position: absolute;
+    z-index: 100000;
+    margin: 2px auto 2px auto;
+    width: 96.2%;
+    height: auto;
+    background: white;
+    border: 1px solid #CED4DA;
+    border-radius: .2rem;
+    padding: 0px;
+}
+
+ul.suggestions li.suggestion{
+    display: block;
+    height: auto;
+    width: 100%;
+    list-style: none;
+    cursor: pointer;
+    padding: 8px 5px 8px 5px;
+}
+
+ul.suggestions li.suggestion:hover{
+    background: #0074F0;
+}
+
+ul.suggestions li.none-suggestion{
+    display: block;
+    height: auto;
+    width: 100%;
+    list-style: none;
+    cursor: default;
+    padding: 8px 5px 8px 5px;
+    background: #CED4DA;
+}
+
+.avatar {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px;
+    height: auto;
+    width: 32px;
+    border-radius: 50%;
+    background: #633E71;
+    color: white;
+    text-align: center;
+}

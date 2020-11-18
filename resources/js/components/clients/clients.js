@@ -1,0 +1,12 @@
+Vue.component(
+    'clients-list',
+    require('./ClientsList.vue').default
+);
+Vue.component(
+    'client-create',
+    require('./ClientFormCreate.vue').default
+);
+Vue.component(
+    'client-edit',
+    require('./ClientFormEdit.vue').default
+);
