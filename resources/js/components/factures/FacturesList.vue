@@ -14,8 +14,32 @@
                     <i class="fas fa-print"></i> Exporter excel
                 </button>
             </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control form-control-sm" placeholder="Tapez votre recherche, raison sociale ou NIF" v-model="filter.keyword" v-on:keyup="search">
+            <div class="col-md-4 offset-md-2">
+                <!-- <input type="text" class="form-control form-control-sm" 
+                    placeholder="Tapez votre recherche, raison sociale ou NIF" 
+                    v-model="filter.keyword" v-on:keyup="search"> -->
+                
+
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control mr-1" placeholder="Tapez le n° de facture ou la raison sociale"
+                        v-model="filter.keyword" v-on:keyup="search">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-dark btn-flat mr-1"
+                            @click="openFilter"
+                            v-if="!hasFilter(filter)">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <button type="button" class="btn btn-info btn-flat mr-1"
+                            @click="openFilter"
+                            v-if="hasFilter(filter)">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <button type="button" class="btn btn-success btn-flat">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </span>
+                </div>
+
             </div>
         </div>
 
@@ -26,17 +50,18 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-sm table-bordered table-striped" id="example1">
+                <table class="table table-bordered table-striped" id="example1">
                     <thead>
                     <tr class="text-center">
                         <th></th>
-                        <th>N° Facture</th>
+                        <th>Facture no.</th>
                         <th>Type</th>
                         <th>Montant</th>
+                        <th>Recouvré</th>
                         <th>Client</th>
                         <th>Facture initiale</th>
                         <th>Dates</th>
-                        <th>Documents</th>
+                        <!-- <th>Documents</th> -->
                         <th>Statut</th>
                     </tr>
                     </thead>
@@ -56,35 +81,49 @@
                                     <a class="dropdown-item text-info text-sm" :href="'/factures/'+facture.id">
                                         <i class="fas fa-eye mr-1"></i> Détails
                                     </a>
-                                    <a class="dropdown-item text-success text-sm" href="javascript:void(0);" v-if="facture.state == 'waiting'" @click="validate(facture)">
+                                    <a class="dropdown-item text-success text-sm" href="javascript:void(0);" 
+                                        v-if="facture.state == 'waiting' && facture.statut != 'paid'" @click="validate(facture)">
                                         <i class="fas fa-check mr-1"></i> Valider
                                     </a>
-                                    <a class="dropdown-item text-warning text-sm" href="javascript:void(0);">
+                                    <a class="dropdown-item text-warning text-sm" href="javascript:void(0);"
+                                        v-if="facture.statut == 'in_progress' && facture.m_paid <= 0">
                                         <i class="fas fa-edit mr-1"></i> Modifier
                                     </a>
-                                    <a class="dropdown-item text-indigo text-sm" href="javascript:void(0);" v-if="facture.state == 'validated'">
+                                    <a class="dropdown-item text-indigo text-sm" href="javascript:void(0);" 
+                                        v-if="facture.state == 'validated' && facture.statut != 'litigation'"
+                                        @click="litigate(facture)">
                                         <i class="fas fa-exclamation mr-1"></i> Litige
                                     </a>
                                     <a class="dropdown-item text-sm" href="javascript:void(0);" v-if="facture.state == 'validated'">
                                         <i class="fas fa-exchange-alt mr-1"></i> Convertir en avoir
                                     </a>
-                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider" v-if="facture.m_paid <= 0"></div>
                                     <a class="dropdown-item text-gray-dark text-sm" href="javascript:void(0);" v-if="facture.state == 'waiting'" @click="cancel(facture)">
                                         <i class="fas fa-times mr-1"></i> Annuler
                                     </a>
-                                    <a class="dropdown-item text-danger text-sm" href="javascript:void(0);">
+                                    <a class="dropdown-item text-danger text-sm" href="javascript:void(0);"
+                                        v-if="facture.m_paid <= 0"
+                                        @click="deleteFacture(facture)">
                                         <i class="fas fa-trash mr-1"></i> Supprimer
                                     </a>
                                 </div>
                             </div>
                         </td>
                         <td class="vertical-align">
-                            <i class="fas fa-check-circle text-success mr-1" v-if="facture.state=='validated'"></i>
-                            <i class="fas fa-times-circle text-danger mr-1" v-if="facture.state=='cancelled'"></i>
+                            <!-- <i class="fas fa-check-circle text-success mr-1" v-if="facture.statut=='is_paid'"></i> -->
+                            <i class="fas fa-times-circle text-danger mr-1" 
+                                v-if="facture.statut=='cancelled' && facture.state=='cancelled'"></i>
                             {{ facture.num_facture }}
                         </td>
                         <td class="vertical-align">{{ facture.type.libelle }}</td>
-                        <td class="vertical-align">{{ facture.montant|numFormat }}</td>
+                        <td class="vertical-align text-center"><b>{{ facture.montant|numFormat }}</b></td>
+                        <td class="vertical-align text-center">
+                            <div class="progress progress-xs">
+                                <div :class="'progress-bar '+progressBarColor(percent(facture))" :style="'width: '+percent(facture)+'%'">
+                                </div>
+                            </div>
+                            <b class="text-xs">{{ facture.m_paid|numFormat }}</b>
+                        </td>
                         <td class="vertical-align">{{ facture.client.raison_sociale }}</td>
                         <td class="vertical-align">
                             <template v-if="facture.parent">
@@ -92,13 +131,19 @@
                             </template>
                         </td>
                         <td class="vertical-align">
-                            Création: {{ facture.date_creation | moment("DD/MM/YYYY") }} <br>
-                            Dépot: {{ facture.date_depot | moment("DD/MM/YYYY") }} <br>
-                            Echéance: {{ facture.date_echeance | moment("DD/MM/YYYY") }}<br>
-                            Paiement: {{ facture.paiement | moment("DD/MM/YYYY") }}
+                            <p v-if="facture.date_creation && !facture.date_paiement" class="p-0 m-0"><b>Facturé le:</b> {{ facture.date_creation | moment("DD/MM/YYYY") }}</p>
+                            <p v-if="facture.date_depot && !facture.date_paiement" class="p-0 m-0"><b>Déposé le:</b> {{ facture.date_depot | moment("DD/MM/YYYY") }}</p>
+                            <p v-if="!facture.date_paiement && !facture.date_paiement" class="p-0 m-0"><b>Echéance le:</b> {{ facture.date_echeance | moment("DD/MM/YYYY") }}</p>
+                            <p v-if="facture.date_paiement" class="p-0 m-0"><b>Payé le:</b> {{ facture.date_paiement | moment("DD/MM/YYYY") }}</p>
                         </td>
-                        <td class="vertical-align"></td>
-                        <td class="vertical-align">{{ facture.statut }}</td>
+                        <!-- <td class="vertical-align"></td> -->
+                        <td class="vertical-align text-center">
+                            <span class="badge badge-success" v-if="facture.statut == 'paid'">Payé</span>
+                            <span class="badge badge-warning" v-if="facture.state == 'waiting'">A valider</span>
+                            <span class="badge badge-info" v-if="facture.statut == 'in_progress' && facture.state != 'waiting'">En cours</span>
+                            <span class="badge badge-danger" v-if="facture.statut == 'cancelled'">Annulé</span>
+                            <span class="badge badge-danger" v-if="facture.statut == 'litigation'">Litige</span>
+                        </td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -107,10 +152,11 @@
                         <th>N° Facture</th>
                         <th>Type</th>
                         <th>Montant</th>
+                        <th>Recouvré</th>
                         <th>Client</th>
                         <th>Facture initiale</th>
                         <th>Dates</th>
-                        <th>Documents</th>
+                        <!-- <th>Documents</th> -->
                         <th>Statut</th>
                     </tr>
                     </tfoot>
@@ -138,11 +184,91 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modal-filter">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Filtre</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Type de facture</label>
+                                <select class="form-control" v-model="filter.type">
+                                    <option value="">Tout</option>
+                                    <option v-for="item in types" :key="item.id" :value="item.id">{{item.libelle}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Statut</label>
+                                <select class="form-control" v-model="filter.statut">
+                                    <option value="">Tout</option>
+                                    <option value="later">En retard</option>
+                                    <option value="cancelled">Annulé</option>
+                                    <option value="paid">Payé</option>
+                                    <option value="waiting">En attente</option>
+                                    <option value="litigation">Litige</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Client</label>
+                                <v-select :options="clients" label="raison_sociale"
+                                    :filterable="false"
+                                    v-model="filter.client"
+                                    @search="onSearchClients">
+                                    <template slot="no-options">
+                                        Sélectionnez un client
+                                    </template>
+                                    <template slot="option" slot-scope="option">
+                                        {{ option.raison_sociale }}
+                                    </template>
+                                    <template slot="selected-option" slot-scope="option">
+                                        {{ option.raison_sociale }}
+                                    </template>
+                                </v-select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Période</label>
+                                <date-picker
+                                    v-model="filter.range"
+                                    type="date" 
+                                    @input="selectRange"
+                                    range
+                                    placeholder="Select date range"
+                                    value-type="format"
+                                    format="YYYY-MM-DD"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            @click="processFilter"
+                            v-if="hasFilter(this.filter)">
+                            <i class="fas fa-filter mr-1"></i>Filtrer
+                        </button>
+                        <button type="button" class="btn btn-dark" data-dismiss="modal"
+                            @click="processFilter"
+                            v-if="!hasFilter(this.filter)">
+                            <i class="fas fa-filter mr-1"></i>Filtrer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import Facture from '../../models/facture'
+    import ClientService from './../../services/clients'
+    import 'vue-select/dist/vue-select.css';
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/index.css';
 
     export default {
 
@@ -153,7 +279,16 @@
                 factures: [],
                 filter: {
                     keyword: '',
+                    type: '',
+                    statut: '',
+                    // state: '',
+                    client: '',
+                    range: [],
+                    start: '',
+                    end: ''
                 },
+                types: [],
+                clients: [],
                 api_token: '',
                 pagination: {
                     current_page: 1,
@@ -168,10 +303,10 @@
 
             if (window.localStorage.getItem('authUser')) {
                 const authUser = JSON.parse(window.localStorage.getItem('authUser'))
-                this.api_token = authUser.api_token
-
-                this.fetchFactures()
+                this.api_token = authUser.api_token 
             }
+            this.fetchFactures()
+            this.fetchTypes()
 
         },
 
@@ -179,8 +314,14 @@
             fetchFactures(page) {
                 let vm = this;
                 this.spinner = true;
-
+                let client_id = ''
+                if(this.filter.client != '' && this.filter.client != null) 
+                    client_id = this.filter.client.id
+                else
+                    client_id = ''
+                    
                 let url_parameters = `api_token=${this.api_token}&keyword=${this.filter.keyword}&limit=10`
+                    +`&client_id=${client_id}&statut=${this.filter.statut}&start=${this.filter.start}&end=${this.filter.end}`
                 let page_url = `/api/factures?${url_parameters}`
                 if(page) page_url = `${page}&${url_parameters}`
 
@@ -209,26 +350,51 @@
 
                 this.pagination = pagination;
             },
+            fetchTypes(){
+                let vm = this;
+
+                axios.get('/api/parametres/types-facture')
+                    .then(response => {
+                        vm.types = response.data.data
+                    })
+                    .catch(error => {
+                        toastr.error('Erreur chargement des données!.')
+                    });
+            },
+            fetchClients: _.debounce((loading, search, vm) => {
+                let parameters = `keyword=${escape(search)}&limit=15`
+
+                ClientService.getClients(parameters)
+                    .then(res => res.json())
+                    .then(res => {
+                        loading(false)
+                        vm.clients = res.data
+                    })
+                    .catch(error => {
+                        toastr.error('Erreur chargement des clients!')
+                    });
+            }, 350),
+            onSearchClients(search, loading){
+                loading(true);
+                this.fetchClients(loading, search, this)
+            },
             search(){
                 this.fetchFactures();
             },
-            deleteFacture(id){
+            deleteFacture(facture){
                 let vm = this;
 
                 Swal.fire({
                     title: 'Supprimer',
-                    text: 'Etes-vous sur de vouloir supprimer?',
+                    text: 'Etes-vous sur de vouloir supprimer cette facture?',
                     showCancelButton: true,
                     confirmButtonText: 'Supprimer',
                     confirmButtonColor: '#C82333',
                     showLoaderOnConfirm: true,
                     preConfirm: (login) => {
-                        return fetch(`/api/factures/${id}?api_token=${this.api_token}`, { method: 'delete' })
+                        return axios.delete(`/api/factures/${facture.id}?`)
                             .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(response.statusText)
-                                }
-                                return response.json()
+                                return response
                             })
                             .catch(error => {
                                 Swal.showValidationMessage(
@@ -240,17 +406,17 @@
                 }).then((result) => {
                     if (result.value) {
                         toastr.warning('Suppression terminée!.')
-                        vm.fetchClients();
+                        vm.fetchFactures();
                     }
                 })
             },
             validate(facture){
+                let vm = this
                 let copy = {...facture}
-                copy.state = 'validated'
                 this.purge(copy)
 
                 Swal.fire({
-                    title: 'Supprimer',
+                    title: 'Valider la facture',
                     text: 'Etes-vous sur de vouloir valider cette facture?',
                     showCancelButton: true,
                     confirmButtonText: 'Valider',
@@ -260,15 +426,10 @@
                         return axios.patch("/api/factures/"+copy.id+"/validate", copy)
                             .then(function (response)
                             {
-                                // if (!response.ok) {
-                                //     throw new Error(response.statusText)
-                                //     console.log(0)
-                                // }
-                                // return response.json()
-                                console.log(0)
+                                return response
+                                
                             })
                             .catch(function (error) {
-                                // console.log(error.response.data.message)
                                 Swal.showValidationMessage(
                                     `Erreur validation: ${error.response.data.message}`
                                 )
@@ -277,19 +438,19 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        facture.state = 'validated'
+                        vm.facture = result.value.data.data
+                        // facture.state = 'validated'
                         toastr.success('Facture validée!')
                     }
-                    console.log(result)
                 })
             },
             cancel(facture){
+                let vm = this
                 let copy = {...facture}
-                copy.state = 'validated'
                 this.purge(copy)
 
                 Swal.fire({
-                    title: 'Supprimer',
+                    title: 'Annuler la facture',
                     text: 'Etes-vous sur de vouloir annuler cette facture?',
                     showCancelButton: true,
                     confirmButtonText: 'Annuler',
@@ -299,15 +460,8 @@
                         return axios.patch("/api/factures/"+copy.id+"/cancel", copy)
                             .then(function (response)
                             {
-                                // if (!response.ok) {
-                                //     throw new Error(response.statusText)
-                                //     console.log(0)
-                                // }
-                                // return response.json()
-                                console.log(0)
                             })
                             .catch(function (error) {
-                                // console.log(error.response.data.message)
                                 Swal.showValidationMessage(
                                     `Erreur validation: ${error.response.data.message}`
                                 )
@@ -317,9 +471,42 @@
                 }).then((result) => {
                     if (result.value) {
                         facture.state = 'cancelled'
+                        facture.statut = 'cancelled'
                         toastr.warning('Facture annulée!')
                     }
-                    console.log(result)
+                })
+            },
+            litigate(facture){
+                let vm = this
+                let copy = {...facture}
+                this.purge(copy)
+
+                Swal.fire({
+                    title: 'Modifier le statut',
+                    text: 'Etes-vous sur de vouloir modifier le statut de cette facture en litige?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmer',
+                    confirmButtonColor: '#dc3545',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (login) => {
+                        return axios.patch("/api/factures/"+copy.id+"/litigate", copy)
+                            .then(function (response)
+                            {
+                                return response
+                            })
+                            .catch(function (error) {
+                                Swal.showValidationMessage(
+                                    `Erreur validation: ${error.response.data.message}`
+                                )
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.value) {
+                        facture.statut = 'litigation'
+                        toastr.warning('Statut de la facture modifiée!')
+                    }
+                    console.log(result.value)
                 })
             },
             purge(facture){
@@ -330,6 +517,38 @@
                 delete facture.paiements
                 delete facture.m_paid
                 delete facture.m_not_paid
+            },
+            percent(facture){
+                return (facture.m_paid/facture.montant)*100
+            },
+            progressBarColor(value){
+                if(value>=0 && value < 50) return 'bg-danger'
+                if(value>=50 && value < 70) return 'bg-info'
+                if(value>=70 && value < 90) return 'bg-warning'
+                if(value>=90 && value <= 100) return 'bg-success'
+            },
+            openFilter(){
+                $('#modal-filter').modal({
+                    show: true,
+                    backdrop: 'static'
+                })
+            },
+            processFilter(){
+                this.fetchFactures()
+            },
+            selectRange(e){
+                this.filter.start = e[0]
+                this.filter.end = e[1]
+            },
+            hasFilter(){
+                if(this.filter.keyword != '') return true
+                if(this.filter.type != '') return true
+                if(this.filter.statut != '') return true
+                if(this.filter.client != '' && this.filter.client != null) return true
+                if(this.filter.start != '') return true
+                if(this.filter.end != '') return true
+
+                return false
             }
         }
 

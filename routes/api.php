@@ -181,7 +181,8 @@ Route::middleware('auth:api')->get('factures/{facture}', 'FactureController@getF
 Route::middleware('auth:api')->patch('factures/{facture}', 'FactureController@update'); //Modification de la facture
 Route::middleware('auth:api')->patch('factures/{facture}/validate', 'FactureController@validateFacture'); //Validation de la facture
 Route::middleware('auth:api')->patch('factures/{facture}/cancel', 'FactureController@cancelFacture'); //Annuler la facture
-// Route::middleware('auth:api')->delete('clients/{client}', 'ClientController@destroy'); //Suppression client
+Route::middleware('auth:api')->patch('factures/{facture}/litigate', 'FactureController@litigateFacture'); //Modifie le statut de la facture en litige
+Route::middleware('auth:api')->delete('factures/{facture}', 'FactureController@destroy'); //Suppression de la facture
 
 /***** Modes de paiement *****/
 Route::middleware('auth:api')->get('modes-paiement', 'ModePaiementController@index'); //Liste des modes de paiement

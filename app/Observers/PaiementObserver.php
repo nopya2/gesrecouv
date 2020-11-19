@@ -15,7 +15,8 @@ class PaiementObserver
     public function created(Paiement $paiement)
     {
         if($paiement->facture->MNotPaid <= 0){
-            $paiement->facture->statut = 'is_paid';
+            $paiement->facture->statut = 'paid';
+            $paiement->facture->date_paiement = now();
             $paiement->facture->save();
         }
 

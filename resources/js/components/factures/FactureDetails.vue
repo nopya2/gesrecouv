@@ -98,7 +98,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Historique des paiements</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-success btn-sm" @click="showPaiementForm()" v-if="facture.m_not_paid > 0"><i class="fas fa-plus mr-1"></i> Ajouter</button>
+                            <button type="button" class="btn btn-success btn-sm" @click="showPaiementForm()" 
+                                v-if="facture.m_not_paid > 0"><i class="fas fa-plus mr-1"></i> Ajouter</button>
                         </div>
                     </div>
                     <div class="card-body table-responsive p-0" style="height: 300px;">

@@ -7453,6 +7453,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -7925,6 +7926,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _models_facture__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../models/facture */ "./resources/js/models/facture.js");
+/* harmony import */ var _services_clients__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/clients */ "./resources/js/services/clients.js");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
+/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
+/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -8074,6 +8081,132 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: [],
@@ -8081,8 +8214,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       factures: [],
       filter: {
-        keyword: ''
+        keyword: '',
+        type: '',
+        statut: '',
+        // state: '',
+        client: '',
+        range: [],
+        start: '',
+        end: ''
       },
+      types: [],
+      clients: [],
       api_token: '',
       pagination: {
         current_page: 1,
@@ -8095,8 +8237,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (window.localStorage.getItem('authUser')) {
       var authUser = JSON.parse(window.localStorage.getItem('authUser'));
       this.api_token = authUser.api_token;
-      this.fetchFactures();
     }
+
+    this.fetchFactures();
+    this.fetchTypes();
   },
   methods: {
     fetchFactures: function fetchFactures(page) {
@@ -8104,7 +8248,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var vm = this;
       this.spinner = true;
-      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=10");
+      var client_id = '';
+      if (this.filter.client != '' && this.filter.client != null) client_id = this.filter.client.id;else client_id = '';
+      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=10") + "&client_id=".concat(client_id, "&statut=").concat(this.filter.statut, "&start=").concat(this.filter.start, "&end=").concat(this.filter.end);
       var page_url = "/api/factures?".concat(url_parameters);
       if (page) page_url = "".concat(page, "&").concat(url_parameters);
       fetch(page_url).then(function (res) {
@@ -8130,29 +8276,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
       this.pagination = pagination;
     },
+    fetchTypes: function fetchTypes() {
+      var vm = this;
+      axios.get('/api/parametres/types-facture').then(function (response) {
+        vm.types = response.data.data;
+      })["catch"](function (error) {
+        toastr.error('Erreur chargement des données!.');
+      });
+    },
+    fetchClients: _.debounce(function (loading, search, vm) {
+      var parameters = "keyword=".concat(escape(search), "&limit=15");
+      _services_clients__WEBPACK_IMPORTED_MODULE_1__["default"].getClients(parameters).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        loading(false);
+        vm.clients = res.data;
+      })["catch"](function (error) {
+        toastr.error('Erreur chargement des clients!');
+      });
+    }, 350),
+    onSearchClients: function onSearchClients(search, loading) {
+      loading(true);
+      this.fetchClients(loading, search, this);
+    },
     search: function search() {
       this.fetchFactures();
     },
-    deleteFacture: function deleteFacture(id) {
-      var _this2 = this;
-
+    deleteFacture: function deleteFacture(facture) {
       var vm = this;
       Swal.fire({
         title: 'Supprimer',
-        text: 'Etes-vous sur de vouloir supprimer?',
+        text: 'Etes-vous sur de vouloir supprimer cette facture?',
         showCancelButton: true,
         confirmButtonText: 'Supprimer',
         confirmButtonColor: '#C82333',
         showLoaderOnConfirm: true,
         preConfirm: function preConfirm(login) {
-          return fetch("/api/factures/".concat(id, "?api_token=").concat(_this2.api_token), {
-            method: 'delete'
-          }).then(function (response) {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-
-            return response.json();
+          return axios["delete"]("/api/factures/".concat(facture.id, "?")).then(function (response) {
+            return response;
           })["catch"](function (error) {
             Swal.showValidationMessage("Request failed: ".concat(error));
           });
@@ -8163,17 +8324,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.value) {
           toastr.warning('Suppression terminée!.');
-          vm.fetchClients();
+          vm.fetchFactures();
         }
       });
     },
     validate: function validate(facture) {
+      var vm = this;
+
       var copy = _objectSpread({}, facture);
 
-      copy.state = 'validated';
       this.purge(copy);
       Swal.fire({
-        title: 'Supprimer',
+        title: 'Valider la facture',
         text: 'Etes-vous sur de vouloir valider cette facture?',
         showCancelButton: true,
         confirmButtonText: 'Valider',
@@ -8181,14 +8343,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         showLoaderOnConfirm: true,
         preConfirm: function preConfirm(login) {
           return axios.patch("/api/factures/" + copy.id + "/validate", copy).then(function (response) {
-            // if (!response.ok) {
-            //     throw new Error(response.statusText)
-            //     console.log(0)
-            // }
-            // return response.json()
-            console.log(0);
+            return response;
           })["catch"](function (error) {
-            // console.log(error.response.data.message)
             Swal.showValidationMessage("Erreur validation: ".concat(error.response.data.message));
           });
         },
@@ -8197,35 +8353,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (result) {
         if (result.value) {
-          facture.state = 'validated';
+          vm.facture = result.value.data.data; // facture.state = 'validated'
+
           toastr.success('Facture validée!');
         }
-
-        console.log(result);
       });
     },
     cancel: function cancel(facture) {
+      var vm = this;
+
       var copy = _objectSpread({}, facture);
 
-      copy.state = 'validated';
       this.purge(copy);
       Swal.fire({
-        title: 'Supprimer',
+        title: 'Annuler la facture',
         text: 'Etes-vous sur de vouloir annuler cette facture?',
         showCancelButton: true,
         confirmButtonText: 'Annuler',
         confirmButtonColor: '#dc3545',
         showLoaderOnConfirm: true,
         preConfirm: function preConfirm(login) {
-          return axios.patch("/api/factures/" + copy.id + "/cancel", copy).then(function (response) {
-            // if (!response.ok) {
-            //     throw new Error(response.statusText)
-            //     console.log(0)
-            // }
-            // return response.json()
-            console.log(0);
-          })["catch"](function (error) {
-            // console.log(error.response.data.message)
+          return axios.patch("/api/factures/" + copy.id + "/cancel", copy).then(function (response) {})["catch"](function (error) {
             Swal.showValidationMessage("Erreur validation: ".concat(error.response.data.message));
           });
         },
@@ -8235,10 +8383,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.value) {
           facture.state = 'cancelled';
+          facture.statut = 'cancelled';
           toastr.warning('Facture annulée!');
         }
+      });
+    },
+    litigate: function litigate(facture) {
+      var vm = this;
 
-        console.log(result);
+      var copy = _objectSpread({}, facture);
+
+      this.purge(copy);
+      Swal.fire({
+        title: 'Modifier le statut',
+        text: 'Etes-vous sur de vouloir modifier le statut de cette facture en litige?',
+        showCancelButton: true,
+        confirmButtonText: 'Confirmer',
+        confirmButtonColor: '#dc3545',
+        showLoaderOnConfirm: true,
+        preConfirm: function preConfirm(login) {
+          return axios.patch("/api/factures/" + copy.id + "/litigate", copy).then(function (response) {
+            return response;
+          })["catch"](function (error) {
+            Swal.showValidationMessage("Erreur validation: ".concat(error.response.data.message));
+          });
+        },
+        allowOutsideClick: function allowOutsideClick() {
+          return !Swal.isLoading();
+        }
+      }).then(function (result) {
+        if (result.value) {
+          facture.statut = 'litigation';
+          toastr.warning('Statut de la facture modifiée!');
+        }
+
+        console.log(result.value);
       });
     },
     purge: function purge(facture) {
@@ -8249,6 +8428,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       delete facture.paiements;
       delete facture.m_paid;
       delete facture.m_not_paid;
+    },
+    percent: function percent(facture) {
+      return facture.m_paid / facture.montant * 100;
+    },
+    progressBarColor: function progressBarColor(value) {
+      if (value >= 0 && value < 50) return 'bg-danger';
+      if (value >= 50 && value < 70) return 'bg-info';
+      if (value >= 70 && value < 90) return 'bg-warning';
+      if (value >= 90 && value <= 100) return 'bg-success';
+    },
+    openFilter: function openFilter() {
+      $('#modal-filter').modal({
+        show: true,
+        backdrop: 'static'
+      });
+    },
+    processFilter: function processFilter() {
+      this.fetchFactures();
+    },
+    selectRange: function selectRange(e) {
+      this.filter.start = e[0];
+      this.filter.end = e[1];
+    },
+    hasFilter: function hasFilter() {
+      if (this.filter.keyword != '') return true;
+      if (this.filter.type != '') return true;
+      if (this.filter.statut != '') return true;
+      if (this.filter.client != '' && this.filter.client != null) return true;
+      if (this.filter.start != '') return true;
+      if (this.filter.end != '') return true;
+      return false;
     }
   }
 });
@@ -66316,39 +66526,69 @@ var render = function() {
         _vm._m(2)
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-3" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter.keyword,
-              expression: "filter.keyword"
-            }
-          ],
-          staticClass: "form-control form-control-sm",
-          attrs: {
-            type: "text",
-            placeholder: "Tapez votre recherche, raison sociale ou NIF"
-          },
-          domProps: { value: _vm.filter.keyword },
-          on: {
-            keyup: _vm.search,
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      _c("div", { staticClass: "col-md-4 offset-md-2" }, [
+        _c("div", { staticClass: "input-group input-group-sm" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter.keyword,
+                expression: "filter.keyword"
               }
-              _vm.$set(_vm.filter, "keyword", $event.target.value)
+            ],
+            staticClass: "form-control mr-1",
+            attrs: {
+              type: "text",
+              placeholder: "Tapez le n° de facture ou la raison sociale"
+            },
+            domProps: { value: _vm.filter.keyword },
+            on: {
+              keyup: _vm.search,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.filter, "keyword", $event.target.value)
+              }
             }
-          }
-        })
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "input-group-append" }, [
+            !_vm.hasFilter(_vm.filter)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-dark btn-flat mr-1",
+                    attrs: { type: "button" },
+                    on: { click: _vm.openFilter }
+                  },
+                  [_c("i", { staticClass: "fas fa-filter" })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.hasFilter(_vm.filter)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info btn-flat mr-1",
+                    attrs: { type: "button" },
+                    on: { click: _vm.openFilter }
+                  },
+                  [_c("i", { staticClass: "fas fa-filter" })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(3)
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "table-border-style mt-3" }, [
       _vm.spinner
         ? _c("div", { staticClass: "d-flex justify-content-center mb-3" }, [
-            _vm._m(3)
+            _vm._m(4)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -66356,11 +66596,11 @@ var render = function() {
         _c(
           "table",
           {
-            staticClass: "table table-sm table-bordered table-striped",
+            staticClass: "table table-bordered table-striped",
             attrs: { id: "example1" }
           },
           [
-            _vm._m(4),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "tbody",
@@ -66413,7 +66653,8 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            facture.state == "waiting"
+                            facture.state == "waiting" &&
+                            facture.statut != "paid"
                               ? _c(
                                   "a",
                                   {
@@ -66437,15 +66678,39 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(5, true),
+                            facture.statut == "in_progress" &&
+                            facture.m_paid <= 0
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "dropdown-item text-warning text-sm",
+                                    attrs: { href: "javascript:void(0);" }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-edit mr-1"
+                                    }),
+                                    _vm._v(
+                                      " Modifier\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            facture.state == "validated"
+                            facture.state == "validated" &&
+                            facture.statut != "litigation"
                               ? _c(
                                   "a",
                                   {
                                     staticClass:
                                       "dropdown-item text-indigo text-sm",
-                                    attrs: { href: "javascript:void(0);" }
+                                    attrs: { href: "javascript:void(0);" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.litigate(facture)
+                                      }
+                                    }
                                   },
                                   [
                                     _c("i", {
@@ -66476,7 +66741,9 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _c("div", { staticClass: "dropdown-divider" }),
+                            facture.m_paid <= 0
+                              ? _c("div", { staticClass: "dropdown-divider" })
+                              : _vm._e(),
                             _vm._v(" "),
                             facture.state == "waiting"
                               ? _c(
@@ -66502,19 +66769,36 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm._m(6, true)
+                            facture.m_paid <= 0
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass:
+                                      "dropdown-item text-danger text-sm",
+                                    attrs: { href: "javascript:void(0);" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteFacture(facture)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-trash mr-1"
+                                    }),
+                                    _vm._v(
+                                      " Supprimer\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
                           ]
                         )
                       ])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "vertical-align" }, [
-                      facture.state == "validated"
-                        ? _c("i", {
-                            staticClass: "fas fa-check-circle text-success mr-1"
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
+                      facture.statut == "cancelled" &&
                       facture.state == "cancelled"
                         ? _c("i", {
                             staticClass: "fas fa-times-circle text-danger mr-1"
@@ -66531,8 +66815,25 @@ var render = function() {
                       _vm._v(_vm._s(facture.type.libelle))
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "vertical-align" }, [
-                      _vm._v(_vm._s(_vm._f("numFormat")(facture.montant)))
+                    _c("td", { staticClass: "vertical-align text-center" }, [
+                      _c("b", [
+                        _vm._v(_vm._s(_vm._f("numFormat")(facture.montant)))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "vertical-align text-center" }, [
+                      _c("div", { staticClass: "progress progress-xs" }, [
+                        _c("div", {
+                          class:
+                            "progress-bar " +
+                            _vm.progressBarColor(_vm.percent(facture)),
+                          style: "width: " + _vm.percent(facture) + "%"
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("b", { staticClass: "text-xs" }, [
+                        _vm._v(_vm._s(_vm._f("numFormat")(facture.m_paid)))
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "vertical-align" }, [
@@ -66559,48 +66860,98 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("td", { staticClass: "vertical-align" }, [
-                      _vm._v(
-                        "\n                        Création: " +
-                          _vm._s(
-                            _vm._f("moment")(
-                              facture.date_creation,
-                              "DD/MM/YYYY"
+                      facture.date_creation && !facture.date_paiement
+                        ? _c("p", { staticClass: "p-0 m-0" }, [
+                            _c("b", [_vm._v("Facturé le:")]),
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    facture.date_creation,
+                                    "DD/MM/YYYY"
+                                  )
+                                )
                             )
-                          ) +
-                          " "
-                      ),
-                      _c("br"),
-                      _vm._v(
-                        "\n                        Dépot: " +
-                          _vm._s(
-                            _vm._f("moment")(facture.date_depot, "DD/MM/YYYY")
-                          ) +
-                          " "
-                      ),
-                      _c("br"),
-                      _vm._v(
-                        "\n                        Echéance: " +
-                          _vm._s(
-                            _vm._f("moment")(
-                              facture.date_echeance,
-                              "DD/MM/YYYY"
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.date_depot && !facture.date_paiement
+                        ? _c("p", { staticClass: "p-0 m-0" }, [
+                            _c("b", [_vm._v("Déposé le:")]),
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    facture.date_depot,
+                                    "DD/MM/YYYY"
+                                  )
+                                )
                             )
-                          )
-                      ),
-                      _c("br"),
-                      _vm._v(
-                        "\n                        Paiement: " +
-                          _vm._s(
-                            _vm._f("moment")(facture.paiement, "DD/MM/YYYY")
-                          ) +
-                          "\n                    "
-                      )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !facture.date_paiement && !facture.date_paiement
+                        ? _c("p", { staticClass: "p-0 m-0" }, [
+                            _c("b", [_vm._v("Echéance le:")]),
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    facture.date_echeance,
+                                    "DD/MM/YYYY"
+                                  )
+                                )
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.date_paiement
+                        ? _c("p", { staticClass: "p-0 m-0" }, [
+                            _c("b", [_vm._v("Payé le:")]),
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    facture.date_paiement,
+                                    "DD/MM/YYYY"
+                                  )
+                                )
+                            )
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "vertical-align" }),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "vertical-align" }, [
-                      _vm._v(_vm._s(facture.statut))
+                    _c("td", { staticClass: "vertical-align text-center" }, [
+                      facture.statut == "paid"
+                        ? _c("span", { staticClass: "badge badge-success" }, [
+                            _vm._v("Payé")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.state == "waiting"
+                        ? _c("span", { staticClass: "badge badge-warning" }, [
+                            _vm._v("A valider")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.statut == "in_progress" &&
+                      facture.state != "waiting"
+                        ? _c("span", { staticClass: "badge badge-info" }, [
+                            _vm._v("En cours")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.statut == "cancelled"
+                        ? _c("span", { staticClass: "badge badge-danger" }, [
+                            _vm._v("Annulé")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      facture.statut == "litigation"
+                        ? _c("span", { staticClass: "badge badge-danger" }, [
+                            _vm._v("Litige")
+                          ])
+                        : _vm._e()
                     ])
                   ])
                 })
@@ -66608,7 +66959,7 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm._m(7)
+            _vm._m(6)
           ]
         )
       ]),
@@ -66699,6 +67050,252 @@ var render = function() {
             ])
           ])
         : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "modal-filter" } }, [
+      _c("div", { staticClass: "modal-dialog modal-lg" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(7),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("label", [_vm._v("Type de facture")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filter.type,
+                        expression: "filter.type"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filter,
+                          "type",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("Tout")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.types, function(item) {
+                      return _c(
+                        "option",
+                        { key: item.id, domProps: { value: item.id } },
+                        [_vm._v(_vm._s(item.libelle))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("label", [_vm._v("Statut")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filter.statut,
+                        expression: "filter.statut"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filter,
+                          "statut",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("Tout")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "later" } }, [
+                      _vm._v("En retard")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "cancelled" } }, [
+                      _vm._v("Annulé")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "paid" } }, [
+                      _vm._v("Payé")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "waiting" } }, [
+                      _vm._v("En attente")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "litigation" } }, [
+                      _vm._v("Litige")
+                    ])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("label", [_vm._v("Client")]),
+                  _vm._v(" "),
+                  _c(
+                    "v-select",
+                    {
+                      attrs: {
+                        options: _vm.clients,
+                        label: "raison_sociale",
+                        filterable: false
+                      },
+                      on: { search: _vm.onSearchClients },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "option",
+                          fn: function(option) {
+                            return [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(option.raison_sociale) +
+                                  "\n                                "
+                              )
+                            ]
+                          }
+                        },
+                        {
+                          key: "selected-option",
+                          fn: function(option) {
+                            return [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(option.raison_sociale) +
+                                  "\n                                "
+                              )
+                            ]
+                          }
+                        }
+                      ]),
+                      model: {
+                        value: _vm.filter.client,
+                        callback: function($$v) {
+                          _vm.$set(_vm.filter, "client", $$v)
+                        },
+                        expression: "filter.client"
+                      }
+                    },
+                    [
+                      _c("template", { slot: "no-options" }, [
+                        _vm._v(
+                          "\n                                    Sélectionnez un client\n                                "
+                        )
+                      ])
+                    ],
+                    2
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("label", [_vm._v("Période")]),
+                  _vm._v(" "),
+                  _c("date-picker", {
+                    attrs: {
+                      type: "date",
+                      range: "",
+                      placeholder: "Select date range",
+                      "value-type": "format",
+                      format: "YYYY-MM-DD"
+                    },
+                    on: { input: _vm.selectRange },
+                    model: {
+                      value: _vm.filter.range,
+                      callback: function($$v) {
+                        _vm.$set(_vm.filter, "range", $$v)
+                      },
+                      expression: "filter.range"
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _vm.hasFilter(this.filter)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: { click: _vm.processFilter }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-filter mr-1" }),
+                    _vm._v("Filtrer\n                    ")
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.hasFilter(this.filter)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-dark",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: { click: _vm.processFilter }
+                  },
+                  [
+                    _c("i", { staticClass: "fas fa-filter mr-1" }),
+                    _vm._v("Filtrer\n                    ")
+                  ]
+                )
+              : _vm._e()
+          ])
+        ])
+      ])
     ])
   ])
 }
@@ -66735,6 +67332,16 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
+      "button",
+      { staticClass: "btn btn-success btn-flat", attrs: { type: "button" } },
+      [_c("i", { staticClass: "fas fa-times" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
       "div",
       { staticClass: "spinner-grow text-warning", attrs: { role: "status" } },
       [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
@@ -66748,11 +67355,13 @@ var staticRenderFns = [
       _c("tr", { staticClass: "text-center" }, [
         _c("th"),
         _vm._v(" "),
-        _c("th", [_vm._v("N° Facture")]),
+        _c("th", [_vm._v("Facture no.")]),
         _vm._v(" "),
         _c("th", [_vm._v("Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Montant")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Recouvré")]),
         _vm._v(" "),
         _c("th", [_vm._v("Client")]),
         _vm._v(" "),
@@ -66760,43 +67369,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Dates")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Documents")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Statut")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "dropdown-item text-warning text-sm",
-        attrs: { href: "javascript:void(0);" }
-      },
-      [
-        _c("i", { staticClass: "fas fa-edit mr-1" }),
-        _vm._v(" Modifier\n                                ")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "dropdown-item text-danger text-sm",
-        attrs: { href: "javascript:void(0);" }
-      },
-      [
-        _c("i", { staticClass: "fas fa-trash mr-1" }),
-        _vm._v(" Supprimer\n                                ")
-      ]
-    )
   },
   function() {
     var _vm = this
@@ -66812,16 +67387,37 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Montant")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Recouvré")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Client")]),
         _vm._v(" "),
         _c("th", [_vm._v("Facture initiale")]),
         _vm._v(" "),
         _c("th", [_vm._v("Dates")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Documents")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Statut")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", { staticClass: "modal-title" }, [_vm._v("Filtre")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]
@@ -99980,8 +100576,8 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/gesrecouv/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/gesrecouv/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/drd/projects/gesrecouv/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/drd/projects/gesrecouv/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

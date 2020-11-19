@@ -31,17 +31,42 @@ class FactureController extends Controller
         $keyword = '';
         if($request->has('keyword'))
             $keyword = $request->keyword;
-        // if (!Gate::allows('isAdmin')) {
-        //     abort(403, 'Désolé, vous ne pouvez pas executer cette action');
-        // }
 
-        $factures = Facture::where(function ($query) use ($request){
+        $queryBuilder = Facture::where(function ($query) use ($request){
             $query
-                ->where('num_facture', 'LIKE', '%' . $request->keyword . '%');
+                ->where('num_facture', 'LIKE', '%' . $request->keyword . '%')
+                ->where('deleted', false);
                 // ->orWhere('nif', 'like', '%' . $request->keyword . '%');
 
-            })
-            ->orderBy('created_at', 'desc')->paginate($limit);
+            });
+
+        if($request->has('client_id') && $request->client_id != ''){
+            $queryBuilder->where('client_id', $request->client_id);
+        }
+
+        if($request->has('statut') && $request->statut != ''){
+            if($request->statut == 'cancelled'){
+                $queryBuilder->where('statut', 'cancelled');
+            }
+            if($request->statut == 'litigation'){
+                $queryBuilder->where('statut', 'litigation');
+            }
+            if($request->statut == 'paid'){
+                $queryBuilder->where('statut', 'paid');
+            }
+            if($request->statut == 'waiting'){
+                $queryBuilder
+                    ->where(function($query) use ($request){
+                        $query
+                            ->where('statut', '!=', 'paid')
+                            ->where('date_echeance', '>', now());
+                    });
+            }
+        }
+        
+        $factures = $queryBuilder
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         return FactureResource::collection($factures);
     }
@@ -158,13 +183,33 @@ class FactureController extends Controller
     public function cancelFacture(Facture $facture){
 
         $user = Auth::user();
-        Facture::whereId($facture->id)->update(['state'=>"cancelled","updated_at"=>now()]);
+        Facture::whereId($facture->id)->update(['state'=>"cancelled", 'statut'=>'cancelled', "updated_at"=>now()]);
 
         activity()
             ->performedOn($facture->fresh())
             ->causedBy(Auth::user())
             // ->withProperties(['laravel' => 'awesome'])
             ->log("{$user->fullName} a annulé la facture n°{$facture->num_facture}");
+
+        return new FactureResource($facture->fresh());
+    }
+
+    /**
+     * Modifie le statut de la facture en litige.
+     *
+     * @param  \App\Facture  $facture
+     * @return \Illuminate\Http\Response
+     */
+    public function litigateFacture(Facture $facture){
+
+        $user = Auth::user();
+        Facture::whereId($facture->id)->update(['statut'=>'litigation', "updated_at"=>now()]);
+
+        activity()
+            ->performedOn($facture->fresh())
+            ->causedBy(Auth::user())
+            // ->withProperties(['laravel' => 'awesome'])
+            ->log("{$user->fullName} a modifié le statut de la facture n°{$facture->num_facture} en litige");
 
         return new FactureResource($facture->fresh());
     }
@@ -178,6 +223,14 @@ class FactureController extends Controller
      */
     public function destroy(Facture $facture)
     {
-        //
+        $user = Auth::user();
+
+        Facture::whereId($facture->id)->update(['deleted'=>true, "updated_at"=>now()]);
+        activity()
+            ->performedOn($facture->fresh())
+            ->causedBy(Auth::user())
+            ->log("{$user->fullName} a supprimé la facture n°{$facture->num_facture}");
+
+        return response()->json(['message' => 'Facture supprimée'], 200);
     }
 }
