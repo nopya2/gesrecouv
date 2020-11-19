@@ -44,7 +44,14 @@ class FactureController extends Controller
             $queryBuilder->where('client_id', $request->client_id);
         }
 
+        if($request->has('type') && $request->type != ''){
+            $queryBuilder->where('type_id', $request->type);
+        }
+
         if($request->has('statut') && $request->statut != ''){
+            if($request->statut == 'to_validate'){
+                $queryBuilder->where('state', 'waiting');
+            }
             if($request->statut == 'cancelled'){
                 $queryBuilder->where('statut', 'cancelled');
             }
@@ -61,6 +68,18 @@ class FactureController extends Controller
                             ->where('statut', '!=', 'paid')
                             ->where('date_echeance', '>', now());
                     });
+            }
+            if($request->statut == 'later'){
+                $queryBuilder
+                    ->where(function($query) use ($request){
+                        $query
+                            ->where('statut', '!=', 'paid')
+                            ->where('date_echeance', '<', now());
+                    });
+            }
+            if($request->has('start') && $request->has('end') && $request->start != "" && $request->end != ""){
+                $queryBuilder
+                    ->whereBeteween('date_creation', [$request->start, $request->end]);
             }
         }
         

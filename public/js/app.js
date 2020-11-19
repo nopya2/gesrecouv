@@ -8203,6 +8203,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -8250,7 +8251,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.spinner = true;
       var client_id = '';
       if (this.filter.client != '' && this.filter.client != null) client_id = this.filter.client.id;else client_id = '';
-      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=10") + "&client_id=".concat(client_id, "&statut=").concat(this.filter.statut, "&start=").concat(this.filter.start, "&end=").concat(this.filter.end);
+      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=10") + "&client_id=".concat(client_id, "&statut=").concat(this.filter.statut, "&start=").concat(this.filter.start, "&end=").concat(this.filter.end) + "&type=".concat(this.filter.type);
       var page_url = "/api/factures?".concat(url_parameters);
       if (page) page_url = "".concat(page, "&").concat(url_parameters);
       fetch(page_url).then(function (res) {
@@ -8459,6 +8460,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.filter.start != '') return true;
       if (this.filter.end != '') return true;
       return false;
+    },
+    resetFilter: function resetFilter() {
+      this.filter = {
+        keyword: '',
+        type: '',
+        statut: '',
+        // state: '',
+        client: '',
+        range: [],
+        start: '',
+        end: ''
+      };
+      this.search();
     }
   }
 });
@@ -66538,10 +66552,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control mr-1",
-            attrs: {
-              type: "text",
-              placeholder: "Tapez le n° de facture ou la raison sociale"
-            },
+            attrs: { type: "text", placeholder: "Tapez le n° de la facture" },
             domProps: { value: _vm.filter.keyword },
             on: {
               keyup: _vm.search,
@@ -66579,7 +66590,15 @@ var render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm._m(3)
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success btn-flat",
+                attrs: { type: "button" },
+                on: { click: _vm.resetFilter }
+              },
+              [_c("i", { staticClass: "fas fa-times" })]
+            )
           ])
         ])
       ])
@@ -66588,7 +66607,7 @@ var render = function() {
     _c("div", { staticClass: "table-border-style mt-3" }, [
       _vm.spinner
         ? _c("div", { staticClass: "d-flex justify-content-center mb-3" }, [
-            _vm._m(4)
+            _vm._m(3)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -66600,7 +66619,7 @@ var render = function() {
             attrs: { id: "example1" }
           },
           [
-            _vm._m(5),
+            _vm._m(4),
             _vm._v(" "),
             _c(
               "tbody",
@@ -66959,7 +66978,7 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm._m(6)
+            _vm._m(5)
           ]
         )
       ]),
@@ -67055,7 +67074,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "modal-filter" } }, [
       _c("div", { staticClass: "modal-dialog modal-lg" }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(7),
+          _vm._m(6),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
             _c("div", { staticClass: "row" }, [
@@ -67146,6 +67165,10 @@ var render = function() {
                   },
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("Tout")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "to_validate" } }, [
+                      _vm._v("A valider")
+                    ]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "later" } }, [
                       _vm._v("En retard")
@@ -67326,16 +67349,6 @@ var staticRenderFns = [
       _c("i", { staticClass: "fas fa-print" }),
       _vm._v(" Exporter excel\n            ")
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-success btn-flat", attrs: { type: "button" } },
-      [_c("i", { staticClass: "fas fa-times" })]
-    )
   },
   function() {
     var _vm = this

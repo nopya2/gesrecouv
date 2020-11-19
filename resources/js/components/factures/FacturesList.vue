@@ -21,7 +21,7 @@
                 
 
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control mr-1" placeholder="Tapez le n° de facture ou la raison sociale"
+                    <input type="text" class="form-control mr-1" placeholder="Tapez le n° de la facture"
                         v-model="filter.keyword" v-on:keyup="search">
                     <span class="input-group-append">
                         <button type="button" class="btn btn-dark btn-flat mr-1"
@@ -34,7 +34,7 @@
                             v-if="hasFilter(filter)">
                             <i class="fas fa-filter"></i>
                         </button>
-                        <button type="button" class="btn btn-success btn-flat">
+                        <button type="button" class="btn btn-success btn-flat" @click="resetFilter">
                             <i class="fas fa-times"></i>
                         </button>
                     </span>
@@ -206,6 +206,7 @@
                                 <label>Statut</label>
                                 <select class="form-control" v-model="filter.statut">
                                     <option value="">Tout</option>
+                                    <option value="to_validate">A valider</option>
                                     <option value="later">En retard</option>
                                     <option value="cancelled">Annulé</option>
                                     <option value="paid">Payé</option>
@@ -322,6 +323,7 @@
                     
                 let url_parameters = `api_token=${this.api_token}&keyword=${this.filter.keyword}&limit=10`
                     +`&client_id=${client_id}&statut=${this.filter.statut}&start=${this.filter.start}&end=${this.filter.end}`
+                    +`&type=${this.filter.type}`
                 let page_url = `/api/factures?${url_parameters}`
                 if(page) page_url = `${page}&${url_parameters}`
 
@@ -549,6 +551,19 @@
                 if(this.filter.end != '') return true
 
                 return false
+            },
+            resetFilter(){
+                this.filter = {
+                    keyword: '',
+                    type: '',
+                    statut: '',
+                    // state: '',
+                    client: '',
+                    range: [],
+                    start: '',
+                    end: ''
+                }
+                this.search()
             }
         }
 
