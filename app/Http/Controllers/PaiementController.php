@@ -82,6 +82,13 @@ class PaiementController extends Controller
             }
         }
 
+        $user = Auth::user();
+        activity()
+            ->performedOn($paiement->facture)
+            ->causedBy(Auth::user())
+            ->withProperties(['facture' => $paiement->facture, 'user' => $user, 'paiement' => $paiement])
+            ->log("<b>".strtoupper($user->fullName)."</b>"." a ajouté un paiement n°{$paiement->num_paiement} à la facture n°{$paiement->facture->num_facture}");
+
 
         return ['paiement' => new PaiementResource($paiement), 'facture' => new FactureResource($paiement->facture)];
     }
@@ -117,7 +124,30 @@ class PaiementController extends Controller
      */
     public function update(Request $request, Paiement $paiement)
     {
-        //
+                
+    }
+
+    public function updateState(Request $request, Paiement $paiement){
+        if(!$request->has('action'))
+            return response()->json(['message'=>'Erreur serveur interne'], 500);
+        
+        
+        if($request->action =='validate')
+            $paiement->state = 'validated';
+        if($request->action =='cancel')
+            $paiement->state = 'cancelled';
+
+        $paiement->updated_at = now();
+        $paiement->save();
+
+        $user = Auth::user();
+        activity()
+            ->performedOn($paiement->facture)
+            ->causedBy(Auth::user())
+            ->withProperties(['facture' => $paiement->facture, 'user' => $user, 'paiement' => $paiement])
+            ->log("<b>".strtoupper($user->fullName)."</b>"." a validé le paiement n°{$paiement->num_paiement} de la facture n°{$paiement->facture->num_facture}");
+
+        return new PaiementResource($paiement);
     }
 
     /**

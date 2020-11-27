@@ -12,7 +12,7 @@ class ClientController extends Controller
 
     public function home()
     {
-        return view('admin.clients.index', [
+        return view('admin.recouvrement.clients.index', [
             'page' => 'client',
             'sub_page' => 'client.list'
         ]);
@@ -53,7 +53,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('admin.clients.create', [
+        return view('admin.recouvrement.clients.create', [
             'page' => 'client',
             'sub_page' => 'client.create'
         ]);
@@ -105,7 +105,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return view('admin.clients.show', [
+        return view('admin.recouvrement.clients.show', [
             'client' => $client,
             'page' => 'client',
             'sub_page' => 'client.show'
@@ -133,7 +133,7 @@ class ClientController extends Controller
     {
         // $user = User::findOrFail($user);
 
-        return view('admin.clients.edit', [
+        return view('admin.recouvrement.clients.edit', [
             'client' => $client,
             'page' => 'client',
             'sub_page' => 'client.edit'

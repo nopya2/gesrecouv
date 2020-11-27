@@ -26,15 +26,18 @@
                     <span class="input-group-append">
                         <button type="button" class="btn btn-dark btn-flat mr-1"
                             @click="openFilter"
-                            v-if="!hasFilter(filter)">
+                            v-if="!hasFilter(filter)"
+                            data-toggle="tooltip" data-placement="bottom" title="Filtrer">
                             <i class="fas fa-filter"></i>
                         </button>
                         <button type="button" class="btn btn-info btn-flat mr-1"
                             @click="openFilter"
-                            v-if="hasFilter(filter)">
+                            v-if="hasFilter(filter)"
+                            data-toggle="tooltip" data-placement="bottom" title="Filtrer">
                             <i class="fas fa-filter"></i>
                         </button>
-                        <button type="button" class="btn btn-success btn-flat" @click="resetFilter">
+                        <button type="button" class="btn btn-success btn-flat" @click="resetFilter"
+                            data-toggle="tooltip" data-placement="bottom" title="Annuler les filtres">
                             <i class="fas fa-times"></i>
                         </button>
                     </span>
@@ -50,16 +53,17 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="example1">
+                <table class="table table-bordered projects table-striped" id="example1">
                     <thead>
                     <tr class="text-center">
                         <th></th>
-                        <th>Facture no.</th>
-                        <th>Type</th>
-                        <th>Montant</th>
-                        <th>Recouvré</th>
-                        <th>Client</th>
+                        <th style="width: 255px">Facture no.</th>
                         <th>Facture initiale</th>
+                        <th>Client</th>
+                        <th>Type</th>
+                        <th>Paiement attendu</th>
+                        <th>Réglé</th>
+                        <th>Reste à payer</th>
                         <th>Dates</th>
                         <!-- <th>Documents</th> -->
                         <th>Statut</th>
@@ -81,42 +85,63 @@
                                     <a class="dropdown-item text-info text-sm" :href="'/factures/'+facture.id">
                                         <i class="fas fa-eye mr-1"></i> Détails
                                     </a>
+                                    <a class="dropdown-item text-secondary text-sm" href="javascript:void(0);" >
+                                        <i class="fas fa-print mr-1"></i> Imprimer
+                                    </a>
                                     <a class="dropdown-item text-success text-sm" href="javascript:void(0);" 
-                                        v-if="facture.state == 'waiting' && facture.statut != 'paid'" @click="validate(facture)">
+                                        v-if="facture.state == 'waiting'"
+                                        @click="validate(facture)">
                                         <i class="fas fa-check mr-1"></i> Valider
                                     </a>
-                                    <a class="dropdown-item text-warning text-sm" href="javascript:void(0);"
-                                        v-if="facture.statut == 'in_progress' && facture.m_paid <= 0">
+                                    <a class="dropdown-item text-warning text-sm"
+                                        :href="`/factures/${facture.id}/edit`"
+                                        v-if="facture.state == 'waiting' && facture.statut == 'in_progress' && facture.m_paid==0">
                                         <i class="fas fa-edit mr-1"></i> Modifier
                                     </a>
                                     <a class="dropdown-item text-indigo text-sm" href="javascript:void(0);" 
-                                        v-if="facture.state == 'validated' && facture.statut != 'litigation'"
+                                        v-if="facture.state == 'validated' && facture.statut != 'litigation' && facture.statut != 'credit_note' && facture.statut != 'paid'"
                                         @click="litigate(facture)">
                                         <i class="fas fa-exclamation mr-1"></i> Litige
                                     </a>
-                                    <a class="dropdown-item text-sm" href="javascript:void(0);" v-if="facture.state == 'validated'">
+                                    <a class="dropdown-item text-sm" href="javascript:void(0);" 
+                                        v-if="facture.state == 'validated' && facture.statut != 'credit_note' && facture.statut != 'paid'"
+                                        @click="transformToCreditNote(facture)">
                                         <i class="fas fa-exchange-alt mr-1"></i> Convertir en avoir
                                     </a>
-                                    <div class="dropdown-divider" v-if="facture.m_paid <= 0"></div>
-                                    <a class="dropdown-item text-gray-dark text-sm" href="javascript:void(0);" v-if="facture.state == 'waiting'" @click="cancel(facture)">
+                                    <div class="dropdown-divider" v-if="facture.m_paid <= 0 && facture.statut != 'credit_note'"></div>
+                                    <a class="dropdown-item text-gray-dark text-sm" href="javascript:void(0);" 
+                                        v-if="facture.state == 'waiting' && facture.statut != 'credit_note'" 
+                                        @click="cancel(facture)">
                                         <i class="fas fa-times mr-1"></i> Annuler
                                     </a>
                                     <a class="dropdown-item text-danger text-sm" href="javascript:void(0);"
-                                        v-if="facture.m_paid <= 0"
+                                        v-if="facture.m_paid <= 0 && facture.statut != 'credit_note'"
                                         @click="deleteFacture(facture)">
                                         <i class="fas fa-trash mr-1"></i> Supprimer
                                     </a>
                                 </div>
                             </div>
                         </td>
-                        <td class="vertical-align">
+                        <td class="vertical-align text-center">
                             <!-- <i class="fas fa-check-circle text-success mr-1" v-if="facture.statut=='is_paid'"></i> -->
-                            <i class="fas fa-times-circle text-danger mr-1" 
-                                v-if="facture.statut=='cancelled' && facture.state=='cancelled'"></i>
+                            <!-- <i class="fas fa-times-circle text-danger mr-1" 
+                                v-if="facture.statut=='cancelled' && facture.state=='cancelled'"></i> -->
                             {{ facture.num_facture }}
                         </td>
-                        <td class="vertical-align">{{ facture.type.libelle }}</td>
-                        <td class="vertical-align text-center"><b>{{ facture.montant|numFormat }}</b></td>
+                        <td class="vertical-align">
+                            <template v-if="facture.parent">
+                                {{ facture.parent.num_facture }}
+                            </template>
+                        </td>
+                        <td class="vertical-align">
+                            <a :href="'/clients/'+facture.client.id">{{ facture.client.raison_sociale }}</a>
+                        </td>
+                        <td class="vertical-align">
+                            {{ facture.type.libelle }}
+                        </td>
+                        <td class="vertical-align text-center">
+                            <b>{{ facture.montant|numFormat }}</b>
+                        </td>
                         <td class="vertical-align text-center">
                             <div class="progress progress-xs">
                                 <div :class="'progress-bar '+progressBarColor(percent(facture))" :style="'width: '+percent(facture)+'%'">
@@ -124,11 +149,8 @@
                             </div>
                             <b class="text-xs">{{ facture.m_paid|numFormat }}</b>
                         </td>
-                        <td class="vertical-align">{{ facture.client.raison_sociale }}</td>
-                        <td class="vertical-align">
-                            <template v-if="facture.parent">
-                                {{ facture.parent.num_facture }} - {{ facture.client.raison_sociale }}
-                            </template>
+                        <td class="vertical-align text-center">
+                            <b class="text-xs">{{ facture.m_not_paid|numFormat }}</b>
                         </td>
                         <td class="vertical-align">
                             <p v-if="facture.date_creation && !facture.date_paiement" class="p-0 m-0"><b>Facturé le:</b> {{ facture.date_creation | moment("DD/MM/YYYY") }}</p>
@@ -138,6 +160,7 @@
                         </td>
                         <!-- <td class="vertical-align"></td> -->
                         <td class="vertical-align text-center">
+                            <span class="badge badge-dark" v-if="facture.statut == 'credit_note'">Avoir</span>
                             <span class="badge badge-success" v-if="facture.statut == 'paid'">Payé</span>
                             <span class="badge badge-warning" v-if="facture.state == 'waiting'">A valider</span>
                             <span class="badge badge-info" v-if="facture.statut == 'in_progress' && facture.state != 'waiting'">En cours</span>
@@ -149,12 +172,13 @@
                     <tfoot>
                     <tr class="text-center">
                         <th></th>
-                        <th>N° Facture</th>
-                        <th>Type</th>
-                        <th>Montant</th>
-                        <th>Recouvré</th>
-                        <th>Client</th>
+                        <th style="width: 255px">Facture no.</th>
                         <th>Facture initiale</th>
+                        <th>Client</th>
+                        <th>Type</th>
+                        <th>Paiement attendu</th>
+                        <th>Réglé</th>
+                        <th>Reste à payer</th>
                         <th>Dates</th>
                         <!-- <th>Documents</th> -->
                         <th>Statut</th>
@@ -212,6 +236,7 @@
                                     <option value="paid">Payé</option>
                                     <option value="waiting">En attente</option>
                                     <option value="litigation">Litige</option>
+                                    <option value="credit_note">Avoir</option>
                                 </select>
                             </div>
                         </div>
@@ -274,6 +299,9 @@
     export default {
 
         props : [],
+        mounted() {
+            $('[data-toggle="tooltip"]').tooltip()
+        },
 
         data(){
             return{
@@ -355,7 +383,7 @@
             fetchTypes(){
                 let vm = this;
 
-                axios.get('/api/parametres/types-facture')
+                axios.get('/api/types-facture')
                     .then(response => {
                         vm.types = response.data.data
                     })
@@ -440,8 +468,14 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        vm.facture = result.value.data.data
-                        // facture.state = 'validated'
+                        let value = result.value.data.data
+                        let index = vm.factures.findIndex(x => x.id == value.id)
+                        if(index !== -1){
+                            vm.factures[index] = value
+                            this.$forceUpdate();
+                        }
+                        
+                        vm.factures[index] = {...facture}
                         toastr.success('Facture validée!')
                     }
                 })
@@ -472,8 +506,12 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        facture.state = 'cancelled'
-                        facture.statut = 'cancelled'
+                        let value = result.value.data.data
+                        let index = vm.factures.findIndex(x => x.id == value.id)
+                        if(index !== -1){
+                            vm.factures[index] = value
+                            this.$forceUpdate();
+                        }
                         toastr.warning('Facture annulée!')
                     }
                 })
@@ -505,10 +543,44 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        facture.statut = 'litigation'
+                        let value = result.value.data.data
+                        let index = vm.factures.findIndex(x => x.id == value.id)
+                        if(index !== -1){
+                            vm.factures[index] = value
+                            this.$forceUpdate();
+                        }
                         toastr.warning('Statut de la facture modifiée!')
                     }
-                    console.log(result.value)
+                })
+            },
+            transformToCreditNote(facture){
+                let vm = this
+
+                Swal.fire({
+                    title: 'Facture d\'avoir',
+                    text: 'Etes-vous sur de vouloir transformer cette facture en avoir?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmer',
+                    confirmButtonColor: '#dc3545',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (login) => {
+                        return axios.patch("/api/factures/"+facture.id+"/make-credit-note", facture)
+                            .then(function (response)
+                            {
+                                return response
+                            })
+                            .catch(function (error) {
+                                Swal.showValidationMessage(
+                                    `Erreur validation: ${error.response.data.message}`
+                                )
+                            });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.value) {
+                        vm.fetchFactures()
+                        toastr.success('Facture convertie en avoir!')
+                    }
                 })
             },
             purge(facture){

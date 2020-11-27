@@ -7,7 +7,7 @@ class TypeService{
 
     static getTypes(){
 
-        let page_url = '/api/parametres/types-facture?api_token='+ApiTokenService.getToken()
+        let page_url = '/api/types-facture?api_token='+ApiTokenService.getToken()
 
         return fetch(page_url);
     }
@@ -17,7 +17,7 @@ class TypeService{
     }
 
     static createType(type){
-        return fetch('/api/parametres/types-facture?api_token='+ApiTokenService.getToken(), {
+        return fetch('/api/types-facture?api_token='+ApiTokenService.getToken(), {
             method: 'post',
             body: JSON.stringify(type),
             headers: {
@@ -27,7 +27,7 @@ class TypeService{
     }
 
     static updateType(type){
-        return fetch('/api/parametres/types-facture?api_token='+ApiTokenService.getToken(), {
+        return fetch('/api/types-facture?api_token='+ApiTokenService.getToken(), {
             method: 'put',
             body: JSON.stringify(type),
             headers: {
@@ -37,7 +37,7 @@ class TypeService{
     }
 
     static deleteType(id){
-        return fetch('/api/parametres/types-facture/'+id+'?api_token='+ApiTokenService.getToken(), { method: 'delete' })
+        return fetch('/api/types-facture/'+id+'?api_token='+ApiTokenService.getToken(), { method: 'delete' })
     }
 }
 

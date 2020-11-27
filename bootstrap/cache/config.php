@@ -191,7 +191,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/var/www/html/gesrecouv/storage/framework/cache/data',
+        'path' => '/home/drd/projects/gesrecouv/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -333,7 +333,7 @@
     array (
       'enabled' => true,
       'driver' => 'file',
-      'path' => '/var/www/html/gesrecouv/storage/debugbar',
+      'path' => '/home/drd/projects/gesrecouv/storage/debugbar',
       'connection' => NULL,
       'provider' => '',
     ),
@@ -428,12 +428,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/gesrecouv/storage/app',
+        'root' => '/home/drd/projects/gesrecouv/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/html/gesrecouv/storage/app/public',
+        'root' => '/home/drd/projects/gesrecouv/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -479,13 +479,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/var/www/html/gesrecouv/storage/logs/laravel.log',
+        'path' => '/home/drd/projects/gesrecouv/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/var/www/html/gesrecouv/storage/logs/laravel.log',
+        'path' => '/home/drd/projects/gesrecouv/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -554,7 +554,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/var/www/html/gesrecouv/resources/views/vendor/mail',
+        0 => '/home/drd/projects/gesrecouv/resources/views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -651,7 +651,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/var/www/html/gesrecouv/storage/framework/sessions',
+    'files' => '/home/drd/projects/gesrecouv/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -671,9 +671,9 @@
   array (
     'paths' => 
     array (
-      0 => '/var/www/html/gesrecouv/resources/views',
+      0 => '/home/drd/projects/gesrecouv/resources/views',
     ),
-    'compiled' => '/var/www/html/gesrecouv/storage/framework/views',
+    'compiled' => '/home/drd/projects/gesrecouv/storage/framework/views',
   ),
   'dompdf' => 
   array (
@@ -681,10 +681,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => '/var/www/html/gesrecouv/storage/fonts/',
-      'font_cache' => '/var/www/html/gesrecouv/storage/fonts/',
+      'font_dir' => '/home/drd/projects/gesrecouv/storage/fonts/',
+      'font_cache' => '/home/drd/projects/gesrecouv/storage/fonts/',
       'temp_dir' => '/tmp',
-      'chroot' => '/var/www/html/gesrecouv',
+      'chroot' => '/home/drd/projects/gesrecouv',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -828,7 +828,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => '/var/www/html/gesrecouv/storage/framework/laravel-excel',
+      'local_path' => '/home/drd/projects/gesrecouv/storage/framework/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,

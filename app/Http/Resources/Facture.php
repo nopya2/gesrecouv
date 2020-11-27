@@ -38,6 +38,7 @@ class Facture extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'paiements' => PaiementResource::collection($this->paiements),
+            'documents' => $this->documents,
             'm_paid' => $this->m_paid,
             'm_not_paid' => $this->m_not_paid,
             'deleted' => $this->deleted,

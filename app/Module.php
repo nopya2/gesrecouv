@@ -10,6 +10,8 @@ class Module extends Model
         'id', 'slug', 'name', 'description'
     ];
 
+    // protected $guarded = [];
+
     public function permissions()
     {
         return $this->hasMany('App\Permission');

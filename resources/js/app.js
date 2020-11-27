@@ -71,6 +71,7 @@ require('./components/factures/factures')
 require('./components/passport/passport');
 require('./components/types/types');
 require('./components/modes-paiement/mode-paiement');
+require('./components/modules/modules');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-component', require('./components/LoginComponent.vue').default);

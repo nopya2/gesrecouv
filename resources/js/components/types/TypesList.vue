@@ -189,7 +189,7 @@
                 let vm = this;
                 this.spinner = true;
 
-                page_url = page_url || `/api/parametres/types-facture?api_token=${this.api_token}&keyword=${this.keyword}`
+                page_url = page_url || `/api/types-facture?api_token=${this.api_token}&keyword=${this.keyword}`
                     +`&limit=10`
                 fetch(page_url)
                     .then(res => res.json())

@@ -26,7 +26,8 @@ class Paiement extends JsonResource
             'num_paiement' => $this->num_paiement,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'documents' => $this->documents
+            'documents' => $this->documents,
+            'state' => $this->state
         ];
     }
 }

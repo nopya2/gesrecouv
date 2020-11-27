@@ -90,4 +90,14 @@ class HomeController extends Controller
             
         ]);
     }
+
+    public function error(Request $request){
+        $module = $request->m;
+
+        if($module === 'recouv') $layout = 'admin.layout';
+
+        return view('error', [
+            'layout' => $layout
+        ]);
+    }
 }

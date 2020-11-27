@@ -14,13 +14,13 @@ class PaiementObserver
      */
     public function created(Paiement $paiement)
     {
-        if($paiement->facture->MNotPaid <= 0){
-            $paiement->facture->statut = 'paid';
-            $paiement->facture->date_paiement = now();
-            $paiement->facture->save();
-        }
+        // if($paiement->facture->MNotPaid <= 0){
+        //     $paiement->facture->statut = 'paid';
+        //     $paiement->facture->date_paiement = now();
+        //     $paiement->facture->save();
+        // }
 
-        $paiement->facture->touch();
+        // $paiement->facture->touch();
     }
 
     /**
@@ -31,7 +31,20 @@ class PaiementObserver
      */
     public function updated(Paiement $paiement)
     {
-        //
+        if($paiement->state == 'validated'){
+            if($paiement->facture->m_paid < $paiement->facture->montant){
+                $paiement->facture->m_paid += $paiement->montant;
+
+                if($paiement->facture->MNotPaid <= 0){
+                    $paiement->facture->statut = 'paid';
+                    $paiement->facture->date_paiement = now();
+                    $paiement->facture->save();
+                }
+            }
+            
+            $paiement->facture->touch();
+        }
+        
     }
 
     /**

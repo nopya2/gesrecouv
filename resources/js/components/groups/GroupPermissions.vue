@@ -1,10 +1,10 @@
 <template>
     <div class="card-block table-border-style">
-        <div class="callout callout-light" v-for="module in modules">
+        <div class="callout callout-light" v-for="module in modules" :key="module.id">
           <h5>{{ module.name }}</h5>
 
           <div class="row">
-              <div class="col-md-3" v-for="permission in module.permissions">
+              <div class="col-md-3" v-for="permission in module.permissions" :key="permission.id">
                   <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                           <input type="checkbox" :checked="hasPermission(permission.id)" :id="'checkboxPrimary1'+permission.id" @change="changePermission(group.id, permission.id, $event)">

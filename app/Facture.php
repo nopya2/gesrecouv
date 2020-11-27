@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Paiement;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Traits\LogsActivity;
+// use Spatie\Activitylog\Models\Activity;
 
 class Facture extends Model
 {
@@ -63,21 +65,30 @@ class Facture extends Model
 
     public function paiements()
     {
-        return $this->hasMany('App\Paiement');
+        return $this->hasMany('App\Paiement')->orderBy('id', 'desc');
     }
 
-    public function getMPaidAttribute(){
-        $amount = 0;
-        $paiements = $this->paiements()->get()->toArray();
-        foreach($paiements as $paiement){
-            $amount += $paiement['montant'];
-        }
-
-        return $amount;
+    public function documents(){
+        return $this->belongsToMany('App\Document')->orderBy('id', 'desc');
     }
+
+    // public function activities()
+    // {
+    //     return $this->morphMany('Spatie\Activitylog\Models\Activity');
+    // }
+
+    // public function getMPaidAttribute(){
+    //     $amount = 0;
+    //     $paiements = $this->paiements()->get()->toArray();
+    //     foreach($paiements as $paiement){
+    //         $amount += $paiement['montant'];
+    //     }
+
+    //     return $amount;
+    // }
 
     public function getMNotPaidAttribute(){
-        return $this->montant - $this->getMPaidAttribute();
+        return $this->montant - $this->m_paid;
     }
 
     public function getDescriptionForEvent(string $eventName): string
@@ -86,17 +97,17 @@ class Facture extends Model
         if($eventName=="created")
         {
             $user = Auth::user();
-            return "{$user->fullName} a créé la facture n°{$this->num_facture} ";
+            return "<b>".strtoupper($user->fullName)."</b>"." a créé la facture n°{$this->num_facture} ";
         }
         if($eventName=="updated")
         {
             $user = Auth::user();
-            return "{$user->fullName} a modifié la facture n°{$this->num_facture} ";
+            return "<b>".strtoupper($user->fullName)."</b>"." a modifié la facture n°{$this->num_facture} ";
         }
         if($eventName=="deleted")
         {
             $user = Auth::user();
-            return "{$user->fullName} a supprimé la facture n°{$this->num_facture} ";
+            return "<b>".strtoupper($user->fullName)."</b>"." a supprimé la facture n°{$this->num_facture} ";
         }
     }
 }

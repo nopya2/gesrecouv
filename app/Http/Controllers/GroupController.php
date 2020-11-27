@@ -13,12 +13,8 @@ class GroupController extends Controller
 {
     public function home()
     {
-        // if (!Gate::allows('isAdmin')) {
-        //     abort(403, 'Désolé, vous ne pouvez pas executer cette action');
-        // }
-
         return view('admin.groups.index', [
-            'page' => 'user',
+            'page' => 'group',
             'sub_page' => 'group.list'
         ]);
     }
@@ -36,9 +32,6 @@ class GroupController extends Controller
         $keyword = '';
         if($request->has('keyword'))
             $keyword = $request->keyword;
-        // if (!Gate::allows('isAdmin')) {
-        //     abort(403, 'Désolé, vous ne pouvez pas executer cette action');
-        // }
 
         $groups = Group::where('name', 'like', '%' . $keyword . '%')
             ->orderBy('name', 'asc')->paginate($limit);

@@ -1,0 +1,1245 @@
+<?xml version="1.0"?>
+<skipper version="3.2.25.1702" mvc="Laravel" orm="Laravel" name="USTM" uuid="074c1901-8a14-4d7e-9a0b-e3cccd924ee4">
+  <orm-attributes>
+    <attribute name="migrations-path">database/migrations</attribute>
+  </orm-attributes>
+  <module name="\Application module" local-name="Application module" namespace="\App\Models" local-namespace="App\Models" export-format="Laravel" export-path="projects/aninf/USTM" uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d">
+    <entity name="\App\Models\Etablissement" local-name="Etablissement" namespace="\App\Models" uuid="2da11f2c-6a57-49ce-b409-ba4334138d77">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="52b902da-6b08-4215-9d90-b0a206e48907"/>
+      <field name="nom" type="string" required="true" uuid="166251e2-3bd6-473e-b005-cab6eb9c8867"/>
+      <field name="abbreviation" type="string" uuid="e3913728-1f06-4bed-b1f8-f4f0f7dc2d8a"/>
+      <field name="telephone1" type="string" uuid="a793c9b2-5344-4c22-b529-7f4866845860"/>
+      <field name="telephone2" type="string" uuid="7cfe9621-92da-4898-9a8d-88a3c9326bee"/>
+      <field name="email" type="string" uuid="a87055fa-154f-42b2-b293-34efd82a3664"/>
+      <field name="siteweb" type="string" uuid="5a785232-53d5-4efb-8d35-af8b8860812a"/>
+      <field name="created_at" type="timestamp" uuid="01fcba92-41de-4cca-a9e6-4128e0e52086"/>
+      <field name="updated_at" type="timestamp" uuid="51e717ff-175f-4ed1-97e9-84076ac41c65"/>
+      <orm-attributes>
+        <attribute name="fillableAll">as-guarded-none</attribute>
+        <attribute name="engine">innoDB</attribute>
+      </orm-attributes>
+    </entity>
+    <entity name="\App\Models\Cycle" local-name="Cycle" namespace="\App\Models" uuid="29fdfeeb-9985-428f-a958-0396e1a45216">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="856052d0-dfb4-4c31-a91d-a36eb5592669"/>
+      <field name="etablissement_id" type="bigInteger" unsigned="true" uuid="fb77b2a7-c473-42d8-b911-cdf5e35e830a"/>
+      <field name="created_at" type="timestamp" uuid="f5f80a8c-95f3-4dd7-8e5e-76bef08d1c65"/>
+      <field name="updated_at" type="timestamp" uuid="97a0c974-45b2-4b62-93ae-4de5f5fb1213"/>
+    </entity>
+    <association from="\App\Models\Cycle" to="\App\Models\Etablissement" caption="Etablissement Cycles" owner-alias="cycles" inverse-alias="etablissement" many-owner="true" many-inverse="false" uuid="62cdf374-0008-48c9-a883-8ad501092640">
+      <association-field from="etablissement_id" to="id" uuid="3571957d-11fb-4ac4-878c-32b69331ac35"/>
+    </association>
+    <entity name="\App\Models\Filiere" local-name="Filiere" namespace="\App\Models" uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="798c5352-2fec-491d-a182-d4ab31000fb9"/>
+      <field name="libelle" type="string" required="true" uuid="ca98b69f-57e0-42e8-9ea9-dccca0914435"/>
+      <field name="code" type="string" uuid="a22dd7db-4d80-4b1e-9d3d-5f405c8b3b64"/>
+      <field name="created_at" type="timestamp" uuid="a5a6d9bc-e203-47ac-9fd0-a81ad75d1a45"/>
+      <field name="updated_at" type="timestamp" uuid="83b09f48-e583-4004-ad40-c87a35eccd5c"/>
+    </entity>
+    <entity name="\App\Models\CycleFiliere" local-name="CycleFiliere" namespace="\App\Models" uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f">
+      <field name="id" type="bigInteger" required="true" primary="true" unsigned="true" auto-increment="true" uuid="1eebc7a5-8268-452a-990a-4f9e661694ac"/>
+      <field name="filiere_id" type="bigInteger" required="true" unsigned="true" uuid="7a81b1b0-9bc5-439b-9942-6323cb7579cb"/>
+      <field name="cycle_id" type="bigInteger" required="true" unsigned="true" uuid="ad733680-a6b4-4d7e-984e-e6f9264038b3"/>
+      <field name="niveau" type="integer" required="true" uuid="5a9ca09a-929f-49e3-b047-a4052ed6ca70"/>
+    </entity>
+    <many-to-many mn-entity="\App\Models\CycleFiliere" caption="Cycle to Filiere" uuid="e5add200-1bd8-4d56-a0b9-5463c3ddcb14">
+      <many-to-many-entity name="\App\Models\Filiere" owning-side="true" alias="filieres" uuid="50cf2ca1-69c5-43fa-a8c7-c8c0c5a87752">
+        <many-to-many-field from="filiere_id" to="id" uuid="e5ff3f12-8781-4042-bc2c-464506711852"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\Cycle" owning-side="false" alias="cycles" uuid="8fc66257-726c-4284-8c1b-efb6cb993a38">
+        <many-to-many-field from="cycle_id" to="id" uuid="9b793799-be2b-4375-b834-6f31212c76e6"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <entity name="\App\Models\Demande" local-name="Demande" namespace="\App\Models" uuid="888995ac-dd8b-480f-9716-edf75e4adf7d">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="a775908b-8b5c-4aef-8761-b3d159f2af86"/>
+      <field name="cycle_filiere_id" type="bigInteger" unsigned="true" uuid="0257b7bf-a371-4473-b9ab-645303e6fb5f"/>
+      <field name="statut" type="enum" default="enregistr&#xE9;" enum-values="annul&#xE9;,accept&#xE9;,rejet&#xE9;,enregistr&#xE9;" uuid="6ab17867-4f52-40e1-9016-4f1c4fbdd104"/>
+      <field name="numero" type="string" uuid="7f616fd1-3c32-4ff2-8772-2f3f76d7f158"/>
+      <field name="annee_academique" type="string" required="true" uuid="fcb3ee7f-5191-4730-872f-d997b194e3a3"/>
+      <field name="created_at" type="timestamp" uuid="c4abe11c-03d8-4901-87c3-22f047aa7785"/>
+      <field name="updated_at" type="timestamp" uuid="69601897-d2ad-4229-9156-a760fa8e499b"/>
+      <field name="etudiant_id" type="bigInteger" unsigned="true" uuid="3708b030-f988-4c0d-a249-5993d6ff67ba"/>
+      <field name="etablissement_id" type="bigInteger" unsigned="true" uuid="96db137a-ead0-4aba-a040-d6fe5e576b50"/>
+      <field name="type_demande_id" type="bigInteger" unsigned="true" uuid="afdc9db5-9e7f-4713-a6e4-e36a79cfd99b"/>
+      <field name="mode_admission_id" type="bigInteger" unsigned="true" uuid="512dea7a-0317-462d-8a23-0173eafb899d"/>
+    </entity>
+    <association from="\App\Models\Demande" to="\App\Models\CycleFiliere" caption="CycleFiliere Demandes" owner-alias="demandes" inverse-alias="cycleFiliere" many-owner="true" many-inverse="false" uuid="d29351a1-0492-400e-bb13-f33d00be9b2d">
+      <association-field from="cycle_filiere_id" to="id" uuid="804a1a1f-aeb2-45eb-98c5-c5b32cfd7a88"/>
+    </association>
+    <association from="\App\Models\Demande" to="\App\Models\Etudiant" caption="Etudiant Demandes" owner-alias="demandes" inverse-alias="etudiant" many-owner="true" many-inverse="false" uuid="726e881d-3d84-4912-b30e-6337bb52371f">
+      <association-field from="etudiant_id" to="id" uuid="5e5cb22e-ba85-4bab-81c6-344a7ace599a"/>
+      <orm-attributes>
+        <attribute name="onDelete">cascade</attribute>
+        <attribute name="onUpdate">cascade</attribute>
+      </orm-attributes>
+    </association>
+    <association from="\App\Models\Demande" to="\App\Models\Etablissement" caption="Etablissement Demandes" owner-alias="demandes" inverse-alias="etablissement" many-owner="true" many-inverse="false" uuid="7b30525f-0d6a-44b6-9115-5a864230a27f">
+      <association-field from="etablissement_id" to="id" uuid="817b45aa-84c9-4823-89de-35b3020f2e96"/>
+    </association>
+    <association from="\App\Models\Demande" to="\App\Models\TypeDemande" caption="TypeDemande Demandes" owner-alias="demandes" inverse-alias="typeDemande" many-owner="true" many-inverse="false" uuid="303d1b07-0eba-4e6c-b066-cfc98508fc43">
+      <association-field from="type_demande_id" to="id" uuid="fb7445be-6fb8-4513-be87-8ba097b2f3ff"/>
+    </association>
+    <association from="\App\Models\Demande" to="\App\Models\ModeAdmission" caption="ModeAdmission Demandes" owner-alias="demandes" inverse-alias="modeAdmission" many-owner="true" many-inverse="false" uuid="790ad272-4895-4fca-ad6b-5984665aee9f">
+      <association-field from="mode_admission_id" to="id" uuid="c277aafb-f4b5-4e39-bf2a-8fbaa82d9fee"/>
+    </association>
+    <entity name="\App\Models\Personne" local-name="Personne" namespace="\App\Models" uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="7011020a-0000-4b13-89fc-b952c9adba37"/>
+      <field name="nom" type="string" required="true" uuid="d5f1ba4b-064e-44fa-a6e2-e874709bed2a"/>
+      <field name="prenom" type="string" uuid="fd2ae37f-e3a1-4224-889c-8520f488ef44"/>
+      <field name="avatar" type="string" uuid="06419152-f9a5-48a6-b586-9bf2cea1233b"/>
+      <field name="date_naissance" type="date" uuid="c3bc0527-29b8-4bd5-9cbf-fce1b5dd9902"/>
+      <field name="lieu_naissance" type="string" uuid="bf517d78-72e8-4c36-990a-4c1f47642aff"/>
+      <field name="email" type="string" required="true" unique="true" uuid="f3144623-4a55-4fb5-9133-8d3224cfaf15"/>
+      <field name="telephone1" type="string" uuid="89a88f3a-2718-4b59-a7a7-1305a03336c8"/>
+      <field name="telephone2" type="string" uuid="c2121654-f3a3-4aea-a7ed-b111e9eccc03"/>
+      <field name="sexe" type="enum" enum-values="M,F" uuid="12932ab4-b85a-4988-81de-5688bca77bac"/>
+      <field name="situation_matrimoniale" type="enum" enum-values="c&#xE9;libataire,mari&#xE9;,veuf,En concubinage" uuid="55aa0326-8f76-4b3d-a8fb-b89c972b86c6"/>
+      <field name="created_at" type="timestamp" uuid="6375c893-ae9c-4e7a-a7d2-0697188d8d68"/>
+      <field name="updated_at" type="timestamp" uuid="3fbfa8f5-4261-4c0e-9b5a-b61469ce4214"/>
+    </entity>
+    <entity name="\App\Models\Etudiant" local-name="Etudiant" namespace="\App\Models" uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" uuid="7e42cdd0-7bda-48d8-8260-5a2faeb47770"/>
+      <field name="nr_matricule" type="string" uuid="37e01168-be8c-4de5-9dfa-bcc50785d358"/>
+      <field name="nr_nip" type="string" uuid="0a34a61d-cbd3-4ac9-84ed-1663ae95c95c"/>
+      <field name="est_boursier" type="boolean" uuid="599bf096-def4-4f9b-917d-0a9668cc93c4"/>
+      <field name="est_salarie" type="boolean" uuid="f5e884fd-2bab-4ac3-9c1d-dc5d8ea6bba5"/>
+      <field name="nom_tuteur" type="string" uuid="27794ae4-0401-4c34-952e-fa921e304bbd"/>
+      <field name="prenom_tuteur" type="string" uuid="fc23c87e-e876-4783-a68e-20f514edf05e"/>
+      <field name="contact_tuteur" type="string" uuid="e0e1efe5-91ea-4716-834d-36ded6fbe335"/>
+      <field name="ville_tuteur" type="string" uuid="7295ba33-df7e-4195-be8b-de69d66bd07e"/>
+      <field name="date_inscription" type="date" uuid="e27604a1-6476-4873-ace0-aa2761eff812"/>
+      <field name="statut" type="enum" enum-values="postulant,&#xE9;tudiant" uuid="05a9449b-046e-460c-99c6-d6272da77ac5"/>
+      <field name="created_at" type="timestamp" uuid="4aa64cbc-50e8-431b-9d62-0be2c9eac494"/>
+      <field name="updated_at" type="timestamp" uuid="4856fe2c-96f1-419e-9ed3-421d0e3c8111"/>
+    </entity>
+    <association from="\App\Models\Etudiant" to="\App\Models\Personne" caption="Personne Etudiants" owner-alias="etudiants" inverse-alias="personne" many-owner="false" many-inverse="false" parent-required="true" uuid="40c97c5b-e0b7-46b0-bd8d-aa15d404cfee">
+      <association-field from="id" to="id" uuid="6dc5606e-1bc5-41c2-b314-c20d101c74d1"/>
+    </association>
+    <entity name="\App\Models\TypeDocument" local-name="TypeDocument" namespace="\App\Models" uuid="653624b9-7312-414f-83fb-f4657dd7b8a3">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="716b1e90-98be-4e1a-bb13-8ba5b90de8c4"/>
+      <field name="libelle" type="string" required="true" uuid="4e98657e-896d-41cf-871d-c1b8b5721749"/>
+      <field name="created_at" type="timestamp" uuid="3ed3af48-1f5d-4d08-b185-669d5d645239"/>
+      <field name="updated_at" type="timestamp" uuid="f8f9adf9-2255-489f-bd91-0f865cc7d2db"/>
+    </entity>
+    <entity name="\App\Models\Document" local-name="Document" namespace="\App\Models" uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="eff829db-d70b-47b2-9fe0-08eaa5ee21ab"/>
+      <field name="created_at" type="timestamp" uuid="f3966e03-163b-4df3-929e-8a37d6d0f86c"/>
+      <field name="updated_at" type="timestamp" uuid="0228cd3d-a09a-476b-9af5-826cc891084b"/>
+      <field name="chemin" type="string" required="true" uuid="f624bc60-ef88-42e9-9f68-fab9929c3929"/>
+      <field name="type_document_id" type="bigInteger" unsigned="true" uuid="a478a7d2-b9ca-434a-8017-ca9329d89343"/>
+      <field name="demande_id" type="bigInteger" unsigned="true" uuid="6876b2d4-b29b-4772-b8db-9452dc3957e2"/>
+      <field name="etudiant_id" type="bigInteger" unsigned="true" uuid="eda116b3-f27a-4c52-a4bb-ab3aef49c8d9"/>
+    </entity>
+    <association from="\App\Models\Document" to="\App\Models\TypeDocument" caption="TypeDocument Documents" owner-alias="documents" inverse-alias="typeDocument" many-owner="true" many-inverse="false" uuid="54b3b6bc-08a2-430e-9bee-271751bc796a">
+      <association-field from="type_document_id" to="id" uuid="15aff129-6094-474d-82f3-d203078d249d"/>
+    </association>
+    <association from="\App\Models\Document" to="\App\Models\Demande" caption="Demande Documents" owner-alias="documents" inverse-alias="demande" many-owner="true" many-inverse="false" uuid="2ccdeb86-f4f9-4bbd-9561-62d768cbac9e">
+      <association-field from="demande_id" to="id" uuid="8b9ddddc-e823-4b0a-899f-59d3abe01443"/>
+    </association>
+    <association from="\App\Models\Document" to="\App\Models\Etudiant" caption="Etudiant Documents" owner-alias="documents" inverse-alias="etudiant" many-owner="true" many-inverse="false" uuid="decbac62-485e-406d-87e8-288d222fd5b3">
+      <association-field from="etudiant_id" to="id" uuid="936c2acf-435a-439e-8e5b-6b6a35727f8b"/>
+    </association>
+    <entity name="\App\Models\CycleFiliereTypeDocument" local-name="CycleFiliereTypeDocument" namespace="\App\Models" uuid="20d585aa-cc65-4412-b168-b298a703f20d">
+      <field name="type_document_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="dcd6a8fd-7d9b-43d8-a730-4c16ceae1b81"/>
+      <field name="cycle_filiere_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="6d1a71a3-afbb-42ca-875c-1df1fc38a7e3"/>
+      <orm-attributes>
+        <attribute name="model-disabled">true</attribute>
+      </orm-attributes>
+    </entity>
+    <many-to-many mn-entity="\App\Models\CycleFiliereTypeDocument" caption="CycleFiliere to TypeDocument" uuid="00f601b9-a8c2-48d2-b8e0-03d3d5bc65fc">
+      <many-to-many-entity name="\App\Models\TypeDocument" owning-side="true" alias="typeDocuments" uuid="45e101df-dace-4c17-8309-37be98ebe897">
+        <many-to-many-field from="type_document_id" to="id" uuid="255cbc14-eefc-4001-8c03-df0443db8184"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\CycleFiliere" owning-side="false" alias="cycleFilieres" uuid="8c7bb12b-7ecc-47a9-887e-ea922798e80b">
+        <many-to-many-field from="cycle_filiere_id" to="id" uuid="9029c106-1b0c-4b7f-bd0f-c42a98d27f01"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <entity name="\App\Models\ModeAdmission" local-name="ModeAdmission" namespace="\App\Models" uuid="40a14a91-72f2-49df-8dd2-0556cd490d02">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="111a12f8-896e-4e3a-9f5b-f6a9a212d681"/>
+      <field name="diplome_obtenu" type="enum" enum-values="baccalaur&#xE9;at,autre_diplome" uuid="c71aba22-ea6b-4156-b52b-77fcddc65cf7"/>
+      <field name="serie" type="enum" default="a1" enum-values="a1,b,c,d,e,a2,f1,f2" uuid="18279ec3-4170-47df-9ac7-f62dd3dfd555"/>
+      <field name="mention" type="enum" default="passable" enum-values="passable,assez-bien,bien,tr&#xE8;s-bien,parfait" uuid="9f08e1d2-8915-413a-a77b-7f8f468f0494"/>
+      <field name="created_at" type="timestamp" uuid="affcb03e-b40c-4f78-bc77-b7ffbf3330b7"/>
+      <field name="updated_at" type="timestamp" uuid="c96c04bd-fdc7-4111-bc5f-0ef8ceec7d4b"/>
+    </entity>
+    <entity name="\App\Models\TypeDemande" local-name="TypeDemande" namespace="\App\Models" uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="2a8d0db5-1c5b-4869-8682-a4236be45f7d"/>
+      <field name="libelle" type="string" unique="true" uuid="529bd834-f906-484a-8910-b2a0544fe5c8"/>
+      <field name="created_at" type="timestamp" uuid="2e026613-fae6-4055-b3f9-81a3dfa82a59"/>
+      <field name="updated_at" type="timestamp" uuid="b8d0927c-111c-4248-95a5-b49866d96104"/>
+    </entity>
+    <entity name="\App\Models\Cursus" local-name="Cursus" namespace="\App\Models" uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f">
+      <field name="id" type="bigInteger" required="true" primary="true" unsigned="true" auto-increment="true" uuid="a632caed-0244-4f6b-a7eb-57989059250a"/>
+      <field name="niveau" type="integer" required="true" unsigned="true" uuid="4b54ebbf-196e-4c5b-9d8d-1df686748950"/>
+      <field name="annee_academique" type="string" uuid="69481605-155a-40e6-b938-a391d3aeda53"/>
+      <field name="etudiant_id" type="bigInteger" required="true" unsigned="true" uuid="b8fc30bc-77f7-4c76-8918-846517a93997"/>
+      <field name="cycle_filiere_id" type="bigInteger" required="true" unsigned="true" uuid="28409ebb-9750-4d4c-a44c-caba572bc911"/>
+      <field name="created_at" type="timestamp" uuid="e4ae9c96-2ad5-4b60-8615-ed4e22120948"/>
+      <field name="updated_at" type="timestamp" uuid="33b1ffef-71f0-430c-9fc4-159ae74b8b6a"/>
+    </entity>
+    <many-to-many mn-entity="\App\Models\Cursus" caption="CycleFiliere to Etudiant" uuid="8480a48d-28ff-4637-b483-70b7d2364b9e">
+      <many-to-many-entity name="\App\Models\Etudiant" owning-side="true" alias="etudiants" uuid="858d503a-94c2-4625-a55e-e5788b952090">
+        <many-to-many-field from="etudiant_id" to="id" uuid="546f0c4e-dd16-4a03-94ca-90c5442190e5"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\CycleFiliere" owning-side="false" alias="cycleFilieres" uuid="58b29296-a4bc-431b-8891-77bbbc70abfb">
+        <many-to-many-field from="cycle_filiere_id" to="id" uuid="a36efab7-1fda-4e3c-845c-404910deda6a"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <entity name="\App\Models\Role" local-name="Role" namespace="\App\Models" uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="f4e075f2-8a9e-44b8-9e24-8b972b96e9c1"/>
+      <field name="libelle" type="string" uuid="5b2417b0-bc07-4e6d-9d81-c4dc84589450"/>
+      <field name="created_at" type="timestamp" uuid="b515cc73-1ad9-4266-8301-52a8d83bbd74"/>
+      <field name="updated_at" type="timestamp" uuid="6a490899-ef74-4f6d-9a95-d1735e7a7d20"/>
+    </entity>
+    <entity name="\App\Models\Droit" local-name="Droit" namespace="\App\Models" uuid="be6fb059-10de-443d-a2fb-5d8a527d1088">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="b3871724-1bdd-4a3b-943a-554ba9b0fb9c"/>
+      <field name="created_at" type="timestamp" uuid="b8af1f45-c730-479d-ab52-a7cc48e01cc1"/>
+      <field name="updated_at" type="timestamp" uuid="5db5dda4-20b6-40ba-ace2-1e07e78e81d0"/>
+      <field name="libelle" type="string" required="true" uuid="600d4146-6c6e-4181-88a9-4e5feefe3782"/>
+    </entity>
+    <entity name="\App\Models\RoleDroit" local-name="RoleDroit" namespace="\App\Models" uuid="2df343d0-1841-43cb-903d-cb64edf3c4a0">
+      <field name="droit_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="eb70b2ff-e4e2-4c55-8eb7-0f9653a8c1d7"/>
+      <field name="role_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="3744f0fc-f5e6-4a7c-8205-39436a294397"/>
+      <orm-attributes>
+        <attribute name="model-disabled">true</attribute>
+      </orm-attributes>
+    </entity>
+    <many-to-many mn-entity="\App\Models\RoleDroit" caption="Role to Droit" uuid="14dac057-a188-441f-b062-40363b99ea2a">
+      <many-to-many-entity name="\App\Models\Droit" owning-side="true" alias="droits" uuid="f9b589e5-67b8-4ca8-9b00-433e15d75be4">
+        <many-to-many-field from="droit_id" to="id" uuid="15f1bf28-d5f2-4032-8442-a1cee2aadccb"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\Role" owning-side="false" alias="roles" uuid="2a186269-b1b6-410e-9974-ae175c532b5f">
+        <many-to-many-field from="role_id" to="id" uuid="432e20e6-7a55-4535-bd92-5b6061977cda"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <entity name="\App\Models\RolePersonne" local-name="RolePersonne" namespace="\App\Models" uuid="b77e286e-248c-4a41-acc1-8c523bb4111f">
+      <field name="personne_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="45acba94-d41d-405a-9614-fa5f7ef82a01"/>
+      <field name="role_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="e129e304-b3e6-45ae-91df-4783f2102835"/>
+      <orm-attributes>
+        <attribute name="model-disabled">true</attribute>
+      </orm-attributes>
+    </entity>
+    <many-to-many mn-entity="\App\Models\RolePersonne" caption="Role to Personne" uuid="67f65d71-a4da-4108-91ef-485a2a509724">
+      <many-to-many-entity name="\App\Models\Personne" owning-side="true" alias="personnes" uuid="da054af4-6760-4adf-bf48-db6b25ec7fcb">
+        <many-to-many-field from="personne_id" to="id" uuid="70b7cd0a-3548-4d02-a8d1-00e32c3b33f0"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\Role" owning-side="false" alias="roles" uuid="01d0397c-b419-4249-b416-ce6e712c1b89">
+        <many-to-many-field from="role_id" to="id" uuid="df7aecbb-b958-46ad-8fb8-549d22c4db67"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <entity name="\App\Models\Logement" local-name="Logement" namespace="\App\Models" uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31">
+      <field name="id" type="bigInteger" required="true" unique="true" primary="true" unsigned="true" auto-increment="true" uuid="3d746046-77c7-4a19-9ec1-b69aed3361fa"/>
+      <field name="nr_chambre" type="string" uuid="90f89a52-3abd-47bd-b021-29fd7cf18727"/>
+      <field name="batiment" type="string" uuid="92029009-5e79-4f17-a0c8-7a146e527a48"/>
+      <field name="created_at" type="timestamp" uuid="b68e4b74-9161-4fc5-9aa2-ff12ee329937"/>
+      <field name="updated_at" type="timestamp" uuid="fa3a91e8-fc39-4922-b38f-4b308246a197"/>
+    </entity>
+    <entity name="\App\Models\LogementEtudiant" local-name="LogementEtudiant" namespace="\App\Models" uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b">
+      <field name="etudiant_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="675c16de-36f6-457a-b312-550d8ff4ed29"/>
+      <field name="logement_id" type="bigInteger" required="true" primary="true" unsigned="true" uuid="e1672742-e44f-4c2c-bb5a-70d2f992f04f"/>
+      <field name="date_fin" type="dateTime" uuid="b94a419b-0039-450f-ae27-d171b87a2f9a"/>
+      <field name="nr_bourse" type="string" uuid="7d6c6f15-80c3-463c-ae4a-1406b73da7dc"/>
+      <field name="date_dbt" type="dateTime" uuid="c6588e71-8fd2-4c1f-9179-daade8ec8358"/>
+      <field name="created_at" type="timestamp" uuid="067f3c6e-b046-4329-8bad-db3ac87a6448"/>
+      <field name="updated_at" type="timestamp" uuid="07647574-dbfc-49b6-814b-33fe3bc778df"/>
+    </entity>
+    <many-to-many mn-entity="\App\Models\LogementEtudiant" caption="Logement to Etudiant" uuid="5c3ccbc4-9982-45dc-bf05-aefce7c2b844">
+      <many-to-many-entity name="\App\Models\Etudiant" owning-side="true" alias="etudiants" uuid="1f3b59b5-5ab2-45e3-a57b-333c2f751436">
+        <many-to-many-field from="etudiant_id" to="id" uuid="27285a9b-4e40-4e86-bca2-5f6c53c1850c"/>
+      </many-to-many-entity>
+      <many-to-many-entity name="\App\Models\Logement" owning-side="false" alias="logements" uuid="fd9f0e40-13ec-4066-bb1a-fe8c63fcc95e">
+        <many-to-many-field from="logement_id" to="id" uuid="5f5401ae-6d85-4a2f-b919-0cee8afd6ca4"/>
+      </many-to-many-entity>
+    </many-to-many>
+    <migrations version="1.0">
+      <revision uuid="3ac1c1c2-c4af-4464-a802-0279e32e8e2a" date="2020-10-29 10:51:44.185493" exportable="true">
+        <element action="add" uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="module">
+          <property name="export-format" value="Laravel"/>
+          <property name="export-path" value="projects/aninf/USTM"/>
+          <property name="local-name" value="Application module"/>
+          <property name="local-namespace" value="App\Models"/>
+          <property name="name" value="\Application module"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="engine" value="innoDB"/>
+          <property name="fillableAll" value="as-guarded-none"/>
+          <property name="local-name" value="Etablissement"/>
+          <property name="name" value="\App\Models\Etablissement"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="29fdfeeb-9985-428f-a958-0396e1a45216" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Cycle"/>
+          <property name="name" value="\App\Models\Cycle"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Filiere"/>
+          <property name="name" value="\App\Models\Filiere"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="CycleFiliere"/>
+          <property name="name" value="\App\Models\CycleFiliere"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Demande"/>
+          <property name="name" value="\App\Models\Demande"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Personne"/>
+          <property name="name" value="\App\Models\Personne"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Etudiant"/>
+          <property name="name" value="\App\Models\Etudiant"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="TypeDocument"/>
+          <property name="name" value="\App\Models\TypeDocument"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Document"/>
+          <property name="name" value="\App\Models\Document"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="20d585aa-cc65-4412-b168-b298a703f20d" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="CycleFiliereTypeDocument"/>
+          <property name="model-disabled" value="true"/>
+          <property name="name" value="\App\Models\CycleFiliereTypeDocument"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="ModeAdmission"/>
+          <property name="name" value="\App\Models\ModeAdmission"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="TypeDemande"/>
+          <property name="name" value="\App\Models\TypeDemande"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Cursus"/>
+          <property name="name" value="\App\Models\Cursus"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Role"/>
+          <property name="name" value="\App\Models\Role"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Droit"/>
+          <property name="name" value="\App\Models\Droit"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="2df343d0-1841-43cb-903d-cb64edf3c4a0" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="RoleDroit"/>
+          <property name="model-disabled" value="true"/>
+          <property name="name" value="\App\Models\RoleDroit"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="b77e286e-248c-4a41-acc1-8c523bb4111f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="RolePersonne"/>
+          <property name="model-disabled" value="true"/>
+          <property name="name" value="\App\Models\RolePersonne"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="Logement"/>
+          <property name="name" value="\App\Models\Logement"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="entity">
+          <property name="local-name" value="LogementEtudiant"/>
+          <property name="name" value="\App\Models\LogementEtudiant"/>
+          <property name="namespace" value="\App\Models"/>
+        </element>
+        <element action="add" uuid="52b902da-6b08-4215-9d90-b0a206e48907" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="166251e2-3bd6-473e-b005-cab6eb9c8867" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="52b902da-6b08-4215-9d90-b0a206e48907" type="field">
+          <property name="name" value="nom"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="e3913728-1f06-4bed-b1f8-f4f0f7dc2d8a" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="166251e2-3bd6-473e-b005-cab6eb9c8867" type="field">
+          <property name="name" value="abbreviation"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="a793c9b2-5344-4c22-b529-7f4866845860" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="e3913728-1f06-4bed-b1f8-f4f0f7dc2d8a" type="field">
+          <property name="name" value="telephone1"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="7cfe9621-92da-4898-9a8d-88a3c9326bee" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="a793c9b2-5344-4c22-b529-7f4866845860" type="field">
+          <property name="name" value="telephone2"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="a87055fa-154f-42b2-b293-34efd82a3664" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="7cfe9621-92da-4898-9a8d-88a3c9326bee" type="field">
+          <property name="name" value="email"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="5a785232-53d5-4efb-8d35-af8b8860812a" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="a87055fa-154f-42b2-b293-34efd82a3664" type="field">
+          <property name="name" value="siteweb"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="01fcba92-41de-4cca-a9e6-4128e0e52086" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="5a785232-53d5-4efb-8d35-af8b8860812a" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="51e717ff-175f-4ed1-97e9-84076ac41c65" parent-uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" sibling-uuid="01fcba92-41de-4cca-a9e6-4128e0e52086" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="856052d0-dfb4-4c31-a91d-a36eb5592669" parent-uuid="29fdfeeb-9985-428f-a958-0396e1a45216" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="fb77b2a7-c473-42d8-b911-cdf5e35e830a" parent-uuid="29fdfeeb-9985-428f-a958-0396e1a45216" sibling-uuid="856052d0-dfb4-4c31-a91d-a36eb5592669" type="field">
+          <property name="name" value="etablissement_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="f5f80a8c-95f3-4dd7-8e5e-76bef08d1c65" parent-uuid="29fdfeeb-9985-428f-a958-0396e1a45216" sibling-uuid="fb77b2a7-c473-42d8-b911-cdf5e35e830a" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="97a0c974-45b2-4b62-93ae-4de5f5fb1213" parent-uuid="29fdfeeb-9985-428f-a958-0396e1a45216" sibling-uuid="f5f80a8c-95f3-4dd7-8e5e-76bef08d1c65" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="798c5352-2fec-491d-a182-d4ab31000fb9" parent-uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="ca98b69f-57e0-42e8-9ea9-dccca0914435" parent-uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" sibling-uuid="798c5352-2fec-491d-a182-d4ab31000fb9" type="field">
+          <property name="name" value="libelle"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="a22dd7db-4d80-4b1e-9d3d-5f405c8b3b64" parent-uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" sibling-uuid="ca98b69f-57e0-42e8-9ea9-dccca0914435" type="field">
+          <property name="name" value="code"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="a5a6d9bc-e203-47ac-9fd0-a81ad75d1a45" parent-uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" sibling-uuid="a22dd7db-4d80-4b1e-9d3d-5f405c8b3b64" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="83b09f48-e583-4004-ad40-c87a35eccd5c" parent-uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" sibling-uuid="a5a6d9bc-e203-47ac-9fd0-a81ad75d1a45" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="1eebc7a5-8268-452a-990a-4f9e661694ac" parent-uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="7a81b1b0-9bc5-439b-9942-6323cb7579cb" parent-uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" sibling-uuid="1eebc7a5-8268-452a-990a-4f9e661694ac" type="field">
+          <property name="name" value="filiere_id"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="ad733680-a6b4-4d7e-984e-e6f9264038b3" parent-uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" sibling-uuid="7a81b1b0-9bc5-439b-9942-6323cb7579cb" type="field">
+          <property name="name" value="cycle_id"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="5a9ca09a-929f-49e3-b047-a4052ed6ca70" parent-uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" sibling-uuid="ad733680-a6b4-4d7e-984e-e6f9264038b3" type="field">
+          <property name="name" value="niveau"/>
+          <property name="required" value="true"/>
+          <property name="type" value="integer"/>
+        </element>
+        <element action="add" uuid="a775908b-8b5c-4aef-8761-b3d159f2af86" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="0257b7bf-a371-4473-b9ab-645303e6fb5f" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="a775908b-8b5c-4aef-8761-b3d159f2af86" type="field">
+          <property name="name" value="cycle_filiere_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="6ab17867-4f52-40e1-9016-4f1c4fbdd104" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="0257b7bf-a371-4473-b9ab-645303e6fb5f" type="field">
+          <property name="default" value="enregistr&#xE9;"/>
+          <property name="enum-values" value="annul&#xE9;,accept&#xE9;,rejet&#xE9;,enregistr&#xE9;"/>
+          <property name="name" value="statut"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="7f616fd1-3c32-4ff2-8772-2f3f76d7f158" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="6ab17867-4f52-40e1-9016-4f1c4fbdd104" type="field">
+          <property name="name" value="numero"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="fcb3ee7f-5191-4730-872f-d997b194e3a3" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="7f616fd1-3c32-4ff2-8772-2f3f76d7f158" type="field">
+          <property name="name" value="annee_academique"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="c4abe11c-03d8-4901-87c3-22f047aa7785" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="fcb3ee7f-5191-4730-872f-d997b194e3a3" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="69601897-d2ad-4229-9156-a760fa8e499b" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="c4abe11c-03d8-4901-87c3-22f047aa7785" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="3708b030-f988-4c0d-a249-5993d6ff67ba" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="69601897-d2ad-4229-9156-a760fa8e499b" type="field">
+          <property name="name" value="etudiant_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="96db137a-ead0-4aba-a040-d6fe5e576b50" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="3708b030-f988-4c0d-a249-5993d6ff67ba" type="field">
+          <property name="name" value="etablissement_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="afdc9db5-9e7f-4713-a6e4-e36a79cfd99b" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="96db137a-ead0-4aba-a040-d6fe5e576b50" type="field">
+          <property name="name" value="type_demande_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="512dea7a-0317-462d-8a23-0173eafb899d" parent-uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" sibling-uuid="afdc9db5-9e7f-4713-a6e4-e36a79cfd99b" type="field">
+          <property name="name" value="mode_admission_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="7011020a-0000-4b13-89fc-b952c9adba37" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="d5f1ba4b-064e-44fa-a6e2-e874709bed2a" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="7011020a-0000-4b13-89fc-b952c9adba37" type="field">
+          <property name="name" value="nom"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="fd2ae37f-e3a1-4224-889c-8520f488ef44" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="d5f1ba4b-064e-44fa-a6e2-e874709bed2a" type="field">
+          <property name="name" value="prenom"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="06419152-f9a5-48a6-b586-9bf2cea1233b" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="fd2ae37f-e3a1-4224-889c-8520f488ef44" type="field">
+          <property name="name" value="avatar"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="c3bc0527-29b8-4bd5-9cbf-fce1b5dd9902" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="06419152-f9a5-48a6-b586-9bf2cea1233b" type="field">
+          <property name="name" value="date_naissance"/>
+          <property name="type" value="date"/>
+        </element>
+        <element action="add" uuid="bf517d78-72e8-4c36-990a-4c1f47642aff" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="c3bc0527-29b8-4bd5-9cbf-fce1b5dd9902" type="field">
+          <property name="name" value="lieu_naissance"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="f3144623-4a55-4fb5-9133-8d3224cfaf15" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="bf517d78-72e8-4c36-990a-4c1f47642aff" type="field">
+          <property name="name" value="email"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+          <property name="unique" value="true"/>
+        </element>
+        <element action="add" uuid="89a88f3a-2718-4b59-a7a7-1305a03336c8" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="f3144623-4a55-4fb5-9133-8d3224cfaf15" type="field">
+          <property name="name" value="telephone1"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="c2121654-f3a3-4aea-a7ed-b111e9eccc03" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="89a88f3a-2718-4b59-a7a7-1305a03336c8" type="field">
+          <property name="name" value="telephone2"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="12932ab4-b85a-4988-81de-5688bca77bac" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="c2121654-f3a3-4aea-a7ed-b111e9eccc03" type="field">
+          <property name="enum-values" value="M,F"/>
+          <property name="name" value="sexe"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="55aa0326-8f76-4b3d-a8fb-b89c972b86c6" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="12932ab4-b85a-4988-81de-5688bca77bac" type="field">
+          <property name="enum-values" value="c&#xE9;libataire,mari&#xE9;,veuf,En concubinage"/>
+          <property name="name" value="situation_matrimoniale"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="6375c893-ae9c-4e7a-a7d2-0697188d8d68" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="55aa0326-8f76-4b3d-a8fb-b89c972b86c6" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="3fbfa8f5-4261-4c0e-9b5a-b61469ce4214" parent-uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" sibling-uuid="6375c893-ae9c-4e7a-a7d2-0697188d8d68" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="7e42cdd0-7bda-48d8-8260-5a2faeb47770" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" type="field">
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="37e01168-be8c-4de5-9dfa-bcc50785d358" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="7e42cdd0-7bda-48d8-8260-5a2faeb47770" type="field">
+          <property name="name" value="nr_matricule"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="0a34a61d-cbd3-4ac9-84ed-1663ae95c95c" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="37e01168-be8c-4de5-9dfa-bcc50785d358" type="field">
+          <property name="name" value="nr_nip"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="599bf096-def4-4f9b-917d-0a9668cc93c4" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="0a34a61d-cbd3-4ac9-84ed-1663ae95c95c" type="field">
+          <property name="name" value="est_boursier"/>
+          <property name="type" value="boolean"/>
+        </element>
+        <element action="add" uuid="f5e884fd-2bab-4ac3-9c1d-dc5d8ea6bba5" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="599bf096-def4-4f9b-917d-0a9668cc93c4" type="field">
+          <property name="name" value="est_salarie"/>
+          <property name="type" value="boolean"/>
+        </element>
+        <element action="add" uuid="27794ae4-0401-4c34-952e-fa921e304bbd" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="f5e884fd-2bab-4ac3-9c1d-dc5d8ea6bba5" type="field">
+          <property name="name" value="nom_tuteur"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="fc23c87e-e876-4783-a68e-20f514edf05e" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="27794ae4-0401-4c34-952e-fa921e304bbd" type="field">
+          <property name="name" value="prenom_tuteur"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="e0e1efe5-91ea-4716-834d-36ded6fbe335" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="fc23c87e-e876-4783-a68e-20f514edf05e" type="field">
+          <property name="name" value="contact_tuteur"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="7295ba33-df7e-4195-be8b-de69d66bd07e" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="e0e1efe5-91ea-4716-834d-36ded6fbe335" type="field">
+          <property name="name" value="ville_tuteur"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="e27604a1-6476-4873-ace0-aa2761eff812" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="7295ba33-df7e-4195-be8b-de69d66bd07e" type="field">
+          <property name="name" value="date_inscription"/>
+          <property name="type" value="date"/>
+        </element>
+        <element action="add" uuid="05a9449b-046e-460c-99c6-d6272da77ac5" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="e27604a1-6476-4873-ace0-aa2761eff812" type="field">
+          <property name="enum-values" value="postulant,&#xE9;tudiant"/>
+          <property name="name" value="statut"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="4aa64cbc-50e8-431b-9d62-0be2c9eac494" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="05a9449b-046e-460c-99c6-d6272da77ac5" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="4856fe2c-96f1-419e-9ed3-421d0e3c8111" parent-uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" sibling-uuid="4aa64cbc-50e8-431b-9d62-0be2c9eac494" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="716b1e90-98be-4e1a-bb13-8ba5b90de8c4" parent-uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="4e98657e-896d-41cf-871d-c1b8b5721749" parent-uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" sibling-uuid="716b1e90-98be-4e1a-bb13-8ba5b90de8c4" type="field">
+          <property name="name" value="libelle"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="3ed3af48-1f5d-4d08-b185-669d5d645239" parent-uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" sibling-uuid="4e98657e-896d-41cf-871d-c1b8b5721749" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="f8f9adf9-2255-489f-bd91-0f865cc7d2db" parent-uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" sibling-uuid="3ed3af48-1f5d-4d08-b185-669d5d645239" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="eff829db-d70b-47b2-9fe0-08eaa5ee21ab" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="f3966e03-163b-4df3-929e-8a37d6d0f86c" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="eff829db-d70b-47b2-9fe0-08eaa5ee21ab" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="0228cd3d-a09a-476b-9af5-826cc891084b" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="f3966e03-163b-4df3-929e-8a37d6d0f86c" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="f624bc60-ef88-42e9-9f68-fab9929c3929" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="0228cd3d-a09a-476b-9af5-826cc891084b" type="field">
+          <property name="name" value="chemin"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="a478a7d2-b9ca-434a-8017-ca9329d89343" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="f624bc60-ef88-42e9-9f68-fab9929c3929" type="field">
+          <property name="name" value="type_document_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="6876b2d4-b29b-4772-b8db-9452dc3957e2" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="a478a7d2-b9ca-434a-8017-ca9329d89343" type="field">
+          <property name="name" value="demande_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="eda116b3-f27a-4c52-a4bb-ab3aef49c8d9" parent-uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" sibling-uuid="6876b2d4-b29b-4772-b8db-9452dc3957e2" type="field">
+          <property name="name" value="etudiant_id"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="dcd6a8fd-7d9b-43d8-a730-4c16ceae1b81" parent-uuid="20d585aa-cc65-4412-b168-b298a703f20d" type="field">
+          <property name="name" value="type_document_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="6d1a71a3-afbb-42ca-875c-1df1fc38a7e3" parent-uuid="20d585aa-cc65-4412-b168-b298a703f20d" sibling-uuid="dcd6a8fd-7d9b-43d8-a730-4c16ceae1b81" type="field">
+          <property name="name" value="cycle_filiere_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="111a12f8-896e-4e3a-9f5b-f6a9a212d681" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="c71aba22-ea6b-4156-b52b-77fcddc65cf7" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" sibling-uuid="111a12f8-896e-4e3a-9f5b-f6a9a212d681" type="field">
+          <property name="enum-values" value="baccalaur&#xE9;at,autre_diplome"/>
+          <property name="name" value="diplome_obtenu"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="18279ec3-4170-47df-9ac7-f62dd3dfd555" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" sibling-uuid="c71aba22-ea6b-4156-b52b-77fcddc65cf7" type="field">
+          <property name="default" value="a1"/>
+          <property name="enum-values" value="a1,b,c,d,e,a2,f1,f2"/>
+          <property name="name" value="serie"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="9f08e1d2-8915-413a-a77b-7f8f468f0494" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" sibling-uuid="18279ec3-4170-47df-9ac7-f62dd3dfd555" type="field">
+          <property name="default" value="passable"/>
+          <property name="enum-values" value="passable,assez-bien,bien,tr&#xE8;s-bien,parfait"/>
+          <property name="name" value="mention"/>
+          <property name="type" value="enum"/>
+        </element>
+        <element action="add" uuid="affcb03e-b40c-4f78-bc77-b7ffbf3330b7" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" sibling-uuid="9f08e1d2-8915-413a-a77b-7f8f468f0494" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="c96c04bd-fdc7-4111-bc5f-0ef8ceec7d4b" parent-uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" sibling-uuid="affcb03e-b40c-4f78-bc77-b7ffbf3330b7" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="2a8d0db5-1c5b-4869-8682-a4236be45f7d" parent-uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="529bd834-f906-484a-8910-b2a0544fe5c8" parent-uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" sibling-uuid="2a8d0db5-1c5b-4869-8682-a4236be45f7d" type="field">
+          <property name="name" value="libelle"/>
+          <property name="type" value="string"/>
+          <property name="unique" value="true"/>
+        </element>
+        <element action="add" uuid="2e026613-fae6-4055-b3f9-81a3dfa82a59" parent-uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" sibling-uuid="529bd834-f906-484a-8910-b2a0544fe5c8" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="b8d0927c-111c-4248-95a5-b49866d96104" parent-uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" sibling-uuid="2e026613-fae6-4055-b3f9-81a3dfa82a59" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="a632caed-0244-4f6b-a7eb-57989059250a" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="4b54ebbf-196e-4c5b-9d8d-1df686748950" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="a632caed-0244-4f6b-a7eb-57989059250a" type="field">
+          <property name="name" value="niveau"/>
+          <property name="required" value="true"/>
+          <property name="type" value="integer"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="69481605-155a-40e6-b938-a391d3aeda53" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="4b54ebbf-196e-4c5b-9d8d-1df686748950" type="field">
+          <property name="name" value="annee_academique"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="b8fc30bc-77f7-4c76-8918-846517a93997" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="69481605-155a-40e6-b938-a391d3aeda53" type="field">
+          <property name="name" value="etudiant_id"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="28409ebb-9750-4d4c-a44c-caba572bc911" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="b8fc30bc-77f7-4c76-8918-846517a93997" type="field">
+          <property name="name" value="cycle_filiere_id"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="e4ae9c96-2ad5-4b60-8615-ed4e22120948" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="28409ebb-9750-4d4c-a44c-caba572bc911" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="33b1ffef-71f0-430c-9fc4-159ae74b8b6a" parent-uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" sibling-uuid="e4ae9c96-2ad5-4b60-8615-ed4e22120948" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="f4e075f2-8a9e-44b8-9e24-8b972b96e9c1" parent-uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="5b2417b0-bc07-4e6d-9d81-c4dc84589450" parent-uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" sibling-uuid="f4e075f2-8a9e-44b8-9e24-8b972b96e9c1" type="field">
+          <property name="name" value="libelle"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="b515cc73-1ad9-4266-8301-52a8d83bbd74" parent-uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" sibling-uuid="5b2417b0-bc07-4e6d-9d81-c4dc84589450" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="6a490899-ef74-4f6d-9a95-d1735e7a7d20" parent-uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" sibling-uuid="b515cc73-1ad9-4266-8301-52a8d83bbd74" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="b3871724-1bdd-4a3b-943a-554ba9b0fb9c" parent-uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="b8af1f45-c730-479d-ab52-a7cc48e01cc1" parent-uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" sibling-uuid="b3871724-1bdd-4a3b-943a-554ba9b0fb9c" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="5db5dda4-20b6-40ba-ace2-1e07e78e81d0" parent-uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" sibling-uuid="b8af1f45-c730-479d-ab52-a7cc48e01cc1" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="600d4146-6c6e-4181-88a9-4e5feefe3782" parent-uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" sibling-uuid="5db5dda4-20b6-40ba-ace2-1e07e78e81d0" type="field">
+          <property name="name" value="libelle"/>
+          <property name="required" value="true"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="eb70b2ff-e4e2-4c55-8eb7-0f9653a8c1d7" parent-uuid="2df343d0-1841-43cb-903d-cb64edf3c4a0" type="field">
+          <property name="name" value="droit_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="3744f0fc-f5e6-4a7c-8205-39436a294397" parent-uuid="2df343d0-1841-43cb-903d-cb64edf3c4a0" sibling-uuid="eb70b2ff-e4e2-4c55-8eb7-0f9653a8c1d7" type="field">
+          <property name="name" value="role_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="45acba94-d41d-405a-9614-fa5f7ef82a01" parent-uuid="b77e286e-248c-4a41-acc1-8c523bb4111f" type="field">
+          <property name="name" value="personne_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="e129e304-b3e6-45ae-91df-4783f2102835" parent-uuid="b77e286e-248c-4a41-acc1-8c523bb4111f" sibling-uuid="45acba94-d41d-405a-9614-fa5f7ef82a01" type="field">
+          <property name="name" value="role_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="3d746046-77c7-4a19-9ec1-b69aed3361fa" parent-uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" type="field">
+          <property name="auto-increment" value="true"/>
+          <property name="name" value="id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unique" value="true"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="90f89a52-3abd-47bd-b021-29fd7cf18727" parent-uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" sibling-uuid="3d746046-77c7-4a19-9ec1-b69aed3361fa" type="field">
+          <property name="name" value="nr_chambre"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="92029009-5e79-4f17-a0c8-7a146e527a48" parent-uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" sibling-uuid="90f89a52-3abd-47bd-b021-29fd7cf18727" type="field">
+          <property name="name" value="batiment"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="b68e4b74-9161-4fc5-9aa2-ff12ee329937" parent-uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" sibling-uuid="92029009-5e79-4f17-a0c8-7a146e527a48" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="fa3a91e8-fc39-4922-b38f-4b308246a197" parent-uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" sibling-uuid="b68e4b74-9161-4fc5-9aa2-ff12ee329937" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="675c16de-36f6-457a-b312-550d8ff4ed29" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" type="field">
+          <property name="name" value="etudiant_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="e1672742-e44f-4c2c-bb5a-70d2f992f04f" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="675c16de-36f6-457a-b312-550d8ff4ed29" type="field">
+          <property name="name" value="logement_id"/>
+          <property name="primary" value="true"/>
+          <property name="required" value="true"/>
+          <property name="type" value="bigInteger"/>
+          <property name="unsigned" value="true"/>
+        </element>
+        <element action="add" uuid="b94a419b-0039-450f-ae27-d171b87a2f9a" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="e1672742-e44f-4c2c-bb5a-70d2f992f04f" type="field">
+          <property name="name" value="date_fin"/>
+          <property name="type" value="dateTime"/>
+        </element>
+        <element action="add" uuid="7d6c6f15-80c3-463c-ae4a-1406b73da7dc" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="b94a419b-0039-450f-ae27-d171b87a2f9a" type="field">
+          <property name="name" value="nr_bourse"/>
+          <property name="type" value="string"/>
+        </element>
+        <element action="add" uuid="c6588e71-8fd2-4c1f-9179-daade8ec8358" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="7d6c6f15-80c3-463c-ae4a-1406b73da7dc" type="field">
+          <property name="name" value="date_dbt"/>
+          <property name="type" value="dateTime"/>
+        </element>
+        <element action="add" uuid="067f3c6e-b046-4329-8bad-db3ac87a6448" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="c6588e71-8fd2-4c1f-9179-daade8ec8358" type="field">
+          <property name="name" value="created_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="07647574-dbfc-49b6-814b-33fe3bc778df" parent-uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" sibling-uuid="067f3c6e-b046-4329-8bad-db3ac87a6448" type="field">
+          <property name="name" value="updated_at"/>
+          <property name="type" value="timestamp"/>
+        </element>
+        <element action="add" uuid="62cdf374-0008-48c9-a883-8ad501092640" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Cycle"/>
+          <property name="inverse-alias" value="etablissement"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="cycles"/>
+          <property name="to" value="\App\Models\Etablissement"/>
+        </element>
+        <element action="add" uuid="d29351a1-0492-400e-bb13-f33d00be9b2d" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Demande"/>
+          <property name="inverse-alias" value="cycleFiliere"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="demandes"/>
+          <property name="to" value="\App\Models\CycleFiliere"/>
+        </element>
+        <element action="add" uuid="726e881d-3d84-4912-b30e-6337bb52371f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Demande"/>
+          <property name="inverse-alias" value="etudiant"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="onDelete" value="cascade"/>
+          <property name="onUpdate" value="cascade"/>
+          <property name="owner-alias" value="demandes"/>
+          <property name="to" value="\App\Models\Etudiant"/>
+        </element>
+        <element action="add" uuid="7b30525f-0d6a-44b6-9115-5a864230a27f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Demande"/>
+          <property name="inverse-alias" value="etablissement"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="demandes"/>
+          <property name="to" value="\App\Models\Etablissement"/>
+        </element>
+        <element action="add" uuid="303d1b07-0eba-4e6c-b066-cfc98508fc43" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Demande"/>
+          <property name="inverse-alias" value="typeDemande"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="demandes"/>
+          <property name="to" value="\App\Models\TypeDemande"/>
+        </element>
+        <element action="add" uuid="790ad272-4895-4fca-ad6b-5984665aee9f" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Demande"/>
+          <property name="inverse-alias" value="modeAdmission"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="demandes"/>
+          <property name="to" value="\App\Models\ModeAdmission"/>
+        </element>
+        <element action="add" uuid="40c97c5b-e0b7-46b0-bd8d-aa15d404cfee" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Etudiant"/>
+          <property name="inverse-alias" value="personne"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="false"/>
+          <property name="owner-alias" value="etudiants"/>
+          <property name="parent-required" value="true"/>
+          <property name="to" value="\App\Models\Personne"/>
+        </element>
+        <element action="add" uuid="54b3b6bc-08a2-430e-9bee-271751bc796a" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Document"/>
+          <property name="inverse-alias" value="typeDocument"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="documents"/>
+          <property name="to" value="\App\Models\TypeDocument"/>
+        </element>
+        <element action="add" uuid="2ccdeb86-f4f9-4bbd-9561-62d768cbac9e" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Document"/>
+          <property name="inverse-alias" value="demande"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="documents"/>
+          <property name="to" value="\App\Models\Demande"/>
+        </element>
+        <element action="add" uuid="decbac62-485e-406d-87e8-288d222fd5b3" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="association">
+          <property name="from" value="\App\Models\Document"/>
+          <property name="inverse-alias" value="etudiant"/>
+          <property name="many-inverse" value="false"/>
+          <property name="many-owner" value="true"/>
+          <property name="owner-alias" value="documents"/>
+          <property name="to" value="\App\Models\Etudiant"/>
+        </element>
+        <element action="add" uuid="3571957d-11fb-4ac4-878c-32b69331ac35" parent-uuid="62cdf374-0008-48c9-a883-8ad501092640" type="association-field">
+          <property name="from" value="etablissement_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="804a1a1f-aeb2-45eb-98c5-c5b32cfd7a88" parent-uuid="d29351a1-0492-400e-bb13-f33d00be9b2d" type="association-field">
+          <property name="from" value="cycle_filiere_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="5e5cb22e-ba85-4bab-81c6-344a7ace599a" parent-uuid="726e881d-3d84-4912-b30e-6337bb52371f" type="association-field">
+          <property name="from" value="etudiant_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="817b45aa-84c9-4823-89de-35b3020f2e96" parent-uuid="7b30525f-0d6a-44b6-9115-5a864230a27f" type="association-field">
+          <property name="from" value="etablissement_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="fb7445be-6fb8-4513-be87-8ba097b2f3ff" parent-uuid="303d1b07-0eba-4e6c-b066-cfc98508fc43" type="association-field">
+          <property name="from" value="type_demande_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="c277aafb-f4b5-4e39-bf2a-8fbaa82d9fee" parent-uuid="790ad272-4895-4fca-ad6b-5984665aee9f" type="association-field">
+          <property name="from" value="mode_admission_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="6dc5606e-1bc5-41c2-b314-c20d101c74d1" parent-uuid="40c97c5b-e0b7-46b0-bd8d-aa15d404cfee" type="association-field">
+          <property name="from" value="id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="15aff129-6094-474d-82f3-d203078d249d" parent-uuid="54b3b6bc-08a2-430e-9bee-271751bc796a" type="association-field">
+          <property name="from" value="type_document_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="8b9ddddc-e823-4b0a-899f-59d3abe01443" parent-uuid="2ccdeb86-f4f9-4bbd-9561-62d768cbac9e" type="association-field">
+          <property name="from" value="demande_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="936c2acf-435a-439e-8e5b-6b6a35727f8b" parent-uuid="decbac62-485e-406d-87e8-288d222fd5b3" type="association-field">
+          <property name="from" value="etudiant_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="e5add200-1bd8-4d56-a0b9-5463c3ddcb14" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\CycleFiliere"/>
+        </element>
+        <element action="add" uuid="00f601b9-a8c2-48d2-b8e0-03d3d5bc65fc" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\CycleFiliereTypeDocument"/>
+        </element>
+        <element action="add" uuid="8480a48d-28ff-4637-b483-70b7d2364b9e" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\Cursus"/>
+        </element>
+        <element action="add" uuid="14dac057-a188-441f-b062-40363b99ea2a" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\RoleDroit"/>
+        </element>
+        <element action="add" uuid="67f65d71-a4da-4108-91ef-485a2a509724" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\RolePersonne"/>
+        </element>
+        <element action="add" uuid="5c3ccbc4-9982-45dc-bf05-aefce7c2b844" parent-uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" type="many-to-many">
+          <property name="mn-entity" value="\App\Models\LogementEtudiant"/>
+        </element>
+        <element action="add" uuid="50cf2ca1-69c5-43fa-a8c7-c8c0c5a87752" parent-uuid="e5add200-1bd8-4d56-a0b9-5463c3ddcb14" type="many-to-many-entity">
+          <property name="alias" value="filieres"/>
+          <property name="name" value="\App\Models\Filiere"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="8fc66257-726c-4284-8c1b-efb6cb993a38" parent-uuid="e5add200-1bd8-4d56-a0b9-5463c3ddcb14" type="many-to-many-entity">
+          <property name="alias" value="cycles"/>
+          <property name="name" value="\App\Models\Cycle"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="45e101df-dace-4c17-8309-37be98ebe897" parent-uuid="00f601b9-a8c2-48d2-b8e0-03d3d5bc65fc" type="many-to-many-entity">
+          <property name="alias" value="typeDocuments"/>
+          <property name="name" value="\App\Models\TypeDocument"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="8c7bb12b-7ecc-47a9-887e-ea922798e80b" parent-uuid="00f601b9-a8c2-48d2-b8e0-03d3d5bc65fc" type="many-to-many-entity">
+          <property name="alias" value="cycleFilieres"/>
+          <property name="name" value="\App\Models\CycleFiliere"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="858d503a-94c2-4625-a55e-e5788b952090" parent-uuid="8480a48d-28ff-4637-b483-70b7d2364b9e" type="many-to-many-entity">
+          <property name="alias" value="etudiants"/>
+          <property name="name" value="\App\Models\Etudiant"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="58b29296-a4bc-431b-8891-77bbbc70abfb" parent-uuid="8480a48d-28ff-4637-b483-70b7d2364b9e" type="many-to-many-entity">
+          <property name="alias" value="cycleFilieres"/>
+          <property name="name" value="\App\Models\CycleFiliere"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="f9b589e5-67b8-4ca8-9b00-433e15d75be4" parent-uuid="14dac057-a188-441f-b062-40363b99ea2a" type="many-to-many-entity">
+          <property name="alias" value="droits"/>
+          <property name="name" value="\App\Models\Droit"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="2a186269-b1b6-410e-9974-ae175c532b5f" parent-uuid="14dac057-a188-441f-b062-40363b99ea2a" type="many-to-many-entity">
+          <property name="alias" value="roles"/>
+          <property name="name" value="\App\Models\Role"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="da054af4-6760-4adf-bf48-db6b25ec7fcb" parent-uuid="67f65d71-a4da-4108-91ef-485a2a509724" type="many-to-many-entity">
+          <property name="alias" value="personnes"/>
+          <property name="name" value="\App\Models\Personne"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="01d0397c-b419-4249-b416-ce6e712c1b89" parent-uuid="67f65d71-a4da-4108-91ef-485a2a509724" type="many-to-many-entity">
+          <property name="alias" value="roles"/>
+          <property name="name" value="\App\Models\Role"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="1f3b59b5-5ab2-45e3-a57b-333c2f751436" parent-uuid="5c3ccbc4-9982-45dc-bf05-aefce7c2b844" type="many-to-many-entity">
+          <property name="alias" value="etudiants"/>
+          <property name="name" value="\App\Models\Etudiant"/>
+          <property name="owning-side" value="true"/>
+        </element>
+        <element action="add" uuid="fd9f0e40-13ec-4066-bb1a-fe8c63fcc95e" parent-uuid="5c3ccbc4-9982-45dc-bf05-aefce7c2b844" type="many-to-many-entity">
+          <property name="alias" value="logements"/>
+          <property name="name" value="\App\Models\Logement"/>
+          <property name="owning-side" value="false"/>
+        </element>
+        <element action="add" uuid="e5ff3f12-8781-4042-bc2c-464506711852" parent-uuid="50cf2ca1-69c5-43fa-a8c7-c8c0c5a87752" type="many-to-many-field">
+          <property name="from" value="filiere_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="9b793799-be2b-4375-b834-6f31212c76e6" parent-uuid="8fc66257-726c-4284-8c1b-efb6cb993a38" type="many-to-many-field">
+          <property name="from" value="cycle_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="255cbc14-eefc-4001-8c03-df0443db8184" parent-uuid="45e101df-dace-4c17-8309-37be98ebe897" type="many-to-many-field">
+          <property name="from" value="type_document_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="9029c106-1b0c-4b7f-bd0f-c42a98d27f01" parent-uuid="8c7bb12b-7ecc-47a9-887e-ea922798e80b" type="many-to-many-field">
+          <property name="from" value="cycle_filiere_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="546f0c4e-dd16-4a03-94ca-90c5442190e5" parent-uuid="858d503a-94c2-4625-a55e-e5788b952090" type="many-to-many-field">
+          <property name="from" value="etudiant_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="a36efab7-1fda-4e3c-845c-404910deda6a" parent-uuid="58b29296-a4bc-431b-8891-77bbbc70abfb" type="many-to-many-field">
+          <property name="from" value="cycle_filiere_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="15f1bf28-d5f2-4032-8442-a1cee2aadccb" parent-uuid="f9b589e5-67b8-4ca8-9b00-433e15d75be4" type="many-to-many-field">
+          <property name="from" value="droit_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="432e20e6-7a55-4535-bd92-5b6061977cda" parent-uuid="2a186269-b1b6-410e-9974-ae175c532b5f" type="many-to-many-field">
+          <property name="from" value="role_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="70b7cd0a-3548-4d02-a8d1-00e32c3b33f0" parent-uuid="da054af4-6760-4adf-bf48-db6b25ec7fcb" type="many-to-many-field">
+          <property name="from" value="personne_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="df7aecbb-b958-46ad-8fb8-549d22c4db67" parent-uuid="01d0397c-b419-4249-b416-ce6e712c1b89" type="many-to-many-field">
+          <property name="from" value="role_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="27285a9b-4e40-4e86-bca2-5f6c53c1850c" parent-uuid="1f3b59b5-5ab2-45e3-a57b-333c2f751436" type="many-to-many-field">
+          <property name="from" value="etudiant_id"/>
+          <property name="to" value="id"/>
+        </element>
+        <element action="add" uuid="5f5401ae-6d85-4a2f-b919-0cee8afd6ca4" parent-uuid="fd9f0e40-13ec-4066-bb1a-fe8c63fcc95e" type="many-to-many-field">
+          <property name="from" value="logement_id"/>
+          <property name="to" value="id"/>
+        </element>
+      </revision>
+    </migrations>
+  </module>
+  <visual-data>
+    <association uuid="2ccdeb86-f4f9-4bbd-9561-62d768cbac9e" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="303d1b07-0eba-4e6c-b066-cfc98508fc43" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="40c97c5b-e0b7-46b0-bd8d-aa15d404cfee" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="54b3b6bc-08a2-430e-9bee-271751bc796a" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="62cdf374-0008-48c9-a883-8ad501092640" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="726e881d-3d84-4912-b30e-6337bb52371f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="790ad272-4895-4fca-ad6b-5984665aee9f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="7b30525f-0d6a-44b6-9115-5a864230a27f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="d29351a1-0492-400e-bb13-f33d00be9b2d" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="decbac62-485e-406d-87e8-288d222fd5b3" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <entity uuid="20d585aa-cc65-4412-b168-b298a703f20d" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1389" position-y="302" size-x="0" size-x2="154" size-y="0" size-y2="60"/>
+    <entity uuid="241b4888-30cd-4fe4-8cd9-1a29ccc9af50" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="534" position-y="1016" size-x="0" size-x2="145" size-y="0" size-y2="199"/>
+    <entity uuid="29fdfeeb-9985-428f-a958-0396e1a45216" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="440" position-y="157" size-x="0" size-x2="119" size-y="0" size-y2="59"/>
+    <entity uuid="2da11f2c-6a57-49ce-b409-ba4334138d77" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="23" position-y="290" size-x="0" size-x2="119" size-y="0" size-y2="143"/>
+    <entity uuid="2df343d0-1841-43cb-903d-cb64edf3c4a0" bg-color="#E7FAC8" hdr-color="#D2D2D2" position-x="174" position-y="1324" size-x="0" size-x2="102" size-y="0" size-y2="60"/>
+    <entity uuid="2ec21286-15bb-4213-b3ff-98a15dff8f54" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1655" position-y="784" size-x="0" size-x2="146" size-y="0" size-y2="115"/>
+    <entity uuid="3884aff8-6171-426b-b4a6-01fc94a85e8f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="418" position-y="445" size-x="0" size-x2="133" size-y="0" size-y2="130"/>
+    <entity uuid="3cf5f577-64c7-499f-89c9-49d8a46c9068" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="312" position-y="1099" size-x="0" size-x2="119" size-y="0" size-y2="73"/>
+    <entity uuid="40a14a91-72f2-49df-8dd2-0556cd490d02" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1415" position-y="500" size-x="0" size-x2="119" size-y="0" size-y2="59"/>
+    <entity uuid="653624b9-7312-414f-83fb-f4657dd7b8a3" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1736" position-y="180" size-x="0" size-x2="119" size-y="0" size-y2="73"/>
+    <entity uuid="6a21ed16-d719-4774-80a5-1bf145e8ce31" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="45" position-y="681" size-x="0" size-x2="119" size-y="0" size-y2="87"/>
+    <entity uuid="6a2e77fe-74c0-46c7-94af-8d5bed1f636a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="977" position-y="420" size-x="0" size-x2="119" size-y="0" size-y2="73"/>
+    <entity uuid="888995ac-dd8b-480f-9716-edf75e4adf7d" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="655" position-y="681" size-x="0" size-x2="152" size-y="0" size-y2="171"/>
+    <entity uuid="8d8128b6-3807-4053-9f11-7ba54ef1a86f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="786" position-y="284" size-x="0" size-x2="106" size-y="0" size-y2="88"/>
+    <entity uuid="a94267d1-0e21-4d84-b9a4-9fbdc10d9b53" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="1230" position-y="194" size-x="0" size-x2="119" size-y="0" size-y2="87"/>
+    <entity uuid="b77e286e-248c-4a41-acc1-8c523bb4111f" bg-color="#D3F2A9" hdr-color="#D2D2D2" position-x="418" position-y="1323" size-x="0" size-x2="122" size-y="0" size-y2="60"/>
+    <entity uuid="be6fb059-10de-443d-a2fb-5d8a527d1088" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="34" position-y="1088" size-x="0" size-x2="119" size-y="0" size-y2="73"/>
+    <entity uuid="bf8b8ddb-e70d-439c-9cd6-9faf5b46ff6b" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="172" position-y="493" size-x="0" size-x2="121" size-y="0" size-y2="60"/>
+    <entity uuid="f055acbd-3fcf-4016-a05a-aa041b1d1d22" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="336" position-y="752" size-x="0" size-x2="119" size-y="0" size-y2="199"/>
+    <many-to-many-association uuid="00f601b9-a8c2-48d2-b8e0-03d3d5bc65fc" color="#969696"/>
+    <many-to-many-association uuid="14dac057-a188-441f-b062-40363b99ea2a" color="#969696"/>
+    <many-to-many-association uuid="5c3ccbc4-9982-45dc-bf05-aefce7c2b844" color="#969696"/>
+    <many-to-many-association uuid="67f65d71-a4da-4108-91ef-485a2a509724" color="#969696"/>
+    <many-to-many-association uuid="8480a48d-28ff-4637-b483-70b7d2364b9e" color="#969696"/>
+    <many-to-many-association uuid="e5add200-1bd8-4d56-a0b9-5463c3ddcb14" color="#BBE87D"/>
+    <many-to-many-association-entity uuid="45e101df-dace-4c17-8309-37be98ebe897" caption1-position-x="1" caption1-position-y="59" center-position-x="0" center-position-y="0"/>
+    <many-to-many-association-entity uuid="50cf2ca1-69c5-43fa-a8c7-c8c0c5a87752" caption1-position-x="175" caption1-position-y="0" center-position-x="0" center-position-y="0"/>
+    <many-to-many-association-entity uuid="8fc66257-726c-4284-8c1b-efb6cb993a38" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0"/>
+    <module uuid="6dfb0982-12fc-4391-a38d-fe714a4c315d" bg-color="#EAE4F1" position-x="61" position-y="72" size-x="11" size-x2="2036" size-y="22" size-y2="1404"/>
+    <project uuid="074c1901-8a14-4d7e-9a0b-e3cccd924ee4" size-x="0" size-x2="2147" size-y="0" size-y2="1526"/>
+  </visual-data>
+</skipper>

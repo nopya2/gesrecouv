@@ -55,7 +55,11 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="nif">N° Facture</label>
-                                        <input type="text" class="form-control" placeholder="Entrez le n° de facture" v-model.trim="$v.facture.num_facture.$model" name="num_facture">
+                                        <input type="text" class="form-control" 
+                                            placeholder="Entrez le n° de facture" 
+                                            v-model.trim="$v.facture.num_facture.$model" 
+                                            name="num_facture"
+                                            autocomplete="off">
                                         <small class="form-text text-danger" v-if="!$v.facture.num_facture.required">Champs requis.</small>
                                         <!-- <small class="form-text text-danger" v-if="!$v.facture.num_facture.minLength">{{$v.facture.num_facture.$params.minLength.min}} caractères minimum.</small>
                                         <small class="form-text text-danger" v-if="!$v.facture.num_facture.maxLength">{{$v.facture.num_facture.$params.maxLength.max}} caractères maximum.</small> -->
@@ -82,7 +86,11 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="num_dossier">N° Dossier</label>
-                                        <input type="text" class="form-control" placeholder="Entrez le n° de dossier" v-model="$v.facture.num_dossier.$model" name="num_dossier">
+                                        <input type="text" class="form-control" 
+                                            placeholder="Entrez le n° de dossier" 
+                                            v-model="$v.facture.num_dossier.$model"
+                                            name="num_dossier"
+                                            autocomplete="off">
                                         <!-- <small class="form-text text-danger" v-if="!$v.facture.num_dossier.required">Champs requis.</small> -->
                                     </div>
                                 </div>

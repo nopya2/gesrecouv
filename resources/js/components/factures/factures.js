@@ -7,6 +7,10 @@ Vue.component(
     require('./FactureFormCreate.vue').default
 );
 Vue.component(
+    'facture-edit',
+    require('./FactureFormEdit.vue').default
+);
+Vue.component(
     'facture-details',
     require('./FactureDetails.vue').default
 );
