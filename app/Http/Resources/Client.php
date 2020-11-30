@@ -31,6 +31,9 @@ class Client extends JsonResource
             'type' => $this->type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'total_amount' => $this->total_amount,
+            'm_paid' => $this->m_paid,
+            'm_not_paid' => $this->m_not_paid,
         ];
     }
 }

@@ -194,7 +194,7 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            @include('admin.include.sidebar')
+            @include('admin.recouvrement.sidebar')
         </div>
         <!-- /.sidebar -->
     </aside>

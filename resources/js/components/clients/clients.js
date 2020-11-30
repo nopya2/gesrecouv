@@ -10,3 +10,7 @@ Vue.component(
     'client-edit',
     require('./ClientFormEdit.vue').default
 );
+Vue.component(
+    'client-details',
+    require('./ClientDetails.vue').default
+);

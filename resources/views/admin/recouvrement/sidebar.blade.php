@@ -12,7 +12,7 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-            <a href="{{ route('home') }}" class="nav-link @isset($page) {{ ($page == 'dashboard') ? 'active' : '' }} @endisset">
+            <a href="{{ route('home', ['mod' => 'recouvrement']) }}" class="nav-link @isset($page) {{ ($page == 'dashboard') ? 'active' : '' }} @endisset">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     Tableau de bord

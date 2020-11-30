@@ -713,6 +713,7 @@ class ComposerStaticInitcf3fda409c07d303852288db0346295c
         'App\\Importation' => __DIR__ . '/../..' . '/app/Importation.php',
         'App\\Imports\\EngagementsImport' => __DIR__ . '/../..' . '/app/Imports/EngagementsImport.php',
         'App\\ModePaiement' => __DIR__ . '/../..' . '/app/ModePaiement.php',
+        'App\\Models\\Relaunch' => __DIR__ . '/../..' . '/app/Models/Relaunch.php',
         'App\\Module' => __DIR__ . '/../..' . '/app/Module.php',
         'App\\NatureDepense' => __DIR__ . '/../..' . '/app/NatureDepense.php',
         'App\\Observers\\EchelonObserver' => __DIR__ . '/../..' . '/app/Observers/EchelonObserver.php',

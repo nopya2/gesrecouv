@@ -7,7 +7,10 @@ use App\Engagement;
 use App\User;
 use App\Provider;
 use App\Importation;
+use App\Facture;
+use App\Client;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -26,8 +29,27 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(!$request->has('mod'))
+            return response('Cette page n\'existe pas', 404);
+
+        switch ($request->mod) {
+            case 'comptabilite':
+                return $this->dashboardComptabilite($request);
+            case 'recouvrement':
+                return $this->dashboardRecouvrement($request);
+            case 2:
+                echo "i égal 2";
+            default:
+                return $this->error($request);
+        }
+    }
+
+    /*
+    * Dashboar pour le module comptabilité
+    */
+    public function dashboardComptabilite($request){
         $currentYear = date('Y');
 
         $engagements = Engagement::where('d_exerci', $currentYear)->count();
@@ -61,7 +83,7 @@ class HomeController extends Controller
             if($duration > 7) $update = true;
         }
 
-        return view('admin.dashboard', [
+        return view('admin.recouvrement.home', [
             'engagements' => $engagements,
             'paiements' => $paiements,
             'last_paiements' => $lastPaiements,
@@ -72,6 +94,114 @@ class HomeController extends Controller
             'memory' => $memory,
             'page' => 'dashboard',
             'sub_page' => ''
+        ]);
+
+    }
+    /*
+    * Dashboar pour le module recouvrement
+    *
+    */
+    public function dashboardRecouvrement($request){
+        $currentYear = date('Y');
+        $start = $currentYear.'-01-01';
+        $end = $currentYear.'-12-31';
+
+        //la dette de tous les clients - Toutes les factures non payées pour l'année en cours
+        $notPaid = Facture::where('statut', '!=', 'paid')
+            ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+            ->where('deleted', false)
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', '!=', 'waiting')
+            ->get();
+
+        //Le montant des factures en retard
+        $late = Facture::where('statut', '!=', 'paid')
+            ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+            ->where('date_echeance', '<', now()->format('Y-m-d').' 00:00:00')
+            ->where('deleted', false)
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', '!=', 'waiting')
+            ->get();
+            
+        //Le nombre de clients ayant des facture en retard
+        $clientsLate = Client::where(function ($query) use ($request, $currentYear){
+            $query
+                ->whereHas('factures', function ($query) use ($request, $currentYear){
+                    $query
+                        ->where('statut', '!=', 'paid')
+                        ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+                        ->where('date_echeance', '<', now())
+                        ->where('deleted', false)
+                        ->where('statut', '!=', 'cancelled')
+                        ->where('statut', '!=', 'credit_note')
+                        ->where('state', '!=', 'waiting');
+                });
+        })->get();
+        $nbClientsLate = count($clientsLate);
+
+        //Le montant des factures en attente
+        $waiting = Facture::where('statut', '!=', 'paid')
+            ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+            ->where('date_echeance', '>=', now()->format('Y-m-d').' 00:00:00')
+            ->where('deleted', false)
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', '!=', 'waiting')
+            ->get();
+            
+        //
+        $nbClientsWaiting = Client::where(function ($query) use ($request, $currentYear){
+            $query
+                ->whereHas('factures', function ($query) use ($request, $currentYear){
+                    $query
+                        ->where('statut', '!=', 'paid')
+                        ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+                        ->where('date_echeance', '>=', now())
+                        ->where('deleted', false)
+                        ->where('statut', '!=', 'cancelled')
+                        ->where('statut', '!=', 'credit_note')
+                        ->where('state', '!=', 'waiting');
+                });
+        })->get()->count();
+
+        //Paiement effectué sur les 3 derniers mois
+        $lastTrimester = Facture::where('statut', 'paid')
+            ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+            ->whereBetween('date_paiement', [Carbon::today()->subMonths(3)->toDateTimeString(), Carbon::today()->toDateTimeString()])
+            ->get();
+
+        //Liste des clients ayant des factures non payées
+        $clientsNotPaidFactures = Client::where(function ($query) use ($request, $currentYear){
+            $query
+                ->whereHas('factures', function ($query) use ($request, $currentYear){
+                    $query
+                        ->where('statut', '!=', 'paid')
+                        ->whereBetween('date_creation', ["{$currentYear}-01-01", "{$currentYear}-12-31"])
+                        // ->where('date_echeance', '<', now())
+                        ->where('deleted', false)
+                        ->where('statut', '!=', 'cancelled')
+                        ->where('statut', '!=', 'credit_note')
+                        ->where('state', '!=', 'waiting');
+                });
+        })->get()->take(10);
+
+        return view('admin.recouvrement.home', [
+            'page' => 'dashboard',
+            'sub_page' => '',
+            'not_paid' => $notPaid->sum('montant'),
+            'late' => $late->sum('montant'),
+            'clients_late' => $clientsLate,
+            'nb_clients_late' => $nbClientsLate,
+            'waiting' => $waiting->sum('montant'),
+            'nb_clients_waiting' => $nbClientsWaiting,
+            'last_trimester' => $lastTrimester->sum('montant'),
+            'client_not_paid_factures' => $clientsNotPaidFactures,
+            'start' => $start,
+            'end' => $end
+
+
         ]);
     }
 
@@ -92,9 +222,16 @@ class HomeController extends Controller
     }
 
     public function error(Request $request){
-        $module = $request->m;
-
-        if($module === 'recouv') $layout = 'admin.layout';
+        $module = $request->mod;
+        switch($module){
+            case 'recouvrement':
+                $layout = 'admin.recouvrement.layout';
+                break;
+            default:
+                return view('errors.error_404');
+                
+                
+        }
 
         return view('error', [
             'layout' => $layout

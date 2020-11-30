@@ -234,6 +234,7 @@
                                     <option value="later">En retard</option>
                                     <option value="cancelled">Annulé</option>
                                     <option value="paid">Payé</option>
+                                    <option value="not_paid">Non payé</option>
                                     <option value="waiting">En attente</option>
                                     <option value="litigation">Litige</option>
                                     <option value="credit_note">Avoir</option>
@@ -300,6 +301,15 @@
 
         props : [],
         mounted() {
+            let vm = this
+            let url_string = window.location.href
+            let url = new URL(url_string)
+            if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("end")
+            if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
+            if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
+
+            vm.fetchFactures()
+
             $('[data-toggle="tooltip"]').tooltip()
         },
 
@@ -334,7 +344,6 @@
                 const authUser = JSON.parse(window.localStorage.getItem('authUser'))
                 this.api_token = authUser.api_token 
             }
-            this.fetchFactures()
             this.fetchTypes()
 
         },

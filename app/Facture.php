@@ -68,6 +68,11 @@ class Facture extends Model
         return $this->hasMany('App\Paiement')->orderBy('id', 'desc');
     }
 
+    public function relaunches()
+    {
+        return $this->hasMany('App\Models\Relaunch')->orderBy('id', 'desc');
+    }
+
     public function documents(){
         return $this->belongsToMany('App\Document')->orderBy('id', 'desc');
     }

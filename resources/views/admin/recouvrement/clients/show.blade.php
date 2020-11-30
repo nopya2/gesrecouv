@@ -1,4 +1,4 @@
-@extends('layouts.recouvrement')
+@extends('admin.recouvrement.layout')
 
 @section('content')
     <!-- Content Header (Page header) -->
@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Clients - Détails | <span class="text-sm">{{ $client->raison_sociale }}</span></h1>
+                    <h1>Clients - Détails</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <client-edit :client_id="{{ $client->id }}"></client-edit>
+        <client-details :client_id="{{ $client->id }}"></client-details>
     </section>
     <!-- /.content -->
 @endsection

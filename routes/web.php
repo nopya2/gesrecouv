@@ -15,7 +15,7 @@
 //    return view('home');
 //});
 
-Route::redirect('/', '/home');
+Route::redirect('/', '/portail');
 
 Auth::routes();
 

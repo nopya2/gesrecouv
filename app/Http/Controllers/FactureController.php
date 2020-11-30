@@ -42,51 +42,73 @@ class FactureController extends Controller
                 // ->orWhere('nif', 'like', '%' . $request->keyword . '%');
 
             });
-
+        
+        //Recherche par client
         if($request->has('client_id') && $request->client_id != ''){
             $queryBuilder->where('client_id', $request->client_id);
         }
 
+        //Recherche par type
         if($request->has('type') && $request->type != ''){
             $queryBuilder->where('type_id', $request->type);
         }
 
+        //Recherche par statut
         if($request->has('statut') && $request->statut != ''){
+            //Les factures qui doivent etre validées
             if($request->statut == 'to_validate'){
                 $queryBuilder->where('state', 'waiting');
             }
+            //Les avoirs
             if($request->statut == 'credit_note'){
                 $queryBuilder->where('statut', 'credit_note');
             }
+            //Les factures annulées
             if($request->statut == 'cancelled'){
                 $queryBuilder->where('statut', 'cancelled');
             }
+            //Les factures en litige
             if($request->statut == 'litigation'){
                 $queryBuilder->where('statut', 'litigation');
             }
+            //Les factures payées
             if($request->statut == 'paid'){
                 $queryBuilder->where('statut', 'paid');
             }
+            //Les factures non payées
+            if($request->statut == 'not_paid'){
+                $queryBuilder->where('statut', '!=', 'paid')
+                    ->where('statut', '!=', 'credit_note')
+                    ->where('statut', '!=', 'cancelled');
+            }
+            //Les factures en attente de paiement
             if($request->statut == 'waiting'){
                 $queryBuilder
                     ->where(function($query) use ($request){
                         $query
                             ->where('statut', '!=', 'paid')
-                            ->where('date_echeance', '>', now());
+                            ->where('statut', '!=', 'cancelled')
+                            ->where('statut', '!=', 'credit_note')
+                            ->where('date_echeance', '>=', now()->format('Y-m-d').' 00:00:00');
                     });
             }
+            //Les factures en retard et non payées
             if($request->statut == 'later'){
                 $queryBuilder
                     ->where(function($query) use ($request){
                         $query
                             ->where('statut', '!=', 'paid')
-                            ->where('date_echeance', '<', now());
+                            ->where('statut', '!=', 'cancelled')
+                            ->where('statut', '!=', 'credit_note')
+                            ->where('date_echeance', '<', now()->format('Y-m-d').' 00:00:00');
                     });
             }
-            if($request->has('start') && $request->has('end') && $request->start != "" && $request->end != ""){
-                $queryBuilder
-                    ->whereBeteween('date_creation', [$request->start, $request->end]);
-            }
+        }
+
+        //Sélection des factures par période
+        if($request->has('start') && $request->has('end') && $request->start != "" && $request->end != ""){
+            $queryBuilder
+                ->whereBetween('date_creation', [$request->start, $request->end]);
         }
         
         $factures = $queryBuilder
@@ -143,7 +165,7 @@ class FactureController extends Controller
     {
         //Redicrection à la page d'erreur
         if($facture->deleted === true)
-            return redirect('error?m=recouv');
+            return redirect('error?mod=recouvrement');
 
         return view('admin.recouvrement.factures.details', [
             'facture' => $facture,
@@ -155,7 +177,7 @@ class FactureController extends Controller
     public function getFacture(Facture $facture)
     {
         if($facture->deleted === true)
-            return redirect('error?m=recouv');
+            return redirect('error?mod=recouvrement');
 
         return new FactureResource($facture);
     }
@@ -170,9 +192,9 @@ class FactureController extends Controller
     {
         //Redicrection à la page d'erreur
         if($facture->deleted === true)
-            return redirect('error?m=recouv');
+            return redirect('error?mod=recouvrement');
         if($facture->state !== 'waiting' && $facture->statut !== 'in_progress' && $facture->m_paid!==0)
-            return redirect('error?m=recouv');
+            return redirect('error?mod=recouvrement');
 
         return view('admin.recouvrement.factures.edit', [
             'facture' => $facture,

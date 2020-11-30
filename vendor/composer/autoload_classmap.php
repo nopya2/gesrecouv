@@ -82,6 +82,7 @@ return array(
     'App\\Importation' => $baseDir . '/app/Importation.php',
     'App\\Imports\\EngagementsImport' => $baseDir . '/app/Imports/EngagementsImport.php',
     'App\\ModePaiement' => $baseDir . '/app/ModePaiement.php',
+    'App\\Models\\Relaunch' => $baseDir . '/app/Models/Relaunch.php',
     'App\\Module' => $baseDir . '/app/Module.php',
     'App\\NatureDepense' => $baseDir . '/app/NatureDepense.php',
     'App\\Observers\\EchelonObserver' => $baseDir . '/app/Observers/EchelonObserver.php',
