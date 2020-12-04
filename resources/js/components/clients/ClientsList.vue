@@ -14,7 +14,7 @@
                     <i class="fas fa-print"></i> Exporter excel
                 </button>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 offset-md-3">
                 <input type="text" class="form-control form-control-sm" placeholder="Tapez votre recherche, raison sociale ou NIF" v-model="filter.keyword" v-on:keyup="search">
             </div>
         </div>

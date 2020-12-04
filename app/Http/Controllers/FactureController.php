@@ -288,7 +288,7 @@ class FactureController extends Controller
 
         $user = Auth::user();
         //on annule la facture initiale
-        Facture::whereId($facture->id)->update(['statut'=>'cancelled', 'state'=>'cancelled', "updated_at"=>now()]);
+        Facture::whereId($facture->id)->update(['montant'=>-($facture->montant),'statut'=>'cancelled', 'state'=>'cancelled', "updated_at"=>now()]);
 
         activity()
             ->performedOn($facture->fresh())
@@ -377,7 +377,6 @@ class FactureController extends Controller
 
         return new FactureResource($facture->fresh());
     }
-
 
     /**
      * Remove the specified resource from storage.

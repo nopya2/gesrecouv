@@ -21,7 +21,9 @@
 
     <!-- Main content -->
     <section class="content">
-        <client-details :client_id="{{ $client->id }}"></client-details>
+        <client-details :client_id="{{ $client->id }}"
+            :previous="{{$previous}}"
+            :next="{{$next}}"></client-details>
     </section>
     <!-- /.content -->
 @endsection

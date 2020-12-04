@@ -5,6 +5,13 @@
                 <div class="card card-warning">
                     <div class="card-header">
                         <h3 class="card-title">Formulaire de modification</h3>
+                        <div class="card-tools">
+                            <button class="btn btn-info btn-sm" title="Détails">
+                                <a :href="'/clients/'+client.id" class="text-light">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form role="form">
@@ -25,6 +32,17 @@
                                         <small class="form-text text-danger" v-if="!$v.client.nif.required">Champs requis.</small>
                                         <small class="form-text text-danger" v-if="!$v.client.nif.minLength">{{$v.client.nif.$params.minLength.min}} caractères minimum.</small>
                                         <small class="form-text text-danger" v-if="!$v.client.nif.maxLength">{{$v.client.nif.$params.maxLength.max}} caractères maximum.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ville">Secteur d'activités</label>
+                                        <select class="form-control" v-model="$v.client.secteur_id.$model" name="secteur_id">
+                                            <option v-for="(secteur, index) in secteurs" :key="index" :value="secteur.id">{{ secteur.name }}</option>
+                                        </select>
+                                        <small class="form-text text-danger" v-if="!$v.client.secteur_id.required">Champs requis.</small>
                                     </div>
                                 </div>
                             </div>
@@ -135,6 +153,7 @@
                 client: new Client(),
                 villes: [],
                 pays: [],
+                secteurs: [],
                 filter: {
                     keyword: '',
                 },
@@ -179,31 +198,27 @@
                 email: {
                     email,
                     required
+                },
+                secteur_id: {
+                    required
                 }
             }
         },
         created(){
 
-            if (window.localStorage.getItem('authUser')) {
-                const authUser = JSON.parse(window.localStorage.getItem('authUser'))
-                this.api_token = authUser.api_token
-            }
-
             this.fetchClient()
             this.fetchVilles()
             this.fetchPays()
+            this.fetchSecteurs()
 
         },
 
         methods: {
-            fetchClient(page_url){
+            fetchClient(){
                 let vm = this;
-
-                page_url = `/api/clients/${this.client_id}?api_token=${this.api_token}`
-                fetch(page_url)
-                    .then(res => res.json())
+                axios.get(`/api/clients/${this.client_id}`)
                     .then(res => {
-                        vm.client = res.data
+                        vm.client = res.data.data
                     })
                     .catch(error => {
                         toastr.error('Erreur chargement du client!')
@@ -229,18 +244,21 @@
                         toastr.error('Erreur chargement des pays!')
                     });
             },
+            fetchSecteurs(){
+                let vm = this
+                axios.get('/api/secteurs-activites?limit=100')
+                    .then(res => {
+                        vm.secteurs = res.data.data
+                    })
+                    .catch(error => {
+                        toastr.error('Erreur chargement des secteurs!')
+                    })
+            },
             update(){
                 let vm = this;
                 vm.btnLoading = true
 
-                fetch(`/api/clients?api_token=${this.api_token}`, {
-                    method: 'put',
-                    body: JSON.stringify(this.client),
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                })
-                    .then(res => res.json())
+                axios.put(`/api/clients`, this.client)
                     .then(res => {
                         vm.btnLoading = false
                         toastr.warning('Modifications enregistrées!')

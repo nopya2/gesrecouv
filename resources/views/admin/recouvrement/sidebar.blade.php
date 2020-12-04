@@ -110,6 +110,12 @@
                             <p>Modes de paiement</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('secteurs_activites.index') }}" class="nav-link @isset($sub_page) {{ ($sub_page == 'secteur-activite.list') ? 'active' : '' }} @endisset">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Secteurs d'activtés</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             @endif

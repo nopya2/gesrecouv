@@ -40,24 +40,24 @@
                             </p>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="alert alert-warning">
-                                        <strong class="text-lg text-light">En retard</strong>
+                                    <div class="alert border-warning">
+                                        <strong class="text-lg text-orange">En retard</strong>
                                         <a type="button" class="close btn btn-sm" href="/factures?start={{$start}}&end={{$end}}&statut=later">
                                             <i class="fas fa-plus-circle"></i>
                                         </a>
+                                        <p class="text-orange" style="font-size: 30px"><strong>{{ number_format($late, 0, "", " ") }} Fcfa</strong></p>
+                                        <p class="text-orange m-0">({{ number_format($nb_clients_late, 0, "", " ") }} clients)</p>
                                     </div>
-                                    <p class="text-orange" style="font-size: 30px"><strong>{{ number_format($late, 0, "", " ") }} Fcfa</strong></p>
-                                    <p class="text-orange m-0">({{ number_format($nb_clients_late, 0, "", " ") }} clients)</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="alert alert-primary">
-                                        <strong class="text-lg text-light">A venir</strong>
+                                    <div class="alert border-primary">
+                                        <strong class="text-lg text-primary">A venir</strong>
                                         <a type="button" class="close btn btn-sm" href="/factures?start={{$start}}&end={{$end}}&statut=waiting">
                                             <i class="fas fa-plus-circle"></i>
                                         </a>
+                                        <p class="text-primary" style="font-size: 30px"><strong>{{ number_format($waiting, 0, "", " ") }} Fcfa</strong></p>
+                                        <p class="text-primary m-0">({{ number_format($nb_clients_waiting, 0, "", " ") }} clients)</p>
                                     </div>
-                                    <p class="text-primary" style="font-size: 30px"><strong>{{ number_format($waiting, 0, "", " ") }} Fcfa</strong></p>
-                                    <p class="text-primary m-0">({{ number_format($nb_clients_waiting, 0, "", " ") }} clients)</p>
                                 </div>
                             </div>
                             

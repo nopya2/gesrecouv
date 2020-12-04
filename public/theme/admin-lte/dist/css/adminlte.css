@@ -5396,6 +5396,12 @@ a.badge-dark:focus, a.badge-dark.focus {
   border-color: #ffeeba;
 }
 
+.alert-orange {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
 .alert-warning hr {
   border-top-color: #ffe8a1;
 }

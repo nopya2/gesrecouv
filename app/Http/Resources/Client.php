@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\SecteurActivite as SecteurActiviteResource;
 
 class Client extends JsonResource
 {
@@ -34,6 +35,10 @@ class Client extends JsonResource
             'total_amount' => $this->total_amount,
             'm_paid' => $this->m_paid,
             'm_not_paid' => $this->m_not_paid,
+            'm_not_paid_late' => $this->m_not_paid_late,
+            'm_not_paid_waiting' => $this->m_not_paid_waiting,
+            'secteur_id' => $this->secteur_id,
+            'secteur' => new SecteurActiviteResource($this->secteur)
         ];
     }
 }

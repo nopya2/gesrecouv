@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Facture;
+use App\Http\Requests\ClientRequest;
 use App\Http\Resources\Client as ClientResource;
+use App\Http\Resources\Facture as FactureResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,32 +68,21 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-        $data = $request->validate([
-            'raison_sociale' => ['required'],
-            'nif' => ['required'],
-            'bp' => [],
-            'adresse' => ['required'],
-            'ville' => ['required'],
-            'pays' => ['required'],
-            'tel' => [],
-            'responsable' => ['required'],
-            'tel_responsable' => ['required'],
-            'email' => ['required']
-        ]);
 
         $client = Client::forceCreate([
-            'raison_sociale' => $data['raison_sociale'],
-            'nif' => $data['nif'],
-            'bp' => $data['bp'],
-            'adresse' => $data['adresse'],
-            'ville' => $data['ville'],
-            'pays' => $data['pays'],
-            'tel' => $data['tel'],
-            'responsable' => $data['responsable'],
-            'tel_responsable' => $data['tel_responsable'],
-            'email' => $data['email'],
+            'raison_sociale' => $request->raison_sociale,
+            'nif' => $request->nif,
+            'bp' => $request->b,
+            'adresse' => $request->adresse,
+            'ville' => $request->ville,
+            'pays' => $request->pays,
+            'tel' => $request->tel,
+            'responsable' => $request->responsable,
+            'tel_responsable' => $request->tel_responsable,
+            'email' => $request->email,
+            'secteur_id' => $request->secteur_id,
             'utilisateur_id' => Auth::user()->id
         ]);
 
@@ -105,10 +97,29 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $previous = 0;
+        $previousClient = Client::where('id', '<', $client->id)->get()->last();
+        if($previousClient) $previous = $previousClient->id;
+        
+        $next = 0;
+        $nextClient = Client::where('id', '>', $client->id)->get()->first();
+        if($nextClient) $next = $nextClient->id;
+
+        $clients = Client::all();
+
+        $index = null;
+        foreach($clients as $key => $value){
+            if($value->id === $client->id) $index = $key + 1;
+        }
+
         return view('admin.recouvrement.clients.show', [
-            'client' => $client,
             'page' => 'client',
-            'sub_page' => 'client.show'
+            'sub_page' => 'client.show',
+            'client' => $client,
+            'previous' => $previous,
+            'next' => $next,
+            'total' => $client->count(),
+            'current' => $index
         ]);
     }
 
@@ -147,38 +158,40 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientRequest $request, Client $client)
     {
-        $data = $request->validate([
-            'raison_sociale' => ['required'],
-            'nif' => ['required'],
-            'bp' => [],
-            'adresse' => ['required'],
-            'ville' => ['required'],
-            'pays' => ['required'],
-            'tel' => [],
-            'responsable' => ['required'],
-            'tel_responsable' => ['required'],
-            'email' => ['required']
-        ]);
 
         $client = Client::find($request->id);
 
-        $client->raison_sociale = $data['raison_sociale'];
-        $client->nif = $data['nif'];
-        $client->bp = $data['bp'];
-        $client->adresse = $data['adresse'];
-        $client->ville = $data['ville'];
-        $client->pays = $data['pays'];
-        $client->tel = $data['tel'];
-        $client->responsable = $data['responsable'];
-        $client->tel_responsable = $data['tel_responsable'];
-        $client->email = $data['email'];
+        $client->raison_sociale = $request->raison_sociale;
+        $client->nif = $request->nif;
+        $client->bp = $request->bp;
+        $client->adresse = $request->adresse;
+        $client->ville = $request->ville;
+        $client->pays = $request->pays;
+        $client->tel = $request->tel;
+        $client->responsable = $request->responsable;
+        $client->tel_responsable = $request->tel_responsable;
+        $client->email = $request->email;
         $client->updated_at = new \DateTime();
 
         $client->save();
 
         return new ClientResource($client);
+    }
+    
+    /**
+     * La liste des factures pour un client
+     * 
+     */
+    public function getFacturesByClient(Request $request, Client $client){
+        $factures = Facture::whereDeleted(false)
+                    ->where('statut', '!=', 'cancelled')
+                    ->where('client_id', $client->id)
+                    ->orderBy('id', 'desc')
+                    ->paginate(10);
+
+        return FactureResource::collection($factures);
     }
 
     /**

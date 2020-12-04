@@ -24,6 +24,7 @@
     "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
+    "date-fns": "^2.16.1",
     "debounce": "^1.2.0",
     "numeral": "^2.0.6",
     "vee-validate": "^3.4.5",
