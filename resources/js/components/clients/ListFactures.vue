@@ -30,34 +30,40 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date d'écriture</th>
-                        <th>N° Pièce</th>
-                        <th>Mode de règlement</th>
-                        <th>Date d'échéance</th>
-                        <th></th>
-                        <th>Débit</th>
-                        <th>Crédit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(facture, index) in factures" :key="index">
-                        <td class="text-center">{{ facture.date_creation|moment('DD/MM/YYYY') }}</td>
-                        <td>{{ facture.num_facture }}</td>
-                        <td>Mode de règlement</td>
-                        <td class="text-center">{{ facture.date_echeance|moment('DD/MM/YYYY') }}</td>
-                        <td class="text-center">
-                            <span class="badge right text-sm" :class="[{'badge-danger': calculateNumberOfDays(facture) <0 }]">
-                                {{calculateNumberOfDays(facture)}}
-                            </span>
-                        </td>
-                        <th>Débit</th>
-                        <th>Crédit</th>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Date d'écriture</th>
+                            <th>N° Pièce</th>
+                            <th>Mode de règlement</th>
+                            <th>Date d'échéance</th>
+                            <th></th>
+                            <th>Payé</th>
+                            <th>Non payé</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="factures.length <= 0">
+                            <td colspan="8" class="text-center">Aucune facture</td>
+                        </tr>
+                        <tr v-for="(facture, index) in factures" :key="index">
+                            <td class="text-center">{{ facture.date_creation|moment('DD/MM/YYYY') }}</td>
+                            <td><a :href="'/factures/'+facture.id" class="text-info">{{ facture.num_facture }}</a></td>
+                            <td>Mode de règlement</td>
+                            <td class="text-center">{{ facture.date_echeance|moment('DD/MM/YYYY') }}</td>
+                            <td class="text-center">
+                                <span class="badge right text-sm" v-if="facture.date_echeance"
+                                :class="[{'badge-danger': calculateNumberOfDays(facture) <0 }]">
+                                    {{calculateNumberOfDays(facture)}}j
+                                </span>
+                            </td>
+                            <td class="text-center">{{ facture.m_paid }}</td>
+                            <td class="text-center">{{ facture.m_not_paid }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

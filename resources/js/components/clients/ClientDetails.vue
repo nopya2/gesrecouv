@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-lg-12 col-xs-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -39,28 +39,28 @@
                     <div class="card-body">
                         <p class="text-muted" style="font-size: 1.75rem">Somme due : {{ client.m_not_paid|numFormat }} Fcfa</p>
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="alert border-warning text-orange" role="alert">
-                                    <h5><strong>En retard</strong></h5>
-                                    <h4>
-                                        {{ client.m_not_paid_late|numFormat }} Fcfa
-                                    </h4>
+                            <div class="col-md-4">
+                                <div class="card card-warning card-outline orange">
+                                    <div class="card-body text-muted">
+                                        En retard<br>
+                                        <strong class="text-lg">{{ client.m_not_paid_late|numFormat }} Fcfa</strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="alert border-primary text-primary" role="alert">
-                                    <h5><strong>A venir</strong></h5>
-                                    <h4>
-                                        {{ client.m_not_paid_waiting|numFormat }} Fcfa
-                                    </h4>
+                            <div class="col-md-4">
+                                <div class="card card-primary card-outline bleu">
+                                    <div class="card-body text-muted">
+                                        En attente<br>
+                                        <strong class="text-lg">{{ client.m_not_paid_waiting|numFormat }} Fcfa</strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="alert border-success text-success" role="alert">
-                                    <h5><strong>Payé</strong></h5>
-                                    <h4>
-                                        {{ client.m_paid|numFormat }} Fcfa
-                                    </h4>
+                            <div class="col-md-4">
+                                <div class="card card-success card-outline vert">
+                                    <div class="card-body text-muted">
+                                        Payé<br>
+                                        <strong class="text-lg">{{ client.m_paid|numFormat }} Fcfa</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,4 +199,30 @@
 </script>
 
 <style scoped>
+    .orange .card-body{
+        background: #ffecb3;
+    }
+    .bleu .card-body{
+        background: #b3e5fc;
+    }
+    .vert .card-body{
+        background: #c8e6c9;
+    }
+    /* .orange {
+        border: none;
+        border-top: 8px solid #ffb300;
+        color: white;
+        box-shadow: 2px 2px 2px gray ;
+    }
+    .bleu {
+        border: none;
+        color: white;
+        background: #039be5;
+        box-shadow: 2px 2px 2px gray;
+    }
+    .vert {
+        border: none;
+        color: white;
+        
+    } */
 </style>

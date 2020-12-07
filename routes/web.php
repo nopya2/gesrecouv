@@ -49,6 +49,10 @@ Route::get('/developers', 'DevelopersController@index');
 Route::get('/modules', 'ModuleController@home')->name('modules.index')->middleware('auth');
     // ->middleware('permissions:groupes,consulter');
 
+/***** Configuration *****/
+Route::get('/configurations', 'ConfigurationController@edit')->name('configuration.edit')->middleware('auth');
+    // ->middleware('permissions:groupes,consulter');
+
 /***** Error page *****/
 Route::get('/error', 'HomeController@error')->name('error')->middleware('auth');
     // ->middleware('permissions:groupes,consulter');

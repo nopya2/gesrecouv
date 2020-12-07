@@ -95,7 +95,9 @@
                             </div>
                             <div class="col-md-4">
                                 <p class="">Client
-                                    <b class="d-block" v-if="facture.client != null">{{ facture.client.raison_sociale }}</b>
+                                    <b class="d-block" v-if="facture.client != null">
+                                        <a :href="'/clients/'+facture.client.id" class="text-info">{{ facture.client.raison_sociale }}</a>
+                                    </b>
                                 </p>
                             </div>
                             <div class="col-md-4">
