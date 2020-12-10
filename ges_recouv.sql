@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Lun 07 Décembre 2020 à 13:41
+-- Généré le :  Jeu 10 Décembre 2020 à 16:29
 -- Version du serveur :  10.4.14-MariaDB-1:10.4.14+maria~bionic-log
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.7
 
@@ -6372,7 +6372,7 @@ INSERT INTO `factures` (`id`, `created_at`, `updated_at`, `utilisateur_id`, `par
 (21, '2020-10-30 11:00:04', '2020-11-20 08:40:25', 1, 18, 9971, 'in_progress', '7/2020/RR/PR/ANINF/DG/DF/SCF', 785000, NULL, '2020-10-30 00:00:00', NULL, '2020-10-30 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
 (22, '2020-10-30 11:48:28', '2020-11-20 11:20:42', 1, NULL, 10326, 'in_progress', '8/2020/RR/PR/ANINF/DG/DF/SCF', 850000, NULL, '2020-10-30 00:00:00', NULL, '2020-10-30 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
 (23, '2020-10-30 11:52:21', '2020-11-20 08:40:25', 1, 19, 9971, 'cancelled', '9/2020/RR/PR/ANINF/DG/DF/SCF', 540000, 'NG78454', '2020-10-30 00:00:00', '2020-10-30 00:00:00', '2020-10-30 00:00:00', NULL, NULL, 2, 0, 'cancelled', 0),
-(24, '2020-11-02 13:11:49', '2020-11-20 11:28:57', 1, NULL, 10095, 'litigation', '10/2020/RR/PR/ANINF/DG/DF/SCF', 35000, NULL, '2020-12-01 00:00:00', NULL, '2020-12-31 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
+(24, '2020-11-02 13:11:49', '2020-11-20 11:28:57', 1, NULL, 10095, 'litigation', '10/2020/RR/PR/ANINF/DG/DF/SCF', 35000, NULL, '2020-12-01 00:00:00', NULL, '2021-04-28 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
 (25, '2020-11-03 11:04:53', '2020-11-20 13:09:53', 1, 4, 9971, 'litigation', '11/2020/RR/PR/ANINF/DG/DF/SCF', 150000, NULL, '2020-11-03 00:00:00', NULL, '2020-12-03 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
 (26, '2020-11-13 07:20:25', '2020-11-20 08:40:26', 1, 25, 10147, 'cancelled', '12/2020/RR/PR/ANINF/DG/DF/SCF', 350000, NULL, '2020-11-13 00:00:00', NULL, '2020-11-13 00:00:00', NULL, NULL, 2, 0, 'cancelled', 0),
 (27, '2020-11-13 09:24:04', '2020-11-20 12:46:22', 1, NULL, 10096, 'litigation', '13/2020/RR/PR/ANINF/DG/DF/SCF', 560000, NULL, '2020-11-13 00:00:00', NULL, '2020-11-13 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
@@ -6418,7 +6418,7 @@ INSERT INTO `factures` (`id`, `created_at`, `updated_at`, `utilisateur_id`, `par
 (67, '2020-11-26 12:11:22', '2020-11-26 12:57:24', 1, 66, 10101, 'in_progress', '52/2020/RA/PR/ANINF/DG/DF/SCF', 3500000, NULL, '2020-03-02 00:00:00', NULL, '2021-09-30 00:00:00', NULL, NULL, 4, 1, 'waiting', 0),
 (68, '2020-11-26 13:19:39', '2020-12-01 14:19:43', 1, 62, 10099, 'cancelled', '52/2020/RR/PR/ANINF/DG/DF/SCF', -1500000, NULL, '2020-11-26 00:00:00', NULL, '2021-03-31 00:00:00', NULL, NULL, 2, 0, 'cancelled', 0),
 (69, '2020-12-01 14:19:43', '2020-12-01 14:19:43', 1, 68, 10099, 'credit_note', '53/2020/RR/PR/ANINF/DG/DF/SCF', 1500000, NULL, '2020-12-01 15:19:43', NULL, NULL, NULL, NULL, 2, 0, 'validated', 0),
-(70, '2020-12-01 14:21:00', '2020-12-01 14:21:00', 1, 65, 10090, 'credit_note', '54/2020/RR/PR/ANINF/DG/DF/SCF', 600000, NULL, '2020-12-01 15:21:00', NULL, NULL, NULL, NULL, 2, 0, 'validated', 0);
+(70, '2020-12-01 14:21:00', '2020-12-01 14:21:00', 1, 65, 10090, 'credit_note', '54/2020/RR/PR/ANINF/DG/DF/SCF', 600000, NULL, '2020-12-01 15:21:00', NULL, '2020-12-01 00:00:00', NULL, NULL, 2, 0, 'validated', 0);
 
 -- --------------------------------------------------------
 
@@ -7602,7 +7602,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `name`, `firstname`, `email`, `email_verified_at`, `status`, `api_token`, `phonenumber`, `remember_token`, `created_at`, `updated_at`, `group_id`) VALUES
-(1, 'admin', '$2y$10$WqS6aBTLa8Lky4KaXBtFNeLSGK85AUakEuNbY5RDVgyM..yInc8EG', 'superadmin', 'ndong otogue', 'yvon paul brice', 'yvon.ndong@neosystechnologie.ga', NULL, 1, 'MM374gMYF0j8vOv1WCcDX72G5F71XWrsd39zsmXwgfekXR60DToIjR346CTeHJLug9XfVuGJvM12naIJ', NULL, 'NreoR2tFfpsCWgQ8ifmJg2yHqlonoweNieeOG8th0JWkOB3Kw4R2hS1e4KtC', '2019-11-25 17:08:52', '2020-05-29 07:01:46', 3),
+(1, 'admin', '$2y$10$WqS6aBTLa8Lky4KaXBtFNeLSGK85AUakEuNbY5RDVgyM..yInc8EG', 'superadmin', 'ndong otogue', 'yvon paul brice', 'yvon.ndong@neosystechnologie.ga', NULL, 1, 'MM374gMYF0j8vOv1WCcDX72G5F71XWrsd39zsmXwgfekXR60DToIjR346CTeHJLug9XfVuGJvM12naIJ', NULL, '5cUYGGUiOd3HzUxSRa3IuZG9kHD8jrKEoYfc1RyDE8i2ULKW30xI3c1kLxh5', '2019-11-25 17:08:52', '2020-05-29 07:01:46', 3),
 (22, 'steave-gael.ivombo', '$2y$10$hnLe2M5cRRUdrz5XcaAnReSj0nQf1uuee2n97X/sGNZHKy59wcjpS', 'admin', 'ivombo', 'steave gael', 'steave.ivombo@aninf.ga', NULL, 1, 'X3VlFDiE6HmTHRhcRSxU4KaiDJmBdEWVPXawFnIb0IlGS7taX4y9aBgNoS2NGsi3tWn5lhO6vpO8V5S1', NULL, NULL, '2020-02-06 07:58:29', '2020-06-12 01:09:00', 3),
 (23, 'yves-boris.indoumou', '$2y$10$fCOrw/iOUCzpTQIIIDjY6.BKOplW2kCJcaYIRFDlPZGLJqXLEoZkC', 'manager', 'INDOUMOU', 'Yves Boris', 'yves-boris.indoumou@aninf.ga', NULL, 1, 'Vs57R01XZjU9Bk20Kc2PwSH7pVsDvG95x9GRMufJ4z7VKpx6dvGx3m3KUBZcWU33NnXLmcItQVARc9lr', NULL, 'j1yWa5o5cLaEGG0z7l2M5Zmu9IKlYYqMY3FS1P5s76HeKX2iZwKXfFm5hUIO', '2020-06-11 23:59:29', '2020-06-12 01:08:26', 4),
 (24, 'nding.mwande', '$2y$10$sXV.MrFlfnCWqquZ9Q9uwO0Si1arxuo6h/wfffKRg.GaaY9amISDW', 'manager', 'NDING', 'MWANDE', 'nding.mwande@aninf.ga', NULL, 1, 'iVZnZGOriLGhWvoSFkjsJj8XhlOpyxYn2meRYE9Jenqn1X9c7btIso24AjQzTNi7XqaK2ZEtd7SDhp1X', NULL, 'Tpb40WEpZ6c6tyPgiKpUtiPJouUAl7AeOEuuK0iUSTxzp53kscClQWLTFyt3', '2020-06-12 00:02:11', '2020-07-02 09:55:09', 2),
