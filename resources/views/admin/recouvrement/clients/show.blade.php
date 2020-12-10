@@ -23,7 +23,10 @@
     <section class="content">
         <client-details :client_id="{{ $client->id }}"
             :previous="{{$previous}}"
-            :next="{{$next}}"></client-details>
+            :next="{{$next}}"
+            :nb_days_next_echeance="{{$nb_days_next_echeance}}"
+            :nb_days_last_paiement="{{ $nb_days_last_paiement }}"
+            :nb_days_first_late_facture="{{ $nb_days_first_late_facture }}"></client-details>
     </section>
     <!-- /.content -->
 @endsection

@@ -3266,13 +3266,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     ListFactures: _ListFactures__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  props: ['client_id', 'previous', 'next'],
+  props: ['client_id', 'previous', 'next', 'nb_days_next_echeance', 'nb_days_last_paiement', 'nb_days_first_late_facture'],
   data: function data() {
     return {
       client: new _models_client__WEBPACK_IMPORTED_MODULE_0__["default"]()
@@ -3307,6 +3312,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _models_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../../models/client */ "./resources/js/models/client.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
 //
 //
 //
@@ -60368,7 +60374,69 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(1),
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card card-secondary card-outline" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row mb-3" }, [
+              _c("div", { staticClass: "col-md-4" }, [
+                _c("h3", { staticClass: "text-info" }, [_vm._v("Prévénance")]),
+                _vm._v(
+                  "\n                            Prochaine échéance: \n                            "
+                ),
+                _vm.nb_days_next_echeance > 0
+                  ? _c("span", [
+                      _vm._v(_vm._s(_vm.nb_days_next_echeance) + " jours")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.nb_days_next_echeance <= 0
+                  ? _c("span", [_vm._v("Aucune échéance")])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }, [
+                _c("h3", { staticClass: "text-orange" }, [_vm._v("Relance")]),
+                _vm._v(" "),
+                _vm.nb_days_first_late_facture > 0
+                  ? _c("span", [
+                      _vm._v(
+                        "En retard depuis " +
+                          _vm._s(_vm.nb_days_first_late_facture) +
+                          " jours"
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.nb_days_first_late_facture <= 0
+                  ? _c("span", [_vm._v("Aucun retard")])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4" }, [
+                _c("h3", { staticClass: "text-success" }, [
+                  _vm._v("Règlement")
+                ]),
+                _vm._v(
+                  "\n                            Dernier règlement:\n                            "
+                ),
+                _vm.nb_days_last_paiement > 0
+                  ? _c("span", [
+                      _vm._v(_vm._s(_vm.nb_days_last_paiement) + " jours")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.nb_days_last_paiement <= 0
+                  ? _c("span", [_vm._v("Aucun paiement")])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -60394,64 +60462,39 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8" }, [
-      _c("div", { staticClass: "card card-secondary card-outline" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [
-            _vm._v("\n                        Activité\n                    ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-tools" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-info",
-                attrs: { title: "historique des activités" }
-              },
-              [_c("i", { staticClass: "fas fa-history" })]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row mb-3" }, [
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("h3", { staticClass: "text-info" }, [_vm._v("Prévénance")]),
-              _vm._v(
-                "\n                            Prochaine échéance: \n                        "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("h3", { staticClass: "text-orange" }, [_vm._v("Relance")]),
-              _vm._v(
-                "\n                            En retard\n                        "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("h3", { staticClass: "text-success" }, [_vm._v("Règlement")]),
-              _vm._v(
-                "\n                            Dernier règlement \n                        "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-4" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _vm._v("\n                            Relancé: "),
-              _c("span", { staticClass: "text-info" }, [_vm._v("3 fois")]),
-              _c("br"),
-              _vm._v("\n                            Dernière relance: le "),
-              _c("span", { staticClass: "text-info" }, [_vm._v("3 fois")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" })
-          ])
-        ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("\n                        Activité\n                    ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-info",
+            attrs: { title: "historique des activités" }
+          },
+          [_c("i", { staticClass: "fas fa-history" })]
+        )
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-4" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _vm._v("\n                            Relancé: "),
+        _c("span", { staticClass: "text-info" }, [_vm._v("3 fois")]),
+        _c("br"),
+        _vm._v("\n                            Dernière relance: le "),
+        _c("span", { staticClass: "text-info" }, [_vm._v("3 fois")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" })
     ])
   }
 ]
@@ -60478,668 +60521,732 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "card card-success" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("form", { attrs: { role: "form" } }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "raison_sociale" } }, [
-                      _vm._v("Raison sociale")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.raison_sociale.$model,
-                          expression: "$v.client.raison_sociale.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez la raion sociale",
-                        name: "raison_sociale",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.raison_sociale.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.raison_sociale,
-                            "$model",
-                            $event.target.value.trim()
-                          )
-                        },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.raison_sociale.$params.minLength.min
-                            ) + " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.raison_sociale.$params.maxLength.max
-                            ) + " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "nif" } }, [_vm._v("NIF")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.nif.$model,
-                          expression: "$v.client.nif.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez le NIF",
-                        name: "nif",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.nif.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.nif,
-                            "$model",
-                            $event.target.value.trim()
-                          )
-                        },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(_vm.$v.client.nif.$params.minLength.min) +
-                              " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(_vm.$v.client.nif.$params.maxLength.max) +
-                              " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "ville" } }, [
-                      _vm._v("Secteur d'activités")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
+      _c(
+        "div",
+        { staticClass: "col-md-12 col-xs-12 col-sm-12 col-lg-8 offset-lg-2" },
+        [
+          _c("div", { staticClass: "card card-success" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("form", { attrs: { role: "form" } }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "raison_sociale" } }, [
+                        _vm._v("Raison sociale")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.secteur_id.$model,
-                            expression: "$v.client.secteur_id.$model"
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.raison_sociale.$model,
+                            expression: "$v.client.raison_sociale.$model",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { name: "secteur_id" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.$v.client.secteur_id,
-                              "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.secteurs, function(secteur, index) {
-                        return _c(
-                          "option",
-                          { key: index, domProps: { value: secteur.id } },
-                          [_vm._v(_vm._s(secteur.name))]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.secteur_id.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "bp" } }, [
-                      _vm._v("Boite postale")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.bp.$model,
-                          expression: "$v.client.bp.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez la boite postale",
-                        name: "bp",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.bp.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.bp,
-                            "$model",
-                            $event.target.value.trim()
-                          )
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez la raion sociale",
+                          name: "raison_sociale",
+                          autocomplete: "off"
                         },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "adresses" } }, [
-                      _vm._v("Adresse")
-                    ]),
-                    _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.adresse.$model,
-                          expression: "$v.client.adresse.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        placeholder: "Entrez l'adresse",
-                        name: "adresse",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.adresse.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.adresse,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.adresse.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "ville" } }, [_vm._v("Ville")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.ville.$model,
-                            expression: "$v.client.ville.$model"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "ville" },
+                        domProps: {
+                          value: _vm.$v.client.raison_sociale.$model
+                        },
                         on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
                             _vm.$set(
-                              _vm.$v.client.ville,
+                              _vm.$v.client.raison_sociale,
                               "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                              $event.target.value.trim()
                             )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.villes, function(item) {
-                        return _c(
-                          "option",
-                          { key: item, domProps: { value: item } },
-                          [_vm._v(_vm._s(item))]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.ville.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "pays" } }, [_vm._v("Pays")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.pays.$model,
-                            expression: "$v.client.pays.$model"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "pays" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.$v.client.pays,
-                              "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.pays, function(item) {
-                        return _c("option", { key: item }, [
-                          _vm._v(_vm._s(item))
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.pays.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "tel" } }, [
-                      _vm._v("Téléphone de l'entreprise")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.tel.$model,
-                          expression: "$v.client.tel.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez le téléphone de l'entreprise",
-                        name: "tel",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.tel.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.tel,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.tel.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "responsable" } }, [
-                      _vm._v("Responsable/Référend")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.responsable.$model,
-                          expression: "$v.client.responsable.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Identité de la ressource",
-                        name: "responsable",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.responsable.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.responsable,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.responsable.$params.minLength.min
-                            ) + " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.responsable.$params.maxLength.max
-                            ) + " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { form: "tel_responsable" } }, [
-                      _vm._v("Téléphone responsable")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.tel_responsable.$model,
-                          expression: "$v.client.tel_responsable.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Tapez le numéro de téléphone",
-                        name: "tel_responsable",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.tel_responsable.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.tel_responsable,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.tel_responsable.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "email" } }, [
-                      _vm._v("E-mail")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.email.$model,
-                          expression: "$v.client.email.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        placeholder: "Tapez l'e-mail",
-                        name: "email",
-                        autocomplete: "off"
-                      },
-                      domProps: { value: _vm.$v.client.email.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.email,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.email.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.email.email
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("E-mail invalide.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-md-center" }, [
-                _c("div", { staticClass: "col" }, [
-                  !_vm.btnLoading
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          attrs: {
-                            disabled: _vm.$v.client.$invalid,
-                            type: "button"
                           },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.raison_sociale.$params.minLength
+                                    .min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.raison_sociale.$params.maxLength
+                                    .max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "nif" } }, [_vm._v("NIF")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.nif.$model,
+                            expression: "$v.client.nif.$model",
+                            modifiers: { trim: true }
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez le NIF",
+                          name: "nif",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.nif.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.nif,
+                              "$model",
+                              $event.target.value.trim()
+                            )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.nif.$params.minLength.min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.nif.$params.maxLength.max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "ville" } }, [
+                        _vm._v("Secteur d'activités")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.secteur_id.$model,
+                              expression: "$v.client.secteur_id.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "secteur_id" },
                           on: {
-                            click: function($event) {
-                              return _vm.create()
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.secteur_id,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
                             }
                           }
                         },
-                        [
-                          _c("i", { staticClass: "fas fa-save mr-1" }),
-                          _vm._v("Créer\n                                ")
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !_vm.btnLoading
-                    ? _c("a", { attrs: { href: "/clients" } }, [_vm._m(1)])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.btnLoading
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary shadow-2",
-                          attrs: { type: "button", disabled: "" }
-                        },
-                        [
-                          _c("span", {
-                            staticClass: "spinner-grow spinner-grow-sm",
-                            attrs: { role: "status" }
-                          }),
-                          _vm._v(
-                            "\n                                    Création en cours...\n                                "
+                        _vm._l(_vm.secteurs, function(secteur, index) {
+                          return _c(
+                            "option",
+                            { key: index, domProps: { value: secteur.id } },
+                            [_vm._v(_vm._s(secteur.name))]
                           )
-                        ]
-                      )
-                    : _vm._e()
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.secteur_id.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "bp" } }, [
+                        _vm._v("Boite postale")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.bp.$model,
+                            expression: "$v.client.bp.$model",
+                            modifiers: { trim: true }
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez la boite postale",
+                          name: "bp",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.bp.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.bp,
+                              "$model",
+                              $event.target.value.trim()
+                            )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "adresses" } }, [
+                        _vm._v("Adresse")
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.adresse.$model,
+                            expression: "$v.client.adresse.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          placeholder: "Entrez l'adresse",
+                          name: "adresse",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.adresse.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.adresse,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.adresse.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "ville" } }, [
+                        _vm._v("Ville")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.ville.$model,
+                              expression: "$v.client.ville.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "ville" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.ville,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.villes, function(item) {
+                          return _c(
+                            "option",
+                            { key: item, domProps: { value: item } },
+                            [_vm._v(_vm._s(item))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.ville.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "pays" } }, [_vm._v("Pays")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.pays.$model,
+                              expression: "$v.client.pays.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "pays" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.pays,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.pays, function(item) {
+                          return _c("option", { key: item }, [
+                            _vm._v(_vm._s(item))
+                          ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.pays.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "tel" } }, [
+                        _vm._v("Téléphone de l'entreprise")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.tel.$model,
+                            expression: "$v.client.tel.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez le téléphone de l'entreprise",
+                          name: "tel",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.tel.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.tel,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.tel.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "responsable" } }, [
+                        _vm._v("Responsable/Référend")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.responsable.$model,
+                            expression: "$v.client.responsable.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Identité de la ressource",
+                          name: "responsable",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.responsable.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.responsable,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.responsable.$params.minLength
+                                    .min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.responsable.$params.maxLength
+                                    .max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { form: "tel_responsable" } }, [
+                        _vm._v("Téléphone responsable")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.tel_responsable.$model,
+                            expression: "$v.client.tel_responsable.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Tapez le numéro de téléphone",
+                          name: "tel_responsable",
+                          autocomplete: "off"
+                        },
+                        domProps: {
+                          value: _vm.$v.client.tel_responsable.$model
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.tel_responsable,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.tel_responsable.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "email" } }, [
+                        _vm._v("E-mail")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.email.$model,
+                            expression: "$v.client.email.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "email",
+                          placeholder: "Tapez l'e-mail",
+                          name: "email",
+                          autocomplete: "off"
+                        },
+                        domProps: { value: _vm.$v.client.email.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.email,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.email.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.email.email
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("E-mail invalide.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-md-center" }, [
+                  _c("div", { staticClass: "col" }, [
+                    !_vm.btnLoading
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: {
+                              disabled: _vm.$v.client.$invalid,
+                              type: "button"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.create()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-save mr-1" }),
+                            _vm._v("Créer\n                                ")
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.btnLoading
+                      ? _c("a", { attrs: { href: "/clients" } }, [_vm._m(1)])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.btnLoading
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary shadow-2",
+                            attrs: { type: "button", disabled: "" }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "spinner-grow spinner-grow-sm",
+                              attrs: { role: "status" }
+                            }),
+                            _vm._v(
+                              "\n                                    Création en cours...\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ])
                 ])
               ])
             ])
           ])
-        ])
-      ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-4 hidden-md hidden-sm hidden-xs" })
     ])
   ])
 }
@@ -61191,686 +61298,748 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "card card-warning" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("h3", { staticClass: "card-title" }, [
-              _vm._v("Formulaire de modification")
+      _c(
+        "div",
+        { staticClass: "col-md-8 col-xs-12 col-sm-12 col-lg-8 offset-lg-2" },
+        [
+          _c("div", { staticClass: "card card-warning" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _c("h3", { staticClass: "card-title" }, [
+                _vm._v("Formulaire de modification")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-tools" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info btn-sm",
+                    attrs: { title: "Détails" }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "text-light",
+                        attrs: { href: "/clients/" + _vm.client.id }
+                      },
+                      [_c("i", { staticClass: "fas fa-eye" })]
+                    )
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-tools" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-info btn-sm",
-                  attrs: { title: "Détails" }
-                },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "text-light",
-                      attrs: { href: "/clients/" + _vm.client.id }
-                    },
-                    [_c("i", { staticClass: "fas fa-eye" })]
-                  )
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("form", { attrs: { role: "form" } }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "raison_sociale" } }, [
-                      _vm._v("Raison sociale")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.raison_sociale.$model,
-                          expression: "$v.client.raison_sociale.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez la raion sociale",
-                        name: "raison_sociale"
-                      },
-                      domProps: { value: _vm.$v.client.raison_sociale.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.raison_sociale,
-                            "$model",
-                            $event.target.value.trim()
-                          )
-                        },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.raison_sociale.$params.minLength.min
-                            ) + " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.raison_sociale.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.raison_sociale.$params.maxLength.max
-                            ) + " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "nif" } }, [_vm._v("NIF")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.nif.$model,
-                          expression: "$v.client.nif.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez le NIF",
-                        name: "nif"
-                      },
-                      domProps: { value: _vm.$v.client.nif.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.nif,
-                            "$model",
-                            $event.target.value.trim()
-                          )
-                        },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(_vm.$v.client.nif.$params.minLength.min) +
-                              " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.nif.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(_vm.$v.client.nif.$params.maxLength.max) +
-                              " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "ville" } }, [
-                      _vm._v("Secteur d'activités")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
+            _c("div", { staticClass: "card-body" }, [
+              _c("form", { attrs: { role: "form" } }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "raison_sociale" } }, [
+                        _vm._v("Raison sociale")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.secteur_id.$model,
-                            expression: "$v.client.secteur_id.$model"
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.raison_sociale.$model,
+                            expression: "$v.client.raison_sociale.$model",
+                            modifiers: { trim: true }
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { name: "secteur_id" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.$v.client.secteur_id,
-                              "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.secteurs, function(secteur, index) {
-                        return _c(
-                          "option",
-                          { key: index, domProps: { value: secteur.id } },
-                          [_vm._v(_vm._s(secteur.name))]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.secteur_id.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "bp" } }, [
-                      _vm._v("Boite postale")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model.trim",
-                          value: _vm.$v.client.bp.$model,
-                          expression: "$v.client.bp.$model",
-                          modifiers: { trim: true }
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez la boite postale",
-                        name: "bp"
-                      },
-                      domProps: { value: _vm.$v.client.bp.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.bp,
-                            "$model",
-                            $event.target.value.trim()
-                          )
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez la raion sociale",
+                          name: "raison_sociale"
                         },
-                        blur: function($event) {
-                          return _vm.$forceUpdate()
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "adresses" } }, [
-                      _vm._v("Adresse")
-                    ]),
-                    _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.adresse.$model,
-                          expression: "$v.client.adresse.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        placeholder: "Entrez l'adresse",
-                        name: "adresse"
-                      },
-                      domProps: { value: _vm.$v.client.adresse.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.adresse,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.adresse.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "ville" } }, [_vm._v("Ville")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.ville.$model,
-                            expression: "$v.client.ville.$model"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "ville" },
+                        domProps: {
+                          value: _vm.$v.client.raison_sociale.$model
+                        },
                         on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
                             _vm.$set(
-                              _vm.$v.client.ville,
+                              _vm.$v.client.raison_sociale,
                               "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
+                              $event.target.value.trim()
                             )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.villes, function(item) {
-                        return _c(
-                          "option",
-                          { key: item, domProps: { value: item } },
-                          [_vm._v(_vm._s(item))]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.ville.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "pays" } }, [_vm._v("Pays")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.$v.client.pays.$model,
-                            expression: "$v.client.pays.$model"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "pays" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.$v.client.pays,
-                              "$model",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
-                      },
-                      _vm._l(_vm.pays, function(item) {
-                        return _c("option", { key: item }, [
-                          _vm._v(_vm._s(item))
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    !_vm.$v.client.pays.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "tel" } }, [
-                      _vm._v("Téléphone de l'entreprise")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.tel.$model,
-                          expression: "$v.client.tel.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Entrez le téléphone de l'entreprise",
-                        name: "tel"
-                      },
-                      domProps: { value: _vm.$v.client.tel.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.tel,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.tel.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "responsable" } }, [
-                      _vm._v("Responsable/Référend")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.responsable.$model,
-                          expression: "$v.client.responsable.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Identité de la ressource",
-                        name: "responsable"
-                      },
-                      domProps: { value: _vm.$v.client.responsable.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.responsable,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.minLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.responsable.$params.minLength.min
-                            ) + " caractères minimum."
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.responsable.maxLength
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm.$v.client.responsable.$params.maxLength.max
-                            ) + " caractères maximum."
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { form: "tel_responsable" } }, [
-                      _vm._v("Téléphone responsable")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.tel_responsable.$model,
-                          expression: "$v.client.tel_responsable.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Tapez le numéro de téléphone",
-                        name: "tel_responsable"
-                      },
-                      domProps: { value: _vm.$v.client.tel_responsable.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.tel_responsable,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.tel_responsable.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e()
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "email" } }, [
-                      _vm._v("E-mail")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.$v.client.email.$model,
-                          expression: "$v.client.email.$model"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        type: "email",
-                        placeholder: "Tapez l'e-mail",
-                        name: "email"
-                      },
-                      domProps: { value: _vm.$v.client.email.$model },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.$v.client.email,
-                            "$model",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    !_vm.$v.client.email.required
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("Champs requis.")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.$v.client.email.email
-                      ? _c("small", { staticClass: "form-text text-danger" }, [
-                          _vm._v("E-mail invalide.")
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-md-center" }, [
-                _c("div", { staticClass: "col" }, [
-                  !_vm.btnLoading
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-warning",
-                          attrs: {
-                            disabled: _vm.$v.client.$invalid,
-                            type: "button"
                           },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.raison_sociale.$params.minLength
+                                    .min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.raison_sociale.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.raison_sociale.$params.maxLength
+                                    .max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "nif" } }, [_vm._v("NIF")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.nif.$model,
+                            expression: "$v.client.nif.$model",
+                            modifiers: { trim: true }
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez le NIF",
+                          name: "nif"
+                        },
+                        domProps: { value: _vm.$v.client.nif.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.nif,
+                              "$model",
+                              $event.target.value.trim()
+                            )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.nif.$params.minLength.min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.nif.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.nif.$params.maxLength.max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "ville" } }, [
+                        _vm._v("Secteur d'activités")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.secteur_id.$model,
+                              expression: "$v.client.secteur_id.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "secteur_id" },
                           on: {
-                            click: function($event) {
-                              return _vm.update()
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.secteur_id,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
                             }
                           }
                         },
-                        [
-                          _c("i", { staticClass: "fas fa-save mr-1" }),
-                          _vm._v(
-                            "Enregistrer\n                                "
+                        _vm._l(_vm.secteurs, function(secteur, index) {
+                          return _c(
+                            "option",
+                            { key: index, domProps: { value: secteur.id } },
+                            [_vm._v(_vm._s(secteur.name))]
                           )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !_vm.btnLoading
-                    ? _c("a", { attrs: { href: "/clients" } }, [_vm._m(0)])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.btnLoading
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary shadow-2",
-                          attrs: { type: "button", disabled: "" }
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.secteur_id.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "bp" } }, [
+                        _vm._v("Boite postale")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model.trim",
+                            value: _vm.$v.client.bp.$model,
+                            expression: "$v.client.bp.$model",
+                            modifiers: { trim: true }
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez la boite postale",
+                          name: "bp"
                         },
-                        [
-                          _c("span", {
-                            staticClass: "spinner-grow spinner-grow-sm",
-                            attrs: { role: "status" }
-                          }),
-                          _vm._v(
-                            "\n                                    Eenregistrement en cours...\n                                "
+                        domProps: { value: _vm.$v.client.bp.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.bp,
+                              "$model",
+                              $event.target.value.trim()
+                            )
+                          },
+                          blur: function($event) {
+                            return _vm.$forceUpdate()
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "adresses" } }, [
+                        _vm._v("Adresse")
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.adresse.$model,
+                            expression: "$v.client.adresse.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          placeholder: "Entrez l'adresse",
+                          name: "adresse"
+                        },
+                        domProps: { value: _vm.$v.client.adresse.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.adresse,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.adresse.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
                           )
-                        ]
-                      )
-                    : _vm._e()
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "ville" } }, [
+                        _vm._v("Ville")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.ville.$model,
+                              expression: "$v.client.ville.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "ville" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.ville,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.villes, function(item) {
+                          return _c(
+                            "option",
+                            { key: item, domProps: { value: item } },
+                            [_vm._v(_vm._s(item))]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.ville.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "pays" } }, [_vm._v("Pays")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.$v.client.pays.$model,
+                              expression: "$v.client.pays.$model"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "pays" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.$v.client.pays,
+                                "$model",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.pays, function(item) {
+                          return _c("option", { key: item }, [
+                            _vm._v(_vm._s(item))
+                          ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      !_vm.$v.client.pays.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "tel" } }, [
+                        _vm._v("Téléphone de l'entreprise")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.tel.$model,
+                            expression: "$v.client.tel.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Entrez le téléphone de l'entreprise",
+                          name: "tel"
+                        },
+                        domProps: { value: _vm.$v.client.tel.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.tel,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.tel.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "responsable" } }, [
+                        _vm._v("Responsable/Référend")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.responsable.$model,
+                            expression: "$v.client.responsable.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Identité de la ressource",
+                          name: "responsable"
+                        },
+                        domProps: { value: _vm.$v.client.responsable.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.responsable,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.minLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.responsable.$params.minLength
+                                    .min
+                                ) + " caractères minimum."
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.responsable.maxLength
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.$v.client.responsable.$params.maxLength
+                                    .max
+                                ) + " caractères maximum."
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { form: "tel_responsable" } }, [
+                        _vm._v("Téléphone responsable")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.tel_responsable.$model,
+                            expression: "$v.client.tel_responsable.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Tapez le numéro de téléphone",
+                          name: "tel_responsable"
+                        },
+                        domProps: {
+                          value: _vm.$v.client.tel_responsable.$model
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.tel_responsable,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.tel_responsable.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "email" } }, [
+                        _vm._v("E-mail")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$v.client.email.$model,
+                            expression: "$v.client.email.$model"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "email",
+                          placeholder: "Tapez l'e-mail",
+                          name: "email"
+                        },
+                        domProps: { value: _vm.$v.client.email.$model },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.$v.client.email,
+                              "$model",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      !_vm.$v.client.email.required
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("Champs requis.")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.$v.client.email.email
+                        ? _c(
+                            "small",
+                            { staticClass: "form-text text-danger" },
+                            [_vm._v("E-mail invalide.")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-md-center" }, [
+                  _c("div", { staticClass: "col" }, [
+                    !_vm.btnLoading
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning",
+                            attrs: {
+                              disabled: _vm.$v.client.$invalid,
+                              type: "button"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.update()
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "fas fa-save mr-1" }),
+                            _vm._v(
+                              "Enregistrer\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.btnLoading
+                      ? _c("a", { attrs: { href: "/clients" } }, [_vm._m(0)])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.btnLoading
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary shadow-2",
+                            attrs: { type: "button", disabled: "" }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "spinner-grow spinner-grow-sm",
+                              attrs: { role: "status" }
+                            }),
+                            _vm._v(
+                              "\n                                    Eenregistrement en cours...\n                                "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ])
                 ])
               ])
             ])
           ])
-        ])
-      ])
+        ]
+      )
     ])
   ])
 }

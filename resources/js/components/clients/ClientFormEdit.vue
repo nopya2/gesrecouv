@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8 col-xs-12 col-sm-12 col-lg-8 offset-lg-2">
                 <div class="card card-warning">
                     <div class="card-header">
                         <h3 class="card-title">Formulaire de modification</h3>

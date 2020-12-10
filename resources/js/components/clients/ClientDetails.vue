@@ -127,14 +127,19 @@
                             <div class="col-md-4">
                                 <h3 class="text-info">Prévénance</h3>
                                 Prochaine échéance: 
+                                <span v-if="nb_days_next_echeance > 0">{{nb_days_next_echeance}} jours</span>
+                                <span v-if="nb_days_next_echeance <= 0">Aucune échéance</span>
                             </div>
                             <div class="col-md-4">
                                 <h3 class="text-orange">Relance</h3>
-                                En retard
+                                <span v-if="nb_days_first_late_facture > 0">En retard depuis {{nb_days_first_late_facture}} jours</span>
+                                <span v-if="nb_days_first_late_facture <= 0">Aucun retard</span>
                             </div>
                             <div class="col-md-4">
                                 <h3 class="text-success">Règlement</h3>
-                                Dernier règlement 
+                                Dernier règlement:
+                                <span v-if="nb_days_last_paiement > 0">{{nb_days_last_paiement}} jours</span>
+                                <span v-if="nb_days_last_paiement <= 0">Aucun paiement</span>
                             </div>
                         </div>
                         <div class="row">
@@ -170,7 +175,7 @@
             ListFactures
         },
 
-        props : ['client_id', 'previous', 'next'],
+        props : ['client_id', 'previous', 'next', 'nb_days_next_echeance', 'nb_days_last_paiement', 'nb_days_first_late_facture'],
 
         data(){
             return{

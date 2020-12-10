@@ -7,8 +7,10 @@ use App\Facture;
 use App\Http\Requests\ClientRequest;
 use App\Http\Resources\Client as ClientResource;
 use App\Http\Resources\Facture as FactureResource;
+use App\Paiement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientController extends Controller
 {
@@ -112,6 +114,47 @@ class ClientController extends Controller
             if($value->id === $client->id) $index = $key + 1;
         }
 
+        //Prochaine échéance
+        $nextEcheance = Facture::where('client_id', $client->id)
+            ->where('deleted', false)
+            ->where('statut', '!=', 'paid')
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note')
+            ->where('date_echeance', '>', now())
+            ->orderBy('date_echeance', 'asc')
+            ->get()->first();
+        if($nextEcheance) $nbDaysNextEcheance = (date_diff(now(), $nextEcheance->date_echeance))->days;
+        else $nbDaysNextEcheance = 0;
+
+        //Dernier paiement
+        $lastPaiement = Paiement::whereHas('facture', function(Builder $query) use ($client){
+                $query
+                    ->where('client_id', $client->id)
+                    ->where('deleted', false)
+                    ->where('statut', '!=', 'paid')
+                    ->where('statut', '!=', 'cancelled')
+                    ->where('statut', '!=', 'credit_note');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->first();
+
+        if($lastPaiement) $nbDaysLastPaiement = (date_diff(now(), $lastPaiement->created_at))->days;
+        else $nbDaysLastPaiement = 0;
+
+        //Dernière facture en retard
+        $firstLateFacture = Facture::where('client_id', $client->id)
+            ->where('deleted', false)
+            ->where('statut', '!=', 'paid')
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note')
+            ->where('date_echeance', '<', now())
+            ->orderBy('date_echeance', 'asc')
+            ->get()->first();
+
+        if($firstLateFacture) $nbDaysFirstLateFacture = (date_diff(now(), $firstLateFacture->date_echeance))->days;
+        else $nbDaysFirstLateFacture = 0;
+
         return view('admin.recouvrement.clients.show', [
             'page' => 'client',
             'sub_page' => 'client.show',
@@ -119,7 +162,10 @@ class ClientController extends Controller
             'previous' => $previous,
             'next' => $next,
             'total' => $client->count(),
-            'current' => $index
+            'current' => $index,
+            'nb_days_next_echeance' => $nbDaysNextEcheance,
+            'nb_days_last_paiement' => $nbDaysLastPaiement,
+            'nb_days_first_late_facture' => $nbDaysFirstLateFacture
         ]);
     }
 
