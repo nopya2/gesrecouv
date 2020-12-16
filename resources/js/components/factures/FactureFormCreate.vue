@@ -96,43 +96,37 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
                                     <div class="form-group">
                                         <label for="date_creation">Date création</label><br>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_creation.$model" name="date_creation"> -->
                                         <date-picker
                                             v-model="$v.facture.date_creation.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
                                             placeholder="Selectionnez une date"></date-picker>
                                         <small class="form-text text-danger" v-if="!$v.facture.date_creation.required">Champs requis.</small>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="date_creation">Date échéance</label><br>
-                                        <date-picker
-                                            v-model="$v.facture.date_echeance.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
-                                            placeholder="Selectionnez une date"></date-picker>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_echeance.$model" name="date_echeance"> -->
-                                        <small class="form-text text-danger" v-if="!$v.facture.date_echeance.required">Champs requis.</small>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
                                     <div class="form-group">
                                         <label for="date_creation">Date dépôt</label><br>
                                         <date-picker
                                             v-model="$v.facture.date_depot.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
-                                            placeholder="Selectionnez une date"></date-picker>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_depot.$model" name="date_depot"> -->
-                                        <!-- <small class="form-text text-danger" v-if="!$v.facture.date_depot.required">Champs requis.</small> -->
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
+                                            placeholder="Selectionnez une date"
+                                            @input="updateDateEcheance($event)"></date-picker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-xs-12 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="date_creation">Date échéance</label><br>
+                                        <date-picker
+                                            v-model="$v.facture.date_echeance.$model"
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
+                                            placeholder="Selectionnez une date"
+                                            ></date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +166,8 @@
     import 'vue2-datepicker/index.css';
     import Client from '../../models/client'
     import _ from 'lodash'
+    import Configuration from './../../services/configuration'
+    import { addDays, parse, parseISO, toDate, format } from 'date-fns'
 
     export default {
 
@@ -185,6 +181,7 @@
                 options_clients: [],
                 types: [],
                 btnLoading: false,
+                configurations: Configuration.getCNF()
             }
         },
         validations: {
@@ -207,7 +204,7 @@
                 },
                 date_depot: {},
                 date_echeance: {
-                    required
+                    
                 },
                 date_paiement: {},
                 commentaire: {}
@@ -318,6 +315,11 @@
                 {
                     this.facture.parent_id = e.id
                 }
+            },
+            updateDateEcheance(e){
+                let date_depot = parseISO(e)
+                this.$v.facture.date_echeance.$model = format(addDays(date_depot, this.configurations.duree_echeance), 'Y-MM-dd')
+                this.$forceUpdate()
             }
         }
 

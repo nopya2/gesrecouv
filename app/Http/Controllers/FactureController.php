@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Facture;
 use App\Type;
 use App\Document;
+use App\Models\Relaunch;
+use App\Http\Resources\Relaunch as RelaunchResource;
 use App\Http\Requests\FactureRequest;
 use App\Http\Resources\Facture as FactureResource;
 use Illuminate\Http\Request;
@@ -174,6 +176,9 @@ class FactureController extends Controller
         ]);
     }
 
+    /**
+     * Sélection d'une facture par requête Ajax
+     */
     public function getFacture(Facture $facture)
     {
         if($facture->deleted === true)
@@ -288,7 +293,7 @@ class FactureController extends Controller
 
         $user = Auth::user();
         //on annule la facture initiale
-        Facture::whereId($facture->id)->update(['montant'=>-($facture->montant),'statut'=>'cancelled', 'state'=>'cancelled', "updated_at"=>now()]);
+        Facture::whereId($facture->id)->update(['montant'=>$facture->montant,'statut'=>'cancelled', 'state'=>'cancelled', "updated_at"=>now()]);
 
         activity()
             ->performedOn($facture->fresh())
@@ -304,7 +309,7 @@ class FactureController extends Controller
             'parent_id' => $facture->id,
             'num_facture' => Functions::generateNumFacture($typeFacture->code),
             'type_id' => $facture->type_id,
-            'montant' => $facture->m_not_paid,
+            'montant' => (-1)*$facture->m_not_paid,
             'num_dossier' => $facture->num_dossier,
             'date_creation' => now(),
             'date_depot' => null,
@@ -376,6 +381,37 @@ class FactureController extends Controller
             ->log("<b>".strtoupper($user->fullName)."</b>"." a supprimé un document de la facture n°{$facture->num_facture}");
 
         return new FactureResource($facture->fresh());
+    }
+
+    /**
+     * relancer la facture d'un client
+     */
+    public function relaunch(Request $request, Facture $facture)
+    {
+
+        $relaunch = Relaunch::create([
+            'facture_id' => $facture->id,
+            'client_id' => $facture->client->id,
+            'user_id' => Auth::user()->id,
+            'mode_relaunch' => $request->mode_relaunch,
+            'comment' => $request->comment
+        ]);
+
+        return response()->json(['relaunch'=>$relaunch]);
+    }
+
+    /**
+     * Liste des relances de la facture
+     */
+    public function relaunches(Request $request, Facture $facture){
+        $relaunches = Relaunch::where('facture_id', $facture->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        // $relaunches->append('user');
+
+        return RelaunchResource::collection($relaunches);
+
     }
 
     /**

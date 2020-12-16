@@ -14,3 +14,7 @@ Vue.component(
     'facture-details',
     require('./FactureDetails.vue').default
 );
+Vue.component(
+    'relances-facture',
+    require('./RelancesFacture.vue').default
+);

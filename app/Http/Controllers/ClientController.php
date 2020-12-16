@@ -233,6 +233,7 @@ class ClientController extends Controller
     public function getFacturesByClient(Request $request, Client $client){
         $factures = Facture::whereDeleted(false)
                     ->where('statut', '!=', 'cancelled')
+                    ->where('deleted', false)
                     ->where('client_id', $client->id)
                     ->orderBy('id', 'desc')
                     ->paginate(10);

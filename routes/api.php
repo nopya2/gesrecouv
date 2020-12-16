@@ -55,8 +55,11 @@ Route::middleware('auth:api')->get('modes-paiement', 'ModePaiementController@ind
 Route::middleware('auth:api')->post('modes-paiement', 'ModePaiementController@store');
     // ->middleware('permissions:chapitres,creer'); // Ajouter un type de facture
 Route::middleware('auth:api')->put('modes-paiement', 'ModePaiementController@update');
-Route::middleware('auth:api')->delete('modes-paiement/{mode}', 'ModePaiementController@destroy'); 
+Route::middleware('auth:api')->delete('modes-paiement/{mode}', 'ModePaiementController@destroy');
 
 /***** API Personnel *****/
 Route::get('/resources/villes', 'ApiController@getVilles'); //Liste de villes du gabon
 Route::get('/resources/pays', 'ApiController@getPays'); //Liste des pays
+
+/***** Configurations  ******/
+Route::middleware('auth:api')->put('/configurations', 'ConfigurationController@update'); // Modification de la configuration

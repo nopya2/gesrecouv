@@ -155,5 +155,10 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/custom/api/secteur-activite.php'));
 
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/custom/api/relaunch.php'));
+
     }
 }

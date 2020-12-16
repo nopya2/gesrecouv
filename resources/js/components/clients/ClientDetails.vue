@@ -213,21 +213,4 @@
     .vert .card-body{
         background: #c8e6c9;
     }
-    /* .orange {
-        border: none;
-        border-top: 8px solid #ffb300;
-        color: white;
-        box-shadow: 2px 2px 2px gray ;
-    }
-    .bleu {
-        border: none;
-        color: white;
-        background: #039be5;
-        box-shadow: 2px 2px 2px gray;
-    }
-    .vert {
-        border: none;
-        color: white;
-        
-    } */
 </style>

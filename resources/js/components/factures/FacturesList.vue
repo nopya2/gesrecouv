@@ -57,8 +57,8 @@
                     <thead>
                     <tr class="text-center">
                         <th></th>
-                        <th style="width: 255px">Facture no.</th>
-                        <th>Facture initiale</th>
+                        <th style="width: 255px">REFERENCE</th>
+                        <!-- <th>Facture initiale</th> -->
                         <th>Client</th>
                         <th>Type</th>
                         <th>Paiement attendu</th>
@@ -128,13 +128,13 @@
                                 v-if="facture.statut=='cancelled' && facture.state=='cancelled'"></i> -->
                             {{ facture.num_facture }}
                         </td>
-                        <td class="vertical-align">
+                        <!-- <td class="vertical-align">
                             <template v-if="facture.parent">
                                 {{ facture.parent.num_facture }}
                             </template>
-                        </td>
+                        </td> -->
                         <td class="vertical-align">
-                            <a :href="'/clients/'+facture.client.id">{{ facture.client.raison_sociale }}</a>
+                            <a :href="'/clients/'+facture.client.id" class="text-info">{{ facture.client.raison_sociale }}</a>
                         </td>
                         <td class="vertical-align">
                             {{ facture.type.libelle }}
@@ -172,8 +172,8 @@
                     <tfoot>
                     <tr class="text-center">
                         <th></th>
-                        <th style="width: 255px">Facture no.</th>
-                        <th>Facture initiale</th>
+                        <th style="width: 255px">REFERENCE</th>
+                        <!-- <th>Facture initiale</th> -->
                         <th>Client</th>
                         <th>Type</th>
                         <th>Paiement attendu</th>

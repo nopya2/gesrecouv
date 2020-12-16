@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Jeu 10 Décembre 2020 à 16:29
+-- Généré le :  Mer 16 Décembre 2020 à 17:24
 -- Version du serveur :  10.4.14-MariaDB-1:10.4.14+maria~bionic-log
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.7
 
@@ -286,7 +286,19 @@ INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `su
 (244, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a annulé la facture n°52/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 68, 'App\\User', 1, '[]', '2020-12-01 14:19:43', '2020-12-01 14:19:43'),
 (245, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a créé la facture n°53/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 69, 'App\\User', 1, '[]', '2020-12-01 14:19:43', '2020-12-01 14:19:43'),
 (246, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a annulé la facture n°50/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 65, 'App\\User', 1, '[]', '2020-12-01 14:21:00', '2020-12-01 14:21:00'),
-(247, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a créé la facture n°54/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 70, 'App\\User', 1, '[]', '2020-12-01 14:21:00', '2020-12-01 14:21:00');
+(247, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a créé la facture n°54/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 70, 'App\\User', 1, '[]', '2020-12-01 14:21:00', '2020-12-01 14:21:00'),
+(248, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a créé la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 12:40:16', '2020-12-11 12:40:16'),
+(249, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a modifié la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 12:44:54', '2020-12-11 12:44:54'),
+(250, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a modifié la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 12:45:42', '2020-12-11 12:45:42'),
+(251, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a modifié la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 12:45:47', '2020-12-11 12:45:47'),
+(252, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a validé la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 12:47:10', '2020-12-11 12:47:10'),
+(253, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a ajouté un paiement n°P20201211140034 à la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 71, 'App\\User', 1, '{\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0},\"user\":{\"id\":1,\"username\":\"admin\",\"role\":\"superadmin\",\"name\":\"ndong otogue\",\"firstname\":\"yvon paul brice\",\"email\":\"yvon.ndong@neosystechnologie.ga\",\"email_verified_at\":null,\"status\":1,\"phonenumber\":null,\"created_at\":\"2019-11-25 18:08:52\",\"updated_at\":\"2020-05-29 08:01:46\",\"group_id\":3,\"fullName\":\"ndong otogue yvon paul brice\"},\"paiement\":{\"mode_paiement\":\"Virement Bancaire\",\"date_paiement\":\"2020-12-11\",\"commentaire\":\"Test\",\"facture_id\":\"71\",\"montant\":\"150000\",\"user_id\":1,\"num_paiement\":\"P20201211140034\",\"updated_at\":\"2020-12-11 14:00:34\",\"created_at\":\"2020-12-11 14:00:34\",\"id\":73,\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0}}}', '2020-12-11 13:00:34', '2020-12-11 13:00:34'),
+(254, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a validé le paiement n°P20201211140034 de la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 71, 'App\\User', 1, '{\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0},\"user\":{\"id\":1,\"username\":\"admin\",\"role\":\"superadmin\",\"name\":\"ndong otogue\",\"firstname\":\"yvon paul brice\",\"email\":\"yvon.ndong@neosystechnologie.ga\",\"email_verified_at\":null,\"status\":1,\"phonenumber\":null,\"created_at\":\"2019-11-25 18:08:52\",\"updated_at\":\"2020-05-29 08:01:46\",\"group_id\":3,\"fullName\":\"ndong otogue yvon paul brice\"},\"paiement\":{\"id\":73,\"user_id\":1,\"facture_id\":71,\"mode_paiement\":\"Virement Bancaire\",\"montant\":150000,\"date_paiement\":\"2020-12-11 00:00:00\",\"commentaire\":\"Test\",\"created_at\":\"2020-12-11 14:00:34\",\"updated_at\":\"2020-12-11 14:00:44\",\"num_paiement\":\"P20201211140034\",\"state\":\"cancelled\",\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0}}}', '2020-12-11 13:00:44', '2020-12-11 13:00:44'),
+(255, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a ajouté un paiement n°P20201211140107 à la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 71, 'App\\User', 1, '{\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0},\"user\":{\"id\":1,\"username\":\"admin\",\"role\":\"superadmin\",\"name\":\"ndong otogue\",\"firstname\":\"yvon paul brice\",\"email\":\"yvon.ndong@neosystechnologie.ga\",\"email_verified_at\":null,\"status\":1,\"phonenumber\":null,\"created_at\":\"2019-11-25 18:08:52\",\"updated_at\":\"2020-05-29 08:01:46\",\"group_id\":3,\"fullName\":\"ndong otogue yvon paul brice\"},\"paiement\":{\"mode_paiement\":\"Virement Bancaire\",\"date_paiement\":\"2020-12-11\",\"commentaire\":\"Test\",\"facture_id\":\"71\",\"montant\":\"50000\",\"user_id\":1,\"num_paiement\":\"P20201211140107\",\"updated_at\":\"2020-12-11 14:01:07\",\"created_at\":\"2020-12-11 14:01:07\",\"id\":74,\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 13:47:10\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":0}}}', '2020-12-11 13:01:07', '2020-12-11 13:01:07'),
+(256, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a modifié la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 13:01:14', '2020-12-11 13:01:14'),
+(257, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a validé le paiement n°P20201211140107 de la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 71, 'App\\User', 1, '{\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 14:01:14\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":50000},\"user\":{\"id\":1,\"username\":\"admin\",\"role\":\"superadmin\",\"name\":\"ndong otogue\",\"firstname\":\"yvon paul brice\",\"email\":\"yvon.ndong@neosystechnologie.ga\",\"email_verified_at\":null,\"status\":1,\"phonenumber\":null,\"created_at\":\"2019-11-25 18:08:52\",\"updated_at\":\"2020-05-29 08:01:46\",\"group_id\":3,\"fullName\":\"ndong otogue yvon paul brice\"},\"paiement\":{\"id\":74,\"user_id\":1,\"facture_id\":71,\"mode_paiement\":\"Virement Bancaire\",\"montant\":50000,\"date_paiement\":\"2020-12-11 00:00:00\",\"commentaire\":\"Test\",\"created_at\":\"2020-12-11 14:01:07\",\"updated_at\":\"2020-12-11 14:01:14\",\"num_paiement\":\"P20201211140107\",\"state\":\"validated\",\"facture\":{\"id\":71,\"created_at\":\"2020-12-11 13:40:16\",\"updated_at\":\"2020-12-11 14:01:14\",\"utilisateur_id\":1,\"parent_id\":null,\"client_id\":9973,\"statut\":\"in_progress\",\"num_facture\":\"55\\/2020\\/RR\\/PR\\/ANINF\\/DG\\/DF\\/SCF\",\"montant\":150000,\"num_dossier\":null,\"date_creation\":\"2020-12-29 00:00:00\",\"date_depot\":\"2022-12-31 00:00:00\",\"date_echeance\":\"2023-01-30 00:00:00\",\"date_paiement\":null,\"commentaire\":null,\"type_id\":2,\"deleted\":false,\"state\":\"validated\",\"m_paid\":50000}}}', '2020-12-11 13:01:14', '2020-12-11 13:01:14'),
+(258, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a annulé la facture n°55/2020/RR/PR/ANINF/DG/DF/SCF', 'App\\Facture', 71, 'App\\User', 1, '[]', '2020-12-11 13:01:26', '2020-12-11 13:01:26'),
+(259, 'default', '<b>NDONG OTOGUE YVON PAUL BRICE</b> a créé la facture n°56/2020/RR/PR/ANINF/DG/DF/SCF ', 'App\\Facture', 72, 'App\\User', 1, '[]', '2020-12-11 13:01:26', '2020-12-11 13:01:26');
 
 -- --------------------------------------------------------
 
@@ -807,6 +819,13 @@ CREATE TABLE `configurations` (
   `duree_echeance_max` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `configurations`
+--
+
+INSERT INTO `configurations` (`id`, `created_at`, `updated_at`, `duree_echeance`, `duree_echeance_min`, `duree_echeance_max`) VALUES
+(1, NULL, '2020-12-11 11:27:12', 30, 365, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -1134,7 +1153,9 @@ INSERT INTO `documents` (`id`, `filename`, `created_at`, `updated_at`, `size`, `
 (292, 'exercice 1.pdf', '2020-11-26 07:04:24', '2020-11-26 07:04:24', 336492, NULL),
 (293, 'cv.docx', '2020-11-30 13:21:08', '2020-11-30 13:21:08', NULL, NULL),
 (294, 'photo.jpeg', '2020-11-30 13:21:27', '2020-11-30 13:21:27', 429506, NULL),
-(295, 'cv.pdf', '2020-12-01 14:09:09', '2020-12-01 14:09:09', NULL, NULL);
+(295, 'cv.pdf', '2020-12-01 14:09:09', '2020-12-01 14:09:09', NULL, NULL),
+(296, 'home.html.twig', '2020-12-11 13:00:34', '2020-12-11 13:00:34', NULL, NULL),
+(297, 'renouvellement-02122020.pdf', '2020-12-11 13:01:07', '2020-12-11 13:01:07', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1412,7 +1433,9 @@ INSERT INTO `document_paiement` (`id`, `created_at`, `updated_at`, `paiement_id`
 (58, NULL, NULL, 70, 290),
 (59, NULL, NULL, 70, 291),
 (60, NULL, NULL, 71, 293),
-(61, NULL, NULL, 72, 295);
+(61, NULL, NULL, 72, 295),
+(62, NULL, NULL, 73, 296),
+(63, NULL, NULL, 74, 297);
 
 -- --------------------------------------------------------
 
@@ -6418,7 +6441,9 @@ INSERT INTO `factures` (`id`, `created_at`, `updated_at`, `utilisateur_id`, `par
 (67, '2020-11-26 12:11:22', '2020-11-26 12:57:24', 1, 66, 10101, 'in_progress', '52/2020/RA/PR/ANINF/DG/DF/SCF', 3500000, NULL, '2020-03-02 00:00:00', NULL, '2021-09-30 00:00:00', NULL, NULL, 4, 1, 'waiting', 0),
 (68, '2020-11-26 13:19:39', '2020-12-01 14:19:43', 1, 62, 10099, 'cancelled', '52/2020/RR/PR/ANINF/DG/DF/SCF', -1500000, NULL, '2020-11-26 00:00:00', NULL, '2021-03-31 00:00:00', NULL, NULL, 2, 0, 'cancelled', 0),
 (69, '2020-12-01 14:19:43', '2020-12-01 14:19:43', 1, 68, 10099, 'credit_note', '53/2020/RR/PR/ANINF/DG/DF/SCF', 1500000, NULL, '2020-12-01 15:19:43', NULL, NULL, NULL, NULL, 2, 0, 'validated', 0),
-(70, '2020-12-01 14:21:00', '2020-12-01 14:21:00', 1, 65, 10090, 'credit_note', '54/2020/RR/PR/ANINF/DG/DF/SCF', 600000, NULL, '2020-12-01 15:21:00', NULL, '2020-12-01 00:00:00', NULL, NULL, 2, 0, 'validated', 0);
+(70, '2020-12-01 14:21:00', '2020-12-01 14:21:00', 1, 65, 10090, 'credit_note', '54/2020/RR/PR/ANINF/DG/DF/SCF', 600000, NULL, '2020-12-01 15:21:00', NULL, '2020-12-01 00:00:00', NULL, NULL, 2, 0, 'validated', 0),
+(71, '2020-12-11 12:40:16', '2020-12-11 13:01:26', 1, NULL, 9973, 'cancelled', '55/2020/RR/PR/ANINF/DG/DF/SCF', 150000, NULL, '2020-12-29 00:00:00', '2022-12-31 00:00:00', '2023-01-30 00:00:00', NULL, NULL, 2, 0, 'cancelled', 50000),
+(72, '2020-12-11 13:01:26', '2020-12-11 13:01:26', 1, 71, 9973, 'credit_note', '56/2020/RR/PR/ANINF/DG/DF/SCF', -100000, NULL, '2020-12-11 14:01:26', NULL, NULL, NULL, NULL, 2, 0, 'validated', 0);
 
 -- --------------------------------------------------------
 
@@ -7373,7 +7398,9 @@ INSERT INTO `paiements` (`id`, `user_id`, `facture_id`, `mode_paiement`, `montan
 (69, 1, 65, 'Virement Bancaire', 600000, '2020-11-25 00:00:00', 'doc', '2020-11-25 10:44:47', '2020-11-25 10:44:47', 'P20201125114447', 'waiting'),
 (70, 1, 65, 'Virement Bancaire', 600000, '2020-11-25 00:00:00', 'doc', '2020-11-25 10:45:15', '2020-11-25 10:45:15', 'P20201125114515', 'waiting'),
 (71, 1, 68, 'Virement Bancaire', 30000, '2020-11-30 00:00:00', 'Test', '2020-11-30 13:21:08', '2020-11-30 13:21:08', 'P20201130142108', 'waiting'),
-(72, 1, 4, 'Chèque', 350000, '2020-12-01 00:00:00', 'lhfdsqlgdsgsdfgsdq', '2020-12-01 14:09:09', '2020-12-01 14:09:25', 'P20201201150909', 'validated');
+(72, 1, 4, 'Chèque', 350000, '2020-12-01 00:00:00', 'lhfdsqlgdsgsdfgsdq', '2020-12-01 14:09:09', '2020-12-01 14:09:25', 'P20201201150909', 'validated'),
+(73, 1, 71, 'Virement Bancaire', 150000, '2020-12-11 00:00:00', 'Test', '2020-12-11 13:00:34', '2020-12-11 13:00:44', 'P20201211140034', 'cancelled'),
+(74, 1, 71, 'Virement Bancaire', 50000, '2020-12-11 00:00:00', 'Test', '2020-12-11 13:01:07', '2020-12-11 13:01:14', 'P20201211140107', 'validated');
 
 -- --------------------------------------------------------
 
@@ -7484,9 +7511,19 @@ CREATE TABLE `relaunches` (
   `facture_id` bigint(20) UNSIGNED DEFAULT NULL,
   `client_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `mode_relance` varchar(255) NOT NULL DEFAULT 'phone',
-  `commentaire` text DEFAULT NULL
+  `mode_relaunch` varchar(255) NOT NULL DEFAULT 'phone',
+  `comment` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `relaunches`
+--
+
+INSERT INTO `relaunches` (`id`, `created_at`, `updated_at`, `date_relaunch`, `facture_id`, `client_id`, `user_id`, `mode_relaunch`, `comment`) VALUES
+(12, '2020-12-16 09:49:08', '2020-12-16 09:49:08', NULL, 52, 10134, 1, 'Appel Téléphonique', 'Appel téléphonique et aucune réponse'),
+(13, '2020-12-16 09:49:27', '2020-12-16 09:49:27', NULL, 52, 10134, 1, 'Email', 'Envoie e-mail et toujour pas de réponse'),
+(14, '2020-12-16 09:54:51', '2020-12-16 09:54:51', NULL, 52, 10134, 1, 'Email', 'Ghkddv dgdsfgdf'),
+(15, '2020-12-16 09:55:30', '2020-12-16 09:55:30', NULL, 52, 10134, 1, 'Fax', 'fsdgsfgf');
 
 -- --------------------------------------------------------
 
@@ -7602,7 +7639,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `name`, `firstname`, `email`, `email_verified_at`, `status`, `api_token`, `phonenumber`, `remember_token`, `created_at`, `updated_at`, `group_id`) VALUES
-(1, 'admin', '$2y$10$WqS6aBTLa8Lky4KaXBtFNeLSGK85AUakEuNbY5RDVgyM..yInc8EG', 'superadmin', 'ndong otogue', 'yvon paul brice', 'yvon.ndong@neosystechnologie.ga', NULL, 1, 'MM374gMYF0j8vOv1WCcDX72G5F71XWrsd39zsmXwgfekXR60DToIjR346CTeHJLug9XfVuGJvM12naIJ', NULL, '5cUYGGUiOd3HzUxSRa3IuZG9kHD8jrKEoYfc1RyDE8i2ULKW30xI3c1kLxh5', '2019-11-25 17:08:52', '2020-05-29 07:01:46', 3),
+(1, 'admin', '$2y$10$WqS6aBTLa8Lky4KaXBtFNeLSGK85AUakEuNbY5RDVgyM..yInc8EG', 'superadmin', 'ndong otogue', 'yvon paul brice', 'yvon.ndong@neosystechnologie.ga', NULL, 1, 'MM374gMYF0j8vOv1WCcDX72G5F71XWrsd39zsmXwgfekXR60DToIjR346CTeHJLug9XfVuGJvM12naIJ', NULL, 'z0nHjNl2pS136kw6NFGOsn91TnzBRZDMQSJDWRFciOqsUoUDM3XoUbjyCnfy', '2019-11-25 17:08:52', '2020-05-29 07:01:46', 3),
 (22, 'steave-gael.ivombo', '$2y$10$hnLe2M5cRRUdrz5XcaAnReSj0nQf1uuee2n97X/sGNZHKy59wcjpS', 'admin', 'ivombo', 'steave gael', 'steave.ivombo@aninf.ga', NULL, 1, 'X3VlFDiE6HmTHRhcRSxU4KaiDJmBdEWVPXawFnIb0IlGS7taX4y9aBgNoS2NGsi3tWn5lhO6vpO8V5S1', NULL, NULL, '2020-02-06 07:58:29', '2020-06-12 01:09:00', 3),
 (23, 'yves-boris.indoumou', '$2y$10$fCOrw/iOUCzpTQIIIDjY6.BKOplW2kCJcaYIRFDlPZGLJqXLEoZkC', 'manager', 'INDOUMOU', 'Yves Boris', 'yves-boris.indoumou@aninf.ga', NULL, 1, 'Vs57R01XZjU9Bk20Kc2PwSH7pVsDvG95x9GRMufJ4z7VKpx6dvGx3m3KUBZcWU33NnXLmcItQVARc9lr', NULL, 'j1yWa5o5cLaEGG0z7l2M5Zmu9IKlYYqMY3FS1P5s76HeKX2iZwKXfFm5hUIO', '2020-06-11 23:59:29', '2020-06-12 01:08:26', 4),
 (24, 'nding.mwande', '$2y$10$sXV.MrFlfnCWqquZ9Q9uwO0Si1arxuo6h/wfffKRg.GaaY9amISDW', 'manager', 'NDING', 'MWANDE', 'nding.mwande@aninf.ga', NULL, 1, 'iVZnZGOriLGhWvoSFkjsJj8XhlOpyxYn2meRYE9Jenqn1X9c7btIso24AjQzTNi7XqaK2ZEtd7SDhp1X', NULL, 'Tpb40WEpZ6c6tyPgiKpUtiPJouUAl7AeOEuuK0iUSTxzp53kscClQWLTFyt3', '2020-06-12 00:02:11', '2020-07-02 09:55:09', 2),
@@ -7954,12 +7991,12 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT pour la table `configurations`
 --
 ALTER TABLE `configurations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
 --
 -- AUTO_INCREMENT pour la table `document_facture`
 --
@@ -7969,7 +8006,7 @@ ALTER TABLE `document_facture`
 -- AUTO_INCREMENT pour la table `document_paiement`
 --
 ALTER TABLE `document_paiement`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT pour la table `echelons`
 --
@@ -7984,7 +8021,7 @@ ALTER TABLE `engagements`
 -- AUTO_INCREMENT pour la table `factures`
 --
 ALTER TABLE `factures`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT pour la table `failed_jobs`
 --
@@ -8039,7 +8076,7 @@ ALTER TABLE `oauth_personal_access_clients`
 -- AUTO_INCREMENT pour la table `paiements`
 --
 ALTER TABLE `paiements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 --
 -- AUTO_INCREMENT pour la table `permissions`
 --
@@ -8049,7 +8086,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT pour la table `relaunches`
 --
 ALTER TABLE `relaunches`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT pour la table `secteur_activites`
 --

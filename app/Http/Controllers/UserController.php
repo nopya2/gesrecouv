@@ -278,6 +278,9 @@ class UserController extends Controller
             ->orWhere('email', '=', $request->login)
             ->first();
 
+        if(!$user)
+            return response()->json(['error'=>"Cet utilisateur n'existe pas"], 404);
+
         if($user->status == false)
             return new JsonResponse('error', 500);
 

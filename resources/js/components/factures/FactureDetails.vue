@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6">
                 <div class="card">
                     <div class="card-header d-flex p-0">
                         <h3 class="card-title p-3">
@@ -171,7 +171,7 @@
                             </thead>
                             <tbody>
                                 <tr v-if="documents.length <=0">
-                                    <td colspan="5" class="text-center">Aucun document</td>
+                                    <td colspan="5" class="text-center text-muted">Aucun document</td>
                                 </tr>
                                 <tr v-for="item in documents" :key="item.id">
                                     <td>
@@ -198,7 +198,7 @@
                 </div>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6">
                 <div class="card card-gray">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -224,7 +224,7 @@
                             <tbody>
                                 <table></table>
                                 <tr v-if="paiements.length <=0" class="text-center">
-                                    <td colspan="5">Aucun paiement</td>
+                                    <td colspan="5" class="text-muted">Aucun paiement</td>
                                 </tr>
                                 <tr v-for="(item, index) in paiements" :key="index">
                                     <td class="vertical-align">
@@ -268,6 +268,9 @@
                         </table>
                     </div>
                 </div>
+
+                <relances-facture :facture_id="facture_id"></relances-facture>
+                
                 <div class="card card-gray" v-if="activities.length">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -433,8 +436,11 @@
     import DatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/index.css';
     import { required, minLength, maxLength, between, email, sameAs } from 'vuelidate/lib/validators';
+    import RelancesFactures from './RelancesFacture'
+    import RelancesFacture from './RelancesFacture.vue'
 
     export default {
+  components: { RelancesFacture },
 
         props : ['facture_id'],
         mounted(){

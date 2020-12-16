@@ -5,6 +5,13 @@
                 <div class="card card-warning">
                     <div class="card-header">
                         <h3 class="card-title">Formulaire de modification</h3>
+                        <div class="card-tools">
+                            <button class="btn btn-info btn-sm" title="Détails">
+                                <a :href="'/factures/'+facture.id" class="text-light">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form role="form">
@@ -91,7 +98,6 @@
                                             v-model="$v.facture.num_dossier.$model"
                                             name="num_dossier"
                                             autocomplete="off">
-                                        <!-- <small class="form-text text-danger" v-if="!$v.facture.num_dossier.required">Champs requis.</small> -->
                                     </div>
                                 </div>
                             </div>
@@ -99,27 +105,11 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="date_creation">Date création</label><br>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_creation.$model" name="date_creation"> -->
                                         <date-picker
                                             v-model="$v.facture.date_creation.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
                                             placeholder="Selectionnez une date"></date-picker>
-                                        <small class="form-text text-danger" v-if="!$v.facture.date_creation.required">Champs requis.</small>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="date_creation">Date échéance</label><br>
-                                        <date-picker
-                                            v-model="$v.facture.date_echeance.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
-                                            placeholder="Selectionnez une date"></date-picker>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_echeance.$model" name="date_echeance"> -->
-                                        <small class="form-text text-danger" v-if="!$v.facture.date_echeance.required">Champs requis.</small>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -127,12 +117,20 @@
                                         <label for="date_creation">Date dépôt</label><br>
                                         <date-picker
                                             v-model="$v.facture.date_depot.$model"
-                                            value-type="format"
-                                            format="YYYY-MM-DD"
-                                            type="date"
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
+                                            placeholder="Selectionnez une date"
+                                            @input="updateDateEcheance($event)"></date-picker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="date_creation">Date échéance</label><br>
+                                        <date-picker
+                                            v-model="$v.facture.date_echeance.$model"
+                                            value-type="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
                                             placeholder="Selectionnez une date"></date-picker>
-                                        <!-- <input type="text" class="form-control" v-model="$v.facture.date_depot.$model" name="date_depot"> -->
-                                        <!-- <small class="form-text text-danger" v-if="!$v.facture.date_depot.required">Champs requis.</small> -->
                                     </div>
                                 </div>
                             </div>
@@ -173,6 +171,8 @@
     import 'vue2-datepicker/index.css';
     import Client from '../../models/client'
     import _ from 'lodash'
+    import Configuration from './../../services/configuration'
+    import { addDays, parse, parseISO, toDate, format } from 'date-fns'
 
     export default {
 
@@ -193,7 +193,8 @@
                 filter: {
                     keywordClient: '',
                     keywordFacture: ''
-                }
+                },
+                configurations: Configuration.getCNF()
             }
         },
         validations: {
@@ -215,9 +216,7 @@
                     required,
                 },
                 date_depot: {},
-                date_echeance: {
-                    required
-                },
+                date_echeance: {},
                 date_paiement: {},
                 commentaire: {}
             }
@@ -357,6 +356,11 @@
                 delete facture.documents
                 delete facture.activities
             },
+            updateDateEcheance(e){
+                let date_depot = parseISO(e)
+                this.$v.facture.date_echeance.$model = format(addDays(date_depot, this.configurations.duree_echeance), 'Y-MM-dd')
+                this.$forceUpdate()
+            }
         }
 
     }

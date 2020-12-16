@@ -45,7 +45,10 @@ class Client extends Model
         $filtered = $this->factures->filter(function ($item, $key) use ($currentYear){
             return  
                 $item->date_creation >= "{$currentYear}-01-01" && $item->date_creation <= "{$currentYear}-12-31"
-                && $item->date_echeance < now()->format('Y-m-d').' 00:00:00';
+                && $item->date_echeance < now()->format('Y-m-d').' 00:00:00'
+                && $item->statut !== 'credit_note'
+                && $item->deleted === false
+                && $item->statut !== 'cancelled';
         });
 
         return $filtered->sum('montant');
@@ -58,7 +61,10 @@ class Client extends Model
         $filtered = $this->factures->filter(function ($item, $key) use ($currentYear){
             return  
                 $item->date_creation >= "{$currentYear}-01-01" && $item->date_creation <= "{$currentYear}-12-31"
-                && $item->date_echeance >= now()->format('Y-m-d').' 00:00:00';
+                && $item->date_echeance >= now()->format('Y-m-d').' 00:00:00'
+                && $item->statut !== 'credit_note'
+                && $item->deleted === false
+                && $item->statut !== 'cancelled';
         });
 
         return $filtered->sum('montant');
@@ -91,6 +97,7 @@ class Client extends Model
     public function getMNotPaidLateAttribute(){
         return $this->factures->filter(function ($facture, $key){
             return $facture->deleted === false && $facture->statut !== 'cancelled'
+                    && $facture->statut !== 'credit_note'
                     && $facture->state === 'validated'
                     && $facture->date_echeance < now();
         })->sum('montant');
@@ -100,6 +107,7 @@ class Client extends Model
     public function getMNotPaidWaitingAttribute(){
         return $this->factures->filter(function ($facture, $key){
             return $facture->deleted === false && $facture->statut !== 'cancelled'
+                    && $facture->statut !== 'credit_note'
                     && $facture->state === 'validated'
                     && $facture->date_echeance >= now();
         })->sum('montant');
@@ -127,7 +135,7 @@ class Client extends Model
     //     })->sum('montant');
     // }
 
-    
+
 
 
 }

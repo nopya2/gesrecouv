@@ -102,6 +102,8 @@ import parseISO from 'date-fns/parseISO'
                 
                 axios.get(page_url)
                     .then(res => {
+                        console.log(res)
+
                         vm.factures = res.data.data
                         vm.makePagination(res.data.meta, res.data.links)
                         this.spinner = false

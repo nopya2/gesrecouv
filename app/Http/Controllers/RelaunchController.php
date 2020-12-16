@@ -80,6 +80,11 @@ class RelaunchController extends Controller
      */
     public function destroy(Relaunch $relaunch)
     {
-        //
+
+        if($relaunch->delete()){
+            return response()->json(['message'=>'Relance supprimée!'], 200);
+        }else{
+            return response()->json(['error'=>'Erreur suppression'], 404);
+        }
     }
 }

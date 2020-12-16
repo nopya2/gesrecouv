@@ -21,7 +21,7 @@
 
     <!-- Main content -->
     <section class="content">
-    <facture-details :facture_id="{{$facture->id}}"></facture-details>
+        <facture-details :facture_id="{{$facture->id}}"></facture-details>
     </section>
     <!-- /.content -->
 @endsection

@@ -35,7 +35,7 @@ class FactureRequest extends FormRequest
             'num_dossier' => [],
             'date_creation' => ['required'],
             'date_depot' => [],
-            'date_echeance' => ['required'],
+            'date_echeance' => [],
         ];
     }
 

@@ -1,0 +1,1119 @@
+{# templates/portail/home.html.twig #}
+
+{% extends 'portail/layout.html.twig' %}
+
+{% block meta %}
+    {{ parent() }}
+
+    <meta name="title" content="TOP INFOS GABON | ACCUEIL">
+    <meta name="description" content="L'information nationale et internationale, les dernieres news, faits divers, sur votre site d'information" />
+    <link rel="canonical" href="https://topinfosgabon.ga" />
+
+    <meta property="og:url" content="https://topinfosgabon.ga/" />
+    <meta property="og:type" content="website" />
+    {# <meta property="og:image:alt" content="{{ article.titre }}" /> #}
+    {# <meta property="og:type" content="article" /> #}
+    {# <meta property="og:image:width" content="712" />
+    <meta property="og:image:height" content="596" /> #}
+    <meta property="og:locale" content="fr_FR" />
+    {# <meta property="og:type" content="article" /> #}
+    <meta property="og:title" content="TOP INFOS GABON | ACCUEIL" />
+    <meta property="og:description" content="L'information nationale et internationale, les dernieres news, faits divers, sur votre site d'information" />
+    <meta property="og:image" content="https://topinfosgabon.ga/images/capture-accueil.PNG" />
+    <meta property="og:site_name" content="TOP INFOS GABON" />
+    <meta property="fb:app_id" content="1943029152665027" />
+
+    <meta name="twitter:title" content="TOP INFOS GABON | ACCUEIL" />
+    <meta name="twitter:description" content="L'information nationale et internationale, les dernieres news, faits divers, sur votre site d'information" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@topinfosgabon" />
+    <meta name="twitter:creator" content="@topinfosgabon" />
+    <meta name="twitter:image" content="https://topinfosgabon.ga/images/capture-accueil.PNG">
+
+{% endblock %}
+
+{% block title %}ACCUEIL{% endblock %}
+
+{% block content %}
+
+<!-- Headline -->
+<div class="container">
+    <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+        <div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
+            <span class="text-uppercase cl2 p-r-8">
+                <b>EN CE MOMENT<b>
+            </span>
+
+            <span class="dis-inline-block cl6 slide100-txt pos-relative size-w-0 text-danger" data-in="fadeInDown" data-out="fadeOutDown">
+                {% for flash in flashes|slice(0, 4) %}
+                <span class="dis-inline-block slide100-txt-item animated visible-false">
+                    <span class="label label-warning bg-warning p-2 text-light">
+                        {{ flash.article.rubrique.titre }}
+                    </span>
+                    <a href="{{ path('article', {'article': flash.article.slug}) }}" style="margin: 0 5px 0 5px;">
+                        {{ flash.contenu }}
+                    </a>
+                    <button class="btn btn-xs btn-light p-2">
+                        <i class="fa fa-caret-left"></i>
+                    </button>
+                    <button class="btn btn-xs btn-light p-2">
+                        <i class="fa fa-caret-right"></i>
+                    </button>
+                </span>
+                {% endfor %}
+            </span>
+        </div>
+
+        <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+            <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Recherche">
+            <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+                <i class="zmdi zmdi-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Feature post -->
+<section class="bg0">
+    <div class="container">
+        <div class="row m-rl--1">
+            <div class="col-md-6 p-rl-1 p-b-2">
+                <div class="slick-home">
+                    {% for article in last_articles %}
+                        <div>
+                            <div class="bg-img1 size-a-3 how1 pos-relative" style="background-image: url({{ asset('images/uploads/') }}{{ article.image.imageName }});">
+                                {#<a href="blog-detail-01.html" class="dis-block how1-child1 trans-03"></a>#}
+
+                                <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+                                    <a href="{{ path('rubrique', {'rubrique': article.rubrique.slug}) }}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+                                        {{ article.rubrique.titre }}
+                                    </a>
+
+                                    <h3 class="how1-child2 m-t-14 m-b-10">
+                                        <a href="{{ path('article', {'article': article.slug}) }}" class="how-txt1 size-a-6 f1-l-1 cl0 hov-cl10 trans-03">
+                                            {{ article.titre }}
+                                        </a>
+                                    </h3>
+
+                                    <span class="how1-child2">
+                                        <span class="f1-s-4 cl11">
+                                            {{ last_articles[0].auteur.nom }} {{ last_articles[0].auteur.prenom }}
+                                        </span>
+
+                                        <span class="f1-s-3 cl11 m-rl-3">
+                                            -
+                                        </span>
+
+                                        <span class="f1-s-3 cl11">
+                                            {{ last_articles[0].createdAt|date('M d, H:i') }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-6 p-rl-1">
+                <div class="row m-rl--1">
+                    <div class="col-12 p-rl-1 p-b-2">
+                        <div class="bg-img1 size-a-4 how1 pos-relative" style="background-image: url({{ asset('images/uploads/') }}{{ last_articles[1].image.imageName }});">
+                            <a href="{{ path('article', {'article': last_articles[1].slug}) }}" class="dis-block how1-child1 trans-03"></a>
+
+                            <div class="flex-col-e-s s-full p-rl-25 p-tb-24">
+                                <a href="{{ path('rubrique', {'rubrique': last_articles[1].rubrique.slug}) }}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+                                    {{ last_articles[1].rubrique.titre }}
+                                </a>
+
+                                <h3 class="how1-child2 m-t-14">
+                                    <a href="{{ path('article', {'article': last_articles[1].slug}) }}" class="how-txt1 size-a-7 f1-l-2 cl0 hov-cl10 trans-03">
+                                        {{ last_articles[1].titre }}
+                                    </a>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 p-rl-1 p-b-2">
+                        <div class="bg-img1 size-a-5 how1 pos-relative" style="background-image: url({{ asset('images/uploads/') }}{{ last_articles[2].image.imageName }});">
+                            <a href="{{ path('article', {'article': last_articles[2].slug}) }}" class="dis-block how1-child1 trans-03"></a>
+
+                            <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+                                <a href="{{ path('rubrique', {'rubrique': last_articles[2].rubrique.slug}) }}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+                                    {{ last_articles[2].rubrique.titre }}
+                                </a>
+
+                                <h3 class="how1-child2 m-t-14">
+                                    <a href="{{ path('article', {'article': last_articles[2].slug}) }}" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+                                        {{ last_articles[2].titre }}
+                                    </a>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 p-rl-1 p-b-2">
+                        <div class="bg-img1 size-a-5 how1 pos-relative" style="background-image: url({{ asset('images/uploads/') }}{{ last_articles[3].image.imageName }});">
+                            <a href="{{ path('article', {'article': last_articles[3].slug}) }}" class="dis-block how1-child1 trans-03"></a>
+
+                            <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
+                                <a href="{{ path('rubrique', {'rubrique': last_articles[3].rubrique.slug}) }}" class="dis-block how1-child2 f1-s-2 cl0 bo-all-1 bocl0 hov-btn1 trans-03 p-rl-5 p-t-2">
+                                    {{ last_articles[3].rubrique.titre }}
+                                </a>
+
+                                <h3 class="how1-child2 m-t-14">
+                                    <a href="{{ path('article', {'article': last_articles[3].slug}) }}" class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+                                        {{ last_articles[3].titre }}
+                                    </a>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Post -->
+<section class="bg0 p-t-15">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="p-b-20">
+                    <!-- Entertainment -->
+                    {% for rubrique in rubriques %}
+                        {% if rubrique.articles|length > 0%}
+                            <div class="tab01 p-b-20">
+                                <div class="tab01-head how2 how2-cl{{ loop.index }} bocl12 flex-s-c m-r-10 m-r-0-sr991">
+                                    <!-- Brand tab -->
+                                    <h3 class="f1-m-2 cl1{{ loop.index + 1}} tab01-title">
+                                        {{ rubrique.titre }}
+                                    </h3>
+                                    <ul class="nav nav-tabs" role="tablist">
+                                    </ul>
+                                    <a href="{{ path('rubrique', {'rubrique': rubrique.slug}) }}" class="tab01-link f1-s-1 cl9 hov-cl10 trans-03">
+                                        Tout voir
+                                        <i class="fs-12 m-l-5 fa fa-caret-right"></i>
+                                    </a>
+                                </div>
+                                    
+
+                                <!-- Tab panes -->
+                                <div class="tab-content p-t-15">
+                                    <!-- - -->
+                                    <div class="tab-pane fade show active" id="tab1-1" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->  
+                                                <div class="m-b-30">
+                                                    <a href="{{ path('article', {'article': rubrique.getLastArticles(4)[0].slug}) }}" class="wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('images/uploads/') }}{{ rubrique.getLastArticles(4)[0].image.imageName }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="p-t-20">
+                                                        <h5 class="p-b-5">
+                                                            <a href="{{ path('article', {'article': rubrique.getLastArticles(4)[0].slug}) }}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                                {{ rubrique.getLastArticles(4)[0].titre }}
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="{{ path('rubrique', {'rubrique': rubrique.slug}) }}" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                                {{ rubrique.titre }}
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                {{ rubrique.getLastArticles(4)[0].createdAt|date('M d, H:i') }}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                {% for article in rubrique.getLastArticles(4)|slice(1, 3) %}
+                                                <!-- Item post -->  
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="{{ path('article', {'article': article.slug}) }}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('images/uploads/') }}{{ article.image.imageName }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="{{ path('article', {'article': article.slug}) }}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                {{ article.titre }}
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="{{ path('rubrique', {'rubrique': article.rubrique.slug}) }}" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                {{ article.rubrique.titre }}
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                {{ article.createdAt|date('M d, H:i') }}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- - -->
+                                    <div class="tab-pane fade" id="tab1-2" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->  
+                                                <div class="m-b-30">
+                                                    <a href="blog-detail-01.html" class="wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-09.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="p-t-20">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                                American live music lorem ipsum dolor sit amet consectetur 
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 18
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-08.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Celebrity
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 12
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Item post -->  
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-06.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 17
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-07.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Game
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 16
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- - -->
+                                    <div class="tab-pane fade" id="tab1-3" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->  
+                                                <div class="m-b-30">
+                                                    <a href="blog-detail-01.html" class="wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-08.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="p-t-20">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                                American live music lorem ipsum dolor sit amet consectetur 
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 18
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-07.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Celebrity
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 12
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Item post -->  
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-06.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 17
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-05.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Game
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 16
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- - -->
+                                    <div class="tab-pane fade" id="tab1-4" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->  
+                                                <div class="m-b-30">
+                                                    <a href="blog-detail-01.html" class="wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-06.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="p-t-20">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                                American live music lorem ipsum dolor sit amet consectetur 
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 18
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-09.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Celebrity
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 12
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Item post -->  
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-07.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 17
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-08.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Game
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 16
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- - -->
+                                    <div class="tab-pane fade" id="tab1-5" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->  
+                                                <div class="m-b-30">
+                                                    <a href="blog-detail-01.html" class="wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-07.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="p-t-20">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                                                American live music lorem ipsum dolor sit amet consectetur 
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 18
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-08.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Celebrity
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 12
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Item post -->  
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-06.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Music
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 17
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Item post -->
+                                                <div class="flex-wr-sb-s m-b-30">
+                                                    <a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
+                                                        <img src="{{ asset('theme/magnews2/images/post-09.jpg') }}" alt="IMG">
+                                                    </a>
+
+                                                    <div class="size-w-2">
+                                                        <h5 class="p-b-5">
+                                                            <a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+                                                                Donec metus orci, malesuada et lectus vitae
+                                                            </a>
+                                                        </h5>
+
+                                                        <span class="cl8">
+                                                            <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                                                Game
+                                                            </a>
+
+                                                            <span class="f1-s-3 m-rl-3">
+                                                                -
+                                                            </span>
+
+                                                            <span class="f1-s-3">
+                                                                Feb 16
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-10 col-lg-4">
+                <div class="p-l-10 p-rl-0-sr991 p-b-20">
+                    <!--  -->
+                    {# <div>
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Les plus populaires
+                            </h3>
+                        </div>
+
+                        <ul class="p-t-20">
+                            {% for article in most_popular_articles %}
+                            <li class="flex-wr-sb-s">
+                                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0 m-b-6">
+                                    {{ loop.index }}
+                                </div>
+
+                                <a href="{{ path('article', {'article': article['article'].slug}) }}" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
+                                    {{ article['article'].titre }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div> #}
+
+                    <!--  Publicités -->					
+					<div class="flex-c-s p-t-8">
+                        <a href="#" target="_blank">
+                            <img class="max-w-full" src="https://topinfosgabon.ga/uploads/documents/5fca1f5695816_ezgif.com-gif-maker.gif" alt="OLAM">
+                        </a>
+                    </div>
+
+                    <!--  -->
+                    <div class="flex-c-s p-t-8">
+                        <a href="#">
+                            <img class="max-w-full" src="{{ asset('theme/magnews2/images/banner-02.jpg') }}" alt="IMG">
+                        </a>
+                    </div>
+                    
+                    <!--  -->
+                    <div class="p-t-50">
+                        <div class="how2 how2-cl4 flex-s-c">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Restez connecté
+                            </h3>
+                        </div>
+
+                        <ul class="p-t-15">
+                            <li class="flex-wr-sb-c p-b-20">
+                                <a href="#" class="size-a-8 flex-c-c borad-3 size-a-8 bg-facebook fs-16 cl0 hov-cl0">
+                                    <span class="fab fa-facebook-f"></span>
+                                </a>
+
+                                <div class="size-w-3 flex-wr-sb-c">
+                                    <span class="f1-s-8 cl3 p-r-20">
+                                        6879 Fans
+                                    </span>
+
+                                    <a href="#" class="f1-s-9 text-uppercase cl3 hov-cl10 trans-03">
+                                        Like
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="flex-wr-sb-c p-b-20">
+                                <a href="#" class="size-a-8 flex-c-c borad-3 size-a-8 bg-twitter fs-16 cl0 hov-cl0">
+                                    <span class="fab fa-twitter"></span>
+                                </a>
+
+                                <div class="size-w-3 flex-wr-sb-c">
+                                    <span class="f1-s-8 cl3 p-r-20">
+                                        568 Followers
+                                    </span>
+
+                                    <a href="#" class="f1-s-9 text-uppercase cl3 hov-cl10 trans-03">
+                                        Follow
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="flex-wr-sb-c p-b-20">
+                                <a href="#" class="size-a-8 flex-c-c borad-3 size-a-8 bg-youtube fs-16 cl0 hov-cl0">
+                                    <span class="fab fa-youtube"></span>
+                                </a>
+
+                                <div class="size-w-3 flex-wr-sb-c">
+                                    <span class="f1-s-8 cl3 p-r-20">
+                                        5039 Subscribers
+                                    </span>
+
+                                    <a href="#" class="f1-s-9 text-uppercase cl3 hov-cl10 trans-03">
+                                        Subscribe
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banner -->
+<div class="container">
+    <div class="flex-c-c">
+        <a href="#">
+            {# <img class="max-w-full" src="{{ asset('theme/magnews2/images/banner-01.jpg') }}" alt="IMG"> #}
+            <!-- <img class="max-w-full" src="{{ asset('images/publicites/wami-service.jpg') }}" alt="WAMI SERVICE" height="150px" width="auto"> -->
+        </a>
+    </div>
+</div>
+
+<!-- Latest -->
+<section class="bg0 p-t-60 p-b-35">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 p-b-20">
+                <div class="how2 how2-cl4 flex-s-c m-r-10 m-r-0-sr991">
+                    <h3 class="f1-m-2 cl3 tab01-title">
+                        Derniers Articles
+                    </h3>
+                </div>
+
+                <div class="row p-t-15">
+                    {% for article in last_6_articles %}
+                    <div class="col-sm-6 p-r-25 p-r-15-sr991">
+                        <!-- Item latest -->    
+                        <div class="m-b-15">
+                            <a href="{{ path('article', {'article': article.slug}) }}" class="wrap-pic-w hov1 trans-03">
+                                <img src="{{ asset('images/uploads/') }}{{ article.image.imageName }}" alt="IMG">
+                            </a>
+
+                            <div class="p-t-16">
+                                <h5 class="p-b-5">
+                                    <a href="{{ path('article', {'article': article.slug}) }}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                                        {{ article.titre }} 
+                                    </a>
+                                </h5>
+
+                                <span class="cl8">
+                                    <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                        par {{ article.auteur.nom }} {{ article.auteur.prenom }}
+                                    </a>
+
+                                    <span class="f1-s-3 m-rl-3">
+                                        -
+                                    </span>
+
+                                    <span class="f1-s-3">
+                                        {{ article.createdAt|date('M d, H:i') }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-10 col-lg-4">
+                <div class="p-l-10 p-rl-0-sr991 p-b-20">
+                    <!-- Video -->
+                    <div class="p-b-55">
+                        <div class="how2 how2-cl4 flex-s-c m-b-35">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Vidéo en vedette
+                            </h3>
+                        </div>
+
+                        <div>
+                            <div class="wrap-pic-w pos-relative">
+                                <img src="{{ asset('theme/magnews2/images/video-01.jpg') }}" alt="IMG">
+
+                                <button class="s-full ab-t-l flex-c-c fs-32 cl0 hov-cl10 trans-03" data-toggle="modal" data-target="#modal-video-01">
+                                    <span class="fab fa-youtube"></span>
+                                </button>
+                            </div>
+
+                            <div class="p-tb-16 p-rl-25 bg3">
+                                <h5 class="p-b-5">
+                                    <a href="#" class="f1-m-3 cl0 hov-cl10 trans-03">
+                                        Music lorem ipsum dolor sit amet consectetur 
+                                    </a>
+                                </h5>
+
+                                <span class="cl15">
+                                    <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                        by John Alvarado
+                                    </a>
+
+                                    <span class="f1-s-3 m-rl-3">
+                                        -
+                                    </span>
+
+                                    <span class="f1-s-3">
+                                        Feb 18
+                                    </span>
+                                </span>
+                            </div>
+                        </div>  
+                    </div>
+                        
+                    <!-- Subscribe -->
+                    <div class="bg10 p-rl-35 p-t-28 p-b-35 m-b-55">
+                        <h5 class="f1-m-5 cl0 p-b-10">
+                            Newsletter
+                        </h5>
+
+                        <p class="f1-s-1 cl0 p-b-25">
+                            Obternir tous les derniers contenus livrés par email plusieurs fois par mois.
+                        </p>
+
+                        <form class="size-a-9 pos-relative">
+                            <input class="s-full f1-m-6 cl6 plh9 p-l-20 p-r-55" type="text" name="email" placeholder="Email">
+
+                            <button class="size-a-10 flex-c-c ab-t-r fs-16 cl9 hov-cl10 trans-03">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Tag -->
+                    {# <div class="p-b-55">
+                        <div class="how2 how2-cl4 flex-s-c m-b-30">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                Tags
+                            </h3>
+                        </div>
+
+                        <div class="flex-wr-s-s m-rl--5">
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Fashion
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Lifestyle
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Denim
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Streetstyle
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Crafts
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Magazine
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                News
+                            </a>
+
+                            <a href="#" class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
+                                Blogs
+                            </a>
+                        </div>  
+                    </div> #}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Button trigger modal -->
+{# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> #}
+
+<!-- Modal -->
+<div class="modal fade" id="goodYear" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      {# <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> #}
+      <div class="modal-body" style="padding: 0px">
+        <div class="flex-c-s p-t-8">
+            <a href="#">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: absolute; margin-top: 0px; right: 10px; color: white">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <img class="max-w-full" src="{{ asset('images/good_year.jpg') }}" alt="GOOD YEAR" width="100%" height="100%" style="margin-top: -10px;">
+            </a>
+        </div>
+      </div>
+      {# <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> #}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<!-- <script src="https://cdn.rawgit.com/scottschiller/Snowstorm/master/snowstorm-min.js"></script>
+<script>
+// 1. Define a color for the snow
+snowStorm.snowColor = '#fff';
+// 2. To optimize, define the max number of flakes that can
+// be shown on screen at once
+snowStorm.flakesMaxActive = 96;
+// 3. Allow the snow to flicker in and out of the view
+snowStorm.useTwinkleEffect = true; 
+// 4. Start the snowstorm!
+snowStorm.start();
+</script> -->
+
+<script type="text/javascript">
+    $(function() {
+        "use strict";
+
+        // setTimeout(function(){
+
+        //     $('#goodYear').modal({
+        //         show: true,
+        //         // backdrop: 'static'
+        //     });
+
+        // }, 5000);
+
+        
+    });
+</script>
+
+{% endblock %}

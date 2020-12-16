@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Configuration;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/portail';
 
     /**
      * Login username to be used by the controller.
@@ -70,5 +72,21 @@ class LoginController extends Controller
     public function username()
     {
         return $this->username;
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $configuration = Configuration::find(1);
+
+        return redirect()->route('portail')->cookie(
+            'CNF', json_encode($configuration), 120, '/', NULL, NULL, false
+        );
     }
 }

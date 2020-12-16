@@ -73,9 +73,18 @@ class ConfigurationController extends Controller
      * @param  \App\Models\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Configuration $configuration)
+    public function update(Request $request)
     {
-        //
+        $configuration = Configuration::find(1);
+        
+        $configuration->duree_echeance = $request->duree_echeance;
+        $configuration->duree_echeance_max = $request->duree_echeance_max;
+        $configuration->duree_echeance_min = $request->duree_echeance_min;
+
+        $configuration->save();
+        $configuration->touch();
+
+        return $configuration;
     }
 
     /**
