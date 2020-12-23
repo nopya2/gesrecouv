@@ -15,7 +15,7 @@
                 </button>
             </div>
             <div class="col-md-3 offset-md-3">
-                <input type="text" class="form-control form-control-sm" placeholder="Tapez votre recherche, raison sociale ou NIF" v-model="filter.keyword" v-on:keyup="search">
+                <input type="text" class="form-control form-control-sm" placeholder="Tapez votre recherche, raison sociale ou NIF" v-model="filter.keyword" v-on:input="search">
             </div>
         </div>
 
@@ -114,11 +114,12 @@
 </template>
 
 <script>
-
+    import helpers from './../../services/helpers'
     export default {
 
         props : [],
-
+        mounted(){
+        },
         data(){
             return{
                 clients: [],
@@ -136,6 +137,10 @@
         },
 
         created(){
+            let params = helpers.getParams(window.location.href)
+            if(params){
+                this.filter.keyword = params['keyword']
+            }
 
             if (window.localStorage.getItem('authUser')) {
                 const authUser = JSON.parse(window.localStorage.getItem('authUser'))
@@ -181,6 +186,8 @@
                 this.pagination = pagination;
             },
             search(){
+                let uri = helpers.updateQueryStringParameter('keyword', this.filter.keyword)
+                window.history.pushState("", "", uri);
                 this.fetchClients();
             },
             deleteClient(id){
@@ -215,6 +222,7 @@
                     }
                 })
             }
+            
         }
 
     }

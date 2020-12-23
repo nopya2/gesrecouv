@@ -85,8 +85,8 @@ class LoginController extends Controller
     {
         $configuration = Configuration::find(1);
 
-        return redirect()->route('portail')->cookie(
-            'CNF', json_encode($configuration), 120, '/', NULL, NULL, false
-        );
+        return redirect()->route('portail')
+            ->cookie('CNF', json_encode($configuration), 120, '/', NULL, NULL, false)
+            ->with('welcome', 'welcome');
     }
 }

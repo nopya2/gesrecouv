@@ -15,14 +15,11 @@
                 </button>
             </div>
             <div class="col-md-4 offset-md-2">
-                <!-- <input type="text" class="form-control form-control-sm" 
-                    placeholder="Tapez votre recherche, raison sociale ou NIF" 
-                    v-model="filter.keyword" v-on:keyup="search"> -->
                 
 
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control mr-1" placeholder="Tapez le n° de la facture"
-                        v-model="filter.keyword" v-on:keyup="search">
+                        v-model="filter.keyword" v-on:input="search">
                     <span class="input-group-append">
                         <button type="button" class="btn btn-dark btn-flat mr-1"
                             @click="openFilter"
@@ -296,21 +293,12 @@
     import 'vue-select/dist/vue-select.css';
     import DatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/index.css';
+    import helpers from './../../services/helpers'
 
     export default {
 
         props : [],
         mounted() {
-            let vm = this
-            let url_string = window.location.href
-            let url = new URL(url_string)
-            if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("end")
-            if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
-            if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
-
-            vm.fetchFactures()
-
-            $('[data-toggle="tooltip"]').tooltip()
         },
 
         data(){
@@ -344,6 +332,17 @@
                 const authUser = JSON.parse(window.localStorage.getItem('authUser'))
                 this.api_token = authUser.api_token 
             }
+
+            let vm = this
+            let url_string = window.location.href
+            let url = new URL(url_string)
+            if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("start")
+            if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
+            if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
+
+            vm.fetchFactures()
+
+            $('[data-toggle="tooltip"]').tooltip()
             this.fetchTypes()
 
         },
@@ -418,6 +417,37 @@
                 this.fetchClients(loading, search, this)
             },
             search(){
+            //     let uri = window.location.href
+            //     let uriObj = new URL(uri)
+
+            //     uriObj.
+
+            // // if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("end")
+            // // if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
+            // // if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
+            //     uri = helpers.updateQueryStringParameter('keyword', this.filter.keyword)
+            //     uri = helpers.updateQueryStringParameter('type', this.filter.type)
+            //     uri = helpers.updateQueryStringParameter('statut', this.filter.statut)
+            //     uri = helpers.updateQueryStringParameter('start', this.filter.start)
+            //     uri = helpers.updateQueryStringParameter('end', this.filter.end)
+
+            //     window.history.pushState("", "", uri);
+
+                let urlObj = new URL(window.location.href)
+                if(!urlObj.searchParams.get('keyword') && this.filter.keyword.length > 0) 
+                    urlObj.searchParams.append("keyword", this.filter.keyword)
+                if(!urlObj.searchParams.get('type') && this.filter.type.length > 0)
+                    urlObj.searchParams.append("type", this.filter.type)
+                if(!urlObj.searchParams.get('statut') && this.filter.statut.length > 0) 
+                    urlObj.searchParams.append("statut", this.filter.statut)
+                if(!urlObj.searchParams.get('start') && this.filter.start.length > 0) 
+                    urlObj.searchParams.append("start", this.filter.start)
+                if(!urlObj.searchParams.get('end') && this.filter.end.length > 0) 
+                    urlObj.searchParams.append("end", this.filter.end)
+
+                window.history.pushState("", "", urlObj.href);
+
+
                 this.fetchFactures();
             },
             deleteFacture(facture){
@@ -617,7 +647,7 @@
                 })
             },
             processFilter(){
-                this.fetchFactures()
+                this.search()
             },
             selectRange(e){
                 this.filter.start = e[0]
@@ -644,6 +674,7 @@
                     start: '',
                     end: ''
                 }
+                window.history.pushState("", "", "/factures");
                 this.search()
             }
         }

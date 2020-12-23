@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Gestion des données comptable | Connexion</title>
+    <title>COFIRE ERP | Connexion</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -22,7 +22,7 @@
 <body class="hold-transition login-page">
 <div class="login-box" id="app">
     <div class="login-logo">
-        <a href="#"><b>Ges</b>RECOUV</a>
+        <a href="#"><b>COFIRE</b> ERP</a>
     </div>
     <!-- /.login-logo -->
     <login-component></login-component>

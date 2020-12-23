@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import store from './store/store'
 import Vuelidate from 'vuelidate';
 import VueContext from 'vue-context';
 import Swatches from 'vue-swatches';
@@ -101,6 +102,7 @@ Vue.directive('select', {
 
 
 const app = new Vue({
+    store,
     components: {
         VueContext,
         Swatches
