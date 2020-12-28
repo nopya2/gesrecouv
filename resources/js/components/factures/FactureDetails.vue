@@ -23,7 +23,7 @@
                                     </a>
                                     <a class="dropdown-item text-warning text-sm"
                                         :href="`/factures/${facture.id}/edit`"
-                                        v-if="facture.state == 'waiting' && facture.statut == 'in_progress' && facture.m_paid==0">
+                                        v-if="facture.statut != 'cancelled' && facture.statut != 'credit_note'">
                                         <i class="fas fa-edit mr-1"></i> Modifier
                                     </a>
                                     <a class="dropdown-item text-indigo text-sm" href="javascript:void(0);" 
@@ -269,7 +269,7 @@
                     </div>
                 </div>
 
-                <relances-facture :facture_id="facture_id"></relances-facture>
+                <relances-facture :facture_id="facture_id" :statut_facture="facture.statut"></relances-facture>
                 
                 <div class="card card-gray" v-if="activities.length">
                     <div class="card-header">

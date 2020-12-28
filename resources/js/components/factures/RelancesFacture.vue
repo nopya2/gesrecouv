@@ -10,7 +10,8 @@
                     <button
                         @click="showModal"
                         type="button" 
-                        class="btn btn-info btn-sm">
+                        class="btn btn-info btn-sm"
+                        :disabled="statut_facture == 'credit_note' || statut_facture == 'cancelled' || statut_facture == 'paid'">
                         <i class="fas fa-redo mr-1"></i> Relancer
                     </button>
                 </div>
@@ -106,7 +107,7 @@
 
     export default {
         name: 'RelancesFacture',
-        props : ['facture_id'],
+        props : ['facture_id', 'statut_facture'],
         mounted() {
             var vm = this
             $('#modal-relaunch-form').on('hidden.bs.modal', function (e) {

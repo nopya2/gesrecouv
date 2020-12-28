@@ -28,9 +28,21 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="example1">
                     <thead>
-                    <tr class="text-center">
-                        <th>Raison sociale</th>
-                        <th>NIF</th>
+                    <tr>
+                        <th @click="updateSortOrder('raison_sociale')" style="cursor: pointer;">
+                            Raison sociale
+                            <i class="float-right text-muted"
+                                style="cursor: pointer;"
+                                :class="{'fas fa-sort-amount-down': filter.order === 'desc', 'fas fa-sort-amount-up': filter.order === 'asc'}"
+                                v-if="filter.sort==='raison_sociale'"></i>
+                        </th>
+                        <th  @click="updateSortOrder('nif')" style="cursor: pointer;">
+                            NIF
+                            <i class="float-right text-muted"
+                                style="cursor: pointer;"
+                                :class="{'fas fa-sort-amount-down': filter.order === 'desc', 'fas fa-sort-amount-up': filter.order === 'asc'}"
+                                v-if="filter.sort==='nif'"></i>
+                        </th>
                         <th>Type</th>
                         <!-- <th>Téléphone</th> -->
                         <th>Ville</th>
@@ -48,7 +60,7 @@
                         </td>
                     </tr>
                     <tr v-for="client in clients" :key="client.id">
-                        <td>{{ client.raison_sociale }}</td>
+                        <td style="width: 440px">{{ client.raison_sociale }}</td>
                         <td class="text-center">{{ client.nif }}</td>
                         <td>{{ client.type }}</td>
                         <td>{{ client.ville }}</td>
@@ -125,6 +137,8 @@
                 clients: [],
                 filter: {
                     keyword: '',
+                    sort: 'raison_sociale',
+                    order: 'asc'
                 },
                 api_token: '',
                 pagination: {
@@ -138,16 +152,11 @@
 
         created(){
             let params = helpers.getParams(window.location.href)
-            if(params){
+            if(params['keyword'] != undefined){
                 this.filter.keyword = params['keyword']
             }
 
-            if (window.localStorage.getItem('authUser')) {
-                const authUser = JSON.parse(window.localStorage.getItem('authUser'))
-                this.api_token = authUser.api_token
-
-                this.fetchClients()
-            }
+            this.fetchClients()
 
         },
 
@@ -156,16 +165,15 @@
                 let vm = this;
                 this.spinner = true;
 
-                let url_parameters = `api_token=${this.api_token}&keyword=${this.filter.keyword}&limit=15`
+                let url_parameters = `keyword=${this.filter.keyword}&sort=${this.filter.sort}&order=${this.filter.order}&limit=15`
                 let page_url = `/api/clients?${url_parameters}`
                 if(page) page_url = `${page}&${url_parameters}`
 
-                fetch(page_url)
-                    .then(res => res.json())
+                axios.get(page_url)
                     .then(res => {
                         this.spinner = false
-                        this.clients = res.data
-                        vm.makePagination(res.meta, res.links)
+                        this.clients = res.data.data
+                        vm.makePagination(res.data.meta, res.data.links)
                     })
                     .catch(error => {
                         toastr.error('Erreur chargement des données!.')
@@ -221,6 +229,13 @@
                         vm.fetchClients();
                     }
                 })
+            },
+            updateSortOrder(sort){
+                this.filter.sort = sort
+                if(this.filter.order == 'asc') this.filter.order = 'desc'
+                else this.filter.order = 'asc'
+
+                this.search()
             }
             
         }

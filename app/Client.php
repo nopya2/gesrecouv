@@ -129,13 +129,4 @@ class Client extends Model
         });
     }
 
-    // public function getMNotPaidLate(){
-    //     return $filtered = $this->factures->filter(function ($item, $key){
-    //         return $item->statut == 'paid';
-    //     })->sum('montant');
-    // }
-
-
-
-
 }

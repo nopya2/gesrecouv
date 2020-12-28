@@ -3280,17 +3280,32 @@ __webpack_require__.r(__webpack_exports__);
   props: ['client_id', 'previous', 'next', 'nb_days_next_echeance', 'nb_days_last_paiement', 'nb_days_first_late_facture'],
   data: function data() {
     return {
-      client: new _models_client__WEBPACK_IMPORTED_MODULE_0__["default"]()
+      client: new _models_client__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      detailsClient: {
+        m_non_paye: 0,
+        m_non_paye_en_attente: 0,
+        m_non_paye_en_retard: 0,
+        m_paye: 0
+      }
     };
   },
   created: function created() {
     this.fetchClient();
+    this.getDetailsClient();
   },
   methods: {
     fetchClient: function fetchClient() {
       var vm = this;
       axios.get("/api/clients/".concat(this.client_id)).then(function (res) {
         vm.client = res.data.data;
+      })["catch"](function (error) {
+        toastr.error('Erreur chargement du client!');
+      });
+    },
+    getDetailsClient: function getDetailsClient() {
+      var vm = this;
+      axios.get("/api/clients/".concat(this.client_id, "/details-client")).then(function (res) {
+        vm.detailsClient = res.data;
       })["catch"](function (error) {
         toastr.error('Erreur chargement du client!');
       });
@@ -3977,6 +3992,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: [],
@@ -3985,7 +4012,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       clients: [],
       filter: {
-        keyword: ''
+        keyword: '',
+        sort: 'raison_sociale',
+        order: 'asc'
       },
       api_token: '',
       pagination: {
@@ -3998,15 +4027,11 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var params = _services_helpers__WEBPACK_IMPORTED_MODULE_0__["default"].getParams(window.location.href);
 
-    if (params) {
+    if (params['keyword'] != undefined) {
       this.filter.keyword = params['keyword'];
     }
 
-    if (window.localStorage.getItem('authUser')) {
-      var authUser = JSON.parse(window.localStorage.getItem('authUser'));
-      this.api_token = authUser.api_token;
-      this.fetchClients();
-    }
+    this.fetchClients();
   },
   methods: {
     fetchClients: function fetchClients(page) {
@@ -4014,15 +4039,13 @@ __webpack_require__.r(__webpack_exports__);
 
       var vm = this;
       this.spinner = true;
-      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=15");
+      var url_parameters = "keyword=".concat(this.filter.keyword, "&sort=").concat(this.filter.sort, "&order=").concat(this.filter.order, "&limit=15");
       var page_url = "/api/clients?".concat(url_parameters);
       if (page) page_url = "".concat(page, "&").concat(url_parameters);
-      fetch(page_url).then(function (res) {
-        return res.json();
-      }).then(function (res) {
+      axios.get(page_url).then(function (res) {
         _this.spinner = false;
-        _this.clients = res.data;
-        vm.makePagination(res.meta, res.links);
+        _this.clients = res.data.data;
+        vm.makePagination(res.data.meta, res.data.links);
       })["catch"](function (error) {
         toastr.error('Erreur chargement des données!.');
         _this.spinner = false;
@@ -4078,6 +4101,11 @@ __webpack_require__.r(__webpack_exports__);
           vm.fetchClients();
         }
       });
+    },
+    updateSortOrder: function updateSortOrder(sort) {
+      this.filter.sort = sort;
+      if (this.filter.order == 'asc') this.filter.order = 'desc';else this.filter.order = 'asc';
+      this.search();
     }
   }
 });
@@ -4194,7 +4222,6 @@ __webpack_require__.r(__webpack_exports__);
       var page_url = "/api/clients/".concat(this.client_id, "/factures-client");
       if (page) page_url = page;
       axios.get(page_url).then(function (res) {
-        console.log(res);
         vm.factures = res.data.data;
         vm.makePagination(res.data.meta, res.data.links);
         _this.spinner = false;
@@ -9122,6 +9149,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -9317,6 +9357,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
 /* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _services_helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../../services/helpers */ "./resources/js/services/helpers.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/index.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -9612,6 +9653,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -9624,6 +9688,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       factures: [],
+      totalFacture: 0,
       filter: {
         keyword: '',
         type: '',
@@ -9648,15 +9713,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (window.localStorage.getItem('authUser')) {
       var authUser = JSON.parse(window.localStorage.getItem('authUser'));
       this.api_token = authUser.api_token;
-    }
+    } //Initalisation de la période
 
+
+    this.filter.start = Object(date_fns__WEBPACK_IMPORTED_MODULE_6__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_6__["startOfMonth"])(new Date()), 'yyyy-MM-dd');
+    this.filter.end = Object(date_fns__WEBPACK_IMPORTED_MODULE_6__["format"])(Object(date_fns__WEBPACK_IMPORTED_MODULE_6__["endOfMonth"])(new Date()), 'yyyy-MM-dd');
     var vm = this;
     var url_string = window.location.href;
     var url = new URL(url_string);
-    if (url.searchParams.get("start")) vm.filter.end = url.searchParams.get("start");
+    if (url.searchParams.get("start")) vm.filter.start = url.searchParams.get("start");
     if (url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end");
     if (url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut");
-    vm.fetchFactures();
+    this.filter.range = [this.filter.start, this.filter.end];
+    vm.search();
     $('[data-toggle="tooltip"]').tooltip();
     this.fetchTypes();
   },
@@ -9668,15 +9737,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.spinner = true;
       var client_id = '';
       if (this.filter.client != '' && this.filter.client != null) client_id = this.filter.client.id;else client_id = '';
-      var url_parameters = "api_token=".concat(this.api_token, "&keyword=").concat(this.filter.keyword, "&limit=10") + "&client_id=".concat(client_id, "&statut=").concat(this.filter.statut, "&start=").concat(this.filter.start, "&end=").concat(this.filter.end) + "&type=".concat(this.filter.type);
+      var url_parameters = "keyword=".concat(this.filter.keyword, "&limit=10") + "&client_id=".concat(client_id, "&statut=").concat(this.filter.statut, "&start=").concat(this.filter.start, "&end=").concat(this.filter.end) + "&type=".concat(this.filter.type);
       var page_url = "/api/factures?".concat(url_parameters);
       if (page) page_url = "".concat(page, "&").concat(url_parameters);
-      fetch(page_url).then(function (res) {
-        return res.json();
-      }).then(function (res) {
-        vm.spinner = false;
-        vm.factures = res.data;
-        vm.makePagination(res.meta, res.links);
+      axios.get(page_url).then(function (res) {
+        console.log(res);
+        vm.spinner = false; // vm.factures = res.data.data
+        // vm.makePagination(res.data.meta, res.data.links)
+        // vm.totalFacture = res.data.total_facture
       })["catch"](function (error) {
         toastr.error('Erreur chargement des données!.');
         _this.spinner = false;
@@ -9718,24 +9786,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.fetchClients(loading, search, this);
     },
     search: function search() {
-      //     let uri = window.location.href
-      //     let uriObj = new URL(uri)
-      //     uriObj.
-      // // if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("end")
-      // // if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
-      // // if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
-      //     uri = helpers.updateQueryStringParameter('keyword', this.filter.keyword)
-      //     uri = helpers.updateQueryStringParameter('type', this.filter.type)
-      //     uri = helpers.updateQueryStringParameter('statut', this.filter.statut)
-      //     uri = helpers.updateQueryStringParameter('start', this.filter.start)
-      //     uri = helpers.updateQueryStringParameter('end', this.filter.end)
-      //     window.history.pushState("", "", uri);
-      var urlObj = new URL(window.location.href);
-      if (!urlObj.searchParams.get('keyword') && this.filter.keyword.length > 0) urlObj.searchParams.append("keyword", this.filter.keyword);
-      if (!urlObj.searchParams.get('type') && this.filter.type.length > 0) urlObj.searchParams.append("type", this.filter.type);
-      if (!urlObj.searchParams.get('statut') && this.filter.statut.length > 0) urlObj.searchParams.append("statut", this.filter.statut);
-      if (!urlObj.searchParams.get('start') && this.filter.start.length > 0) urlObj.searchParams.append("start", this.filter.start);
-      if (!urlObj.searchParams.get('end') && this.filter.end.length > 0) urlObj.searchParams.append("end", this.filter.end);
+      var urlObj = new URL(window.location.href); //On modifie le keyword à l'url
+
+      if (!urlObj.searchParams.get('keyword') && this.filter.keyword.length < 0) urlObj.searchParams.append("keyword", this.filter.keyword);else urlObj.searchParams.set("keyword", this.filter.keyword); //On modifie le type à l'url
+
+      if (!urlObj.searchParams.get('type') && this.filter.type.length < 0) urlObj.searchParams.append("type", this.filter.type);else urlObj.searchParams.set("type", this.filter.type); //On modifie le statut à l'url
+
+      if (!urlObj.searchParams.get('statut') && this.filter.statut.length < 0) urlObj.searchParams.append("statut", this.filter.statut);else urlObj.searchParams.set("statut", this.filter.statut); //On modifie la date de début à l'url
+
+      if (!urlObj.searchParams.get('start') && this.filter.start.length < 0) urlObj.searchParams.append("start", this.filter.start);else urlObj.searchParams.set("start", this.filter.start); //On modifie la date de fin à l'url
+
+      if (!urlObj.searchParams.get('end') && this.filter.end.length < 0) urlObj.searchParams.append("end", this.filter.end);else urlObj.searchParams.set("end", this.filter.end); //On actualise l'url
+
       window.history.pushState("", "", urlObj.href);
       this.fetchFactures();
     },
@@ -10089,11 +10151,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'RelancesFacture',
-  props: ['facture_id'],
+  props: ['facture_id', 'statut_facture'],
   mounted: function mounted() {
     var vm = this;
     $('#modal-relaunch-form').on('hidden.bs.modal', function (e) {
@@ -14961,7 +15024,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.vertical-align[data-v-6334b0b2]{\n    vertical-align: middle;\n}\n", ""]);
+exports.push([module.i, "\n.vertical-align[data-v-6334b0b2]{\n    vertical-align: middle;\n}\n.info-box[data-v-6334b0b2]{\n    min-height: 0px;\n}\n", ""]);
 
 // exports
 
@@ -60776,7 +60839,7 @@ var render = function() {
               [
                 _vm._v(
                   "Somme due : " +
-                    _vm._s(_vm._f("numFormat")(_vm.client.m_not_paid)) +
+                    _vm._s(_vm._f("numFormat")(_vm.detailsClient.m_non_paye)) +
                     " Fcfa"
                 )
               ]
@@ -60795,7 +60858,9 @@ var render = function() {
                       _c("strong", { staticClass: "text-lg" }, [
                         _vm._v(
                           _vm._s(
-                            _vm._f("numFormat")(_vm.client.m_not_paid_late)
+                            _vm._f("numFormat")(
+                              _vm.detailsClient.m_non_paye_en_retard
+                            )
                           ) + " Fcfa"
                         )
                       ])
@@ -60818,7 +60883,9 @@ var render = function() {
                       _c("strong", { staticClass: "text-lg" }, [
                         _vm._v(
                           _vm._s(
-                            _vm._f("numFormat")(_vm.client.m_not_paid_waiting)
+                            _vm._f("numFormat")(
+                              _vm.detailsClient.m_non_paye_en_attente
+                            )
                           ) + " Fcfa"
                         )
                       ])
@@ -60838,8 +60905,9 @@ var render = function() {
                       _vm._v(" "),
                       _c("strong", { staticClass: "text-lg" }, [
                         _vm._v(
-                          _vm._s(_vm._f("numFormat")(_vm.client.m_paid)) +
-                            " Fcfa"
+                          _vm._s(
+                            _vm._f("numFormat")(_vm.detailsClient.m_paye)
+                          ) + " Fcfa"
                         )
                       ])
                     ])
@@ -62705,7 +62773,77 @@ var render = function() {
             attrs: { id: "example1" }
           },
           [
-            _vm._m(4),
+            _c("thead", [
+              _c("tr", [
+                _c(
+                  "th",
+                  {
+                    staticStyle: { cursor: "pointer" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateSortOrder("raison_sociale")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Raison sociale\n                        "
+                    ),
+                    _vm.filter.sort === "raison_sociale"
+                      ? _c("i", {
+                          staticClass: "float-right text-muted",
+                          class: {
+                            "fas fa-sort-amount-down":
+                              _vm.filter.order === "desc",
+                            "fas fa-sort-amount-up": _vm.filter.order === "asc"
+                          },
+                          staticStyle: { cursor: "pointer" }
+                        })
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticStyle: { cursor: "pointer" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateSortOrder("nif")
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        NIF\n                        "
+                    ),
+                    _vm.filter.sort === "nif"
+                      ? _c("i", {
+                          staticClass: "float-right text-muted",
+                          class: {
+                            "fas fa-sort-amount-down":
+                              _vm.filter.order === "desc",
+                            "fas fa-sort-amount-up": _vm.filter.order === "asc"
+                          },
+                          staticStyle: { cursor: "pointer" }
+                        })
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c("th", [_vm._v("Type")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Ville")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Responsable")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Téléphone responsable")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("E-mail")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Actions")])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
@@ -62723,7 +62861,9 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(_vm.clients, function(client) {
                   return _c("tr", { key: client.id }, [
-                    _c("td", [_vm._v(_vm._s(client.raison_sociale))]),
+                    _c("td", { staticStyle: { width: "440px" } }, [
+                      _vm._v(_vm._s(client.raison_sociale))
+                    ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-center" }, [
                       _vm._v(_vm._s(client.nif))
@@ -62741,13 +62881,13 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", { staticClass: "text-center" }, [
                       _c("a", { attrs: { href: "clients/" + client.id } }, [
-                        _vm._m(5, true)
+                        _vm._m(4, true)
                       ]),
                       _vm._v(" "),
                       _c(
                         "a",
                         { attrs: { href: "clients/" + client.id + "/edit" } },
-                        [_vm._m(6, true)]
+                        [_vm._m(5, true)]
                       ),
                       _vm._v(" "),
                       _c(
@@ -62770,7 +62910,7 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm._m(7)
+            _vm._m(6)
           ]
         )
       ]),
@@ -62901,30 +63041,6 @@ var staticRenderFns = [
       { staticClass: "spinner-grow text-warning", attrs: { role: "status" } },
       [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", { staticClass: "text-center" }, [
-        _c("th", [_vm._v("Raison sociale")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("NIF")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Type")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Ville")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Responsable")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Téléphone responsable")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("E-mail")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
   },
   function() {
     var _vm = this
@@ -69154,9 +69270,8 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm.facture.state == "waiting" &&
-                    _vm.facture.statut == "in_progress" &&
-                    _vm.facture.m_paid == 0
+                    _vm.facture.statut != "cancelled" &&
+                    _vm.facture.statut != "credit_note"
                       ? _c(
                           "a",
                           {
@@ -69872,7 +69987,12 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("relances-facture", { attrs: { facture_id: _vm.facture_id } }),
+          _c("relances-facture", {
+            attrs: {
+              facture_id: _vm.facture_id,
+              statut_facture: _vm.facture.statut
+            }
+          }),
           _vm._v(" "),
           _vm.activities.length
             ? _c("div", { staticClass: "card card-gray" }, [
@@ -71073,7 +71193,10 @@ var render = function() {
                           attrs: {
                             options: _vm.options_clients,
                             label: "raison_sociale",
-                            filterable: false
+                            filterable: false,
+                            disabled:
+                              _vm.facture.state == "cancelled" ||
+                              _vm.facture.state == "validated"
                           },
                           on: {
                             input: _vm.setFactureClient,
@@ -71150,7 +71273,10 @@ var render = function() {
                           attrs: {
                             options: _vm.options_factures,
                             label: "num_facture",
-                            filterable: false
+                            filterable: false,
+                            disabled:
+                              _vm.facture.state == "cancelled" ||
+                              _vm.facture.state == "validated"
                           },
                           on: {
                             input: _vm.setFactureParent,
@@ -71219,7 +71345,10 @@ var render = function() {
                         type: "text",
                         placeholder: "Entrez le n° de facture",
                         name: "num_facture",
-                        autocomplete: "off"
+                        autocomplete: "off",
+                        disabled:
+                          _vm.facture.state == "cancelled" ||
+                          _vm.facture.state == "validated"
                       },
                       domProps: { value: _vm.$v.facture.num_facture.$model },
                       on: {
@@ -71263,7 +71392,10 @@ var render = function() {
                           value: "id",
                           reduce: function(type) {
                             return type.id
-                          }
+                          },
+                          disabled:
+                            _vm.facture.state == "cancelled" ||
+                            _vm.facture.state == "validated"
                         },
                         model: {
                           value: _vm.facture.type_id,
@@ -71307,7 +71439,10 @@ var render = function() {
                       attrs: {
                         type: "number",
                         placeholder: "Entrez le montant",
-                        name: "montant"
+                        name: "montant",
+                        disabled:
+                          _vm.facture.state == "cancelled" ||
+                          _vm.facture.state == "validated"
                       },
                       domProps: { value: _vm.$v.facture.montant.$model },
                       on: {
@@ -71352,7 +71487,10 @@ var render = function() {
                         type: "text",
                         placeholder: "Entrez le n° de dossier",
                         name: "num_dossier",
-                        autocomplete: "off"
+                        autocomplete: "off",
+                        disabled:
+                          _vm.facture.state == "cancelled" ||
+                          _vm.facture.state == "validated"
                       },
                       domProps: { value: _vm.$v.facture.num_dossier.$model },
                       on: {
@@ -71387,7 +71525,10 @@ var render = function() {
                         attrs: {
                           "value-type": "YYYY-MM-DD",
                           format: "DD/MM/YYYY",
-                          placeholder: "Selectionnez une date"
+                          placeholder: "Selectionnez une date",
+                          disabled:
+                            _vm.facture.state == "cancelled" ||
+                            _vm.facture.state == "validated"
                         },
                         model: {
                           value: _vm.$v.facture.date_creation.$model,
@@ -71420,7 +71561,8 @@ var render = function() {
                         attrs: {
                           "value-type": "YYYY-MM-DD",
                           format: "DD/MM/YYYY",
-                          placeholder: "Selectionnez une date"
+                          placeholder: "Selectionnez une date",
+                          disabled: _vm.facture.date_depot != null
                         },
                         on: {
                           input: function($event) {
@@ -71454,7 +71596,8 @@ var render = function() {
                         attrs: {
                           "value-type": "YYYY-MM-DD",
                           format: "DD/MM/YYYY",
-                          placeholder: "Selectionnez une date"
+                          placeholder: "Selectionnez une date",
+                          disabled: _vm.facture.date_depot != null
                         },
                         model: {
                           value: _vm.$v.facture.date_echeance.$model,
@@ -71508,7 +71651,7 @@ var render = function() {
                     ? _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary shadow-2",
+                          staticClass: "btn btn-warning shadow-2",
                           attrs: { type: "button", disabled: "" }
                         },
                         [
@@ -71517,7 +71660,7 @@ var render = function() {
                             attrs: { role: "status" }
                           }),
                           _vm._v(
-                            "\n                                    Création en cours...\n                                "
+                            "\n                                    Enregistrement en cours...\n                                "
                           )
                         ]
                       )
@@ -71658,10 +71801,30 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
+    _c("div", { staticClass: "row mt-4" }, [
+      _c("div", { staticClass: "col-md-2 offset-8" }, [
+        _c("div", { staticClass: "info-box mb-3 bg-success" }, [
+          _vm._m(3),
+          _vm._v(" "),
+          _c("div", { staticClass: "info-box-content" }, [
+            _c("span", { staticClass: "info-box-text" }, [
+              _vm._v("Total facturé")
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "info-box-number" }, [
+              _vm._v(_vm._s(_vm._f("numFormat")(_vm.totalFacture)))
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(4)
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "table-border-style mt-3" }, [
       _vm.spinner
         ? _c("div", { staticClass: "d-flex justify-content-center mb-3" }, [
-            _vm._m(3)
+            _vm._m(5)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -71673,7 +71836,7 @@ var render = function() {
             attrs: { id: "example1" }
           },
           [
-            _vm._m(4),
+            _vm._m(6),
             _vm._v(" "),
             _c(
               "tbody",
@@ -71689,8 +71852,8 @@ var render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                _vm._l(_vm.factures, function(facture) {
-                  return _c("tr", { key: facture.id }, [
+                _vm._l(_vm.factures, function(facture, index) {
+                  return _c("tr", { key: index }, [
                     _c("td", { staticClass: "vertical-align" }, [
                       _c("div", { staticClass: "dropdown text-center" }, [
                         _c("button", {
@@ -71726,7 +71889,7 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            _vm._m(5, true),
+                            _vm._m(7, true),
                             _vm._v(" "),
                             facture.state == "waiting"
                               ? _c(
@@ -71752,9 +71915,8 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            facture.state == "waiting" &&
-                            facture.statut == "in_progress" &&
-                            facture.m_paid == 0
+                            facture.statut != "cancelled" &&
+                            facture.statut != "credit_note"
                               ? _c(
                                   "a",
                                   {
@@ -72048,7 +72210,7 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm._m(6)
+            _vm._m(8)
           ]
         )
       ]),
@@ -72144,7 +72306,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "modal-filter" } }, [
       _c("div", { staticClass: "modal-dialog modal-lg" }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(7),
+          _vm._m(9),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
             _c("div", { staticClass: "row" }, [
@@ -72343,11 +72505,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("date-picker", {
                     attrs: {
-                      type: "date",
                       range: "",
                       placeholder: "Select date range",
-                      "value-type": "format",
-                      format: "YYYY-MM-DD"
+                      "value-type": "YYYY-MM-DD",
+                      format: "DD/MM/YYYY"
                     },
                     on: { input: _vm.selectRange },
                     model: {
@@ -72426,6 +72587,36 @@ var staticRenderFns = [
     return _c("button", { staticClass: "btn btn-primary btn-sm" }, [
       _c("i", { staticClass: "fas fa-print" }),
       _vm._v(" Exporter excel\n            ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "info-box-icon" }, [
+      _c("i", { staticClass: "fas fa-tag" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("div", { staticClass: "info-box mb-3 bg-warning" }, [
+        _c("span", { staticClass: "info-box-icon" }, [
+          _c("i", { staticClass: "fas fa-tag" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "info-box-content" }, [
+          _c("span", { staticClass: "info-box-text" }, [
+            _vm._v("Reste à recouvrer")
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "info-box-number" }, [
+            _vm._v("100000000000000000")
+          ])
+        ])
+      ])
     ])
   },
   function() {
@@ -72564,7 +72755,13 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-info btn-sm",
-              attrs: { type: "button" },
+              attrs: {
+                type: "button",
+                disabled:
+                  _vm.statut_facture == "credit_note" ||
+                  _vm.statut_facture == "cancelled" ||
+                  _vm.statut_facture == "paid"
+              },
               on: { click: _vm.showModal }
             },
             [

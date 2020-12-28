@@ -15,8 +15,6 @@
                 </button>
             </div>
             <div class="col-md-4 offset-md-2">
-                
-
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control mr-1" placeholder="Tapez le n° de la facture"
                         v-model="filter.keyword" v-on:input="search">
@@ -40,6 +38,31 @@
                     </span>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-2 offset-8">
+                <div class="info-box mb-3 bg-success">
+                    <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total facturé</span>
+                        <span class="info-box-number">{{ totalFacture|numFormat }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="info-box mb-3 bg-warning">
+                    <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Reste à recouvrer</span>
+                        <span class="info-box-number">100000000000000000</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
             </div>
         </div>
 
@@ -72,7 +95,7 @@
                             Aucune facture trouvée
                         </td>
                     </tr>
-                    <tr v-for="facture in factures" :key="facture.id">
+                    <tr v-for="(facture, index) in factures" :key="index">
                         <td class="vertical-align">
                             <div class="dropdown text-center">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -92,7 +115,7 @@
                                     </a>
                                     <a class="dropdown-item text-warning text-sm"
                                         :href="`/factures/${facture.id}/edit`"
-                                        v-if="facture.state == 'waiting' && facture.statut == 'in_progress' && facture.m_paid==0">
+                                        v-if="facture.statut != 'cancelled' && facture.statut != 'credit_note'">
                                         <i class="fas fa-edit mr-1"></i> Modifier
                                     </a>
                                     <a class="dropdown-item text-indigo text-sm" href="javascript:void(0);" 
@@ -260,12 +283,11 @@
                                 <label>Période</label>
                                 <date-picker
                                     v-model="filter.range"
-                                    type="date" 
                                     @input="selectRange"
                                     range
                                     placeholder="Select date range"
-                                    value-type="format"
-                                    format="YYYY-MM-DD"></date-picker>
+                                    value-type="YYYY-MM-DD"
+                                    format="DD/MM/YYYY"></date-picker>
                             </div>
                         </div>
                     </div>
@@ -294,6 +316,7 @@
     import DatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/index.css';
     import helpers from './../../services/helpers'
+    import { startOfMonth, endOfMonth, getMonth, format } from 'date-fns'
 
     export default {
 
@@ -304,6 +327,7 @@
         data(){
             return{
                 factures: [],
+                totalFacture: 0,
                 filter: {
                     keyword: '',
                     type: '',
@@ -333,14 +357,20 @@
                 this.api_token = authUser.api_token 
             }
 
+            //Initalisation de la période
+            this.filter.start = format(startOfMonth(new Date()), 'yyyy-MM-dd')
+            this.filter.end = format(endOfMonth(new Date()), 'yyyy-MM-dd')
+
             let vm = this
             let url_string = window.location.href
             let url = new URL(url_string)
-            if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("start")
+            if(url.searchParams.get("start")) vm.filter.start = url.searchParams.get("start")
             if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
             if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
 
-            vm.fetchFactures()
+            this.filter.range = [this.filter.start, this.filter.end]
+
+            vm.search()
 
             $('[data-toggle="tooltip"]').tooltip()
             this.fetchTypes()
@@ -357,18 +387,19 @@
                 else
                     client_id = ''
                     
-                let url_parameters = `api_token=${this.api_token}&keyword=${this.filter.keyword}&limit=10`
+                let url_parameters = `keyword=${this.filter.keyword}&limit=10`
                     +`&client_id=${client_id}&statut=${this.filter.statut}&start=${this.filter.start}&end=${this.filter.end}`
                     +`&type=${this.filter.type}`
                 let page_url = `/api/factures?${url_parameters}`
                 if(page) page_url = `${page}&${url_parameters}`
 
-                fetch(page_url)
-                    .then(res => res.json())
+                axios.get(page_url)
                     .then(res => {
+                        console.log(res)
                         vm.spinner = false
-                        vm.factures = res.data
-                        vm.makePagination(res.meta, res.links)
+                        // vm.factures = res.data.data
+                        // vm.makePagination(res.data.meta, res.data.links)
+                        // vm.totalFacture = res.data.total_facture
                     })
                     .catch(error => {
                         toastr.error('Erreur chargement des données!.')
@@ -417,34 +448,35 @@
                 this.fetchClients(loading, search, this)
             },
             search(){
-            //     let uri = window.location.href
-            //     let uriObj = new URL(uri)
-
-            //     uriObj.
-
-            // // if(url.searchParams.get("start")) vm.filter.end = url.searchParams.get("end")
-            // // if(url.searchParams.get("end")) vm.filter.end = url.searchParams.get("end")
-            // // if(url.searchParams.get("statut")) vm.filter.statut = url.searchParams.get("statut")
-            //     uri = helpers.updateQueryStringParameter('keyword', this.filter.keyword)
-            //     uri = helpers.updateQueryStringParameter('type', this.filter.type)
-            //     uri = helpers.updateQueryStringParameter('statut', this.filter.statut)
-            //     uri = helpers.updateQueryStringParameter('start', this.filter.start)
-            //     uri = helpers.updateQueryStringParameter('end', this.filter.end)
-
-            //     window.history.pushState("", "", uri);
 
                 let urlObj = new URL(window.location.href)
-                if(!urlObj.searchParams.get('keyword') && this.filter.keyword.length > 0) 
+                //On modifie le keyword à l'url
+                if(!urlObj.searchParams.get('keyword') && this.filter.keyword.length < 0)
                     urlObj.searchParams.append("keyword", this.filter.keyword)
-                if(!urlObj.searchParams.get('type') && this.filter.type.length > 0)
+                else
+                    urlObj.searchParams.set("keyword", this.filter.keyword)
+                //On modifie le type à l'url
+                if(!urlObj.searchParams.get('type') && this.filter.type.length < 0)
                     urlObj.searchParams.append("type", this.filter.type)
-                if(!urlObj.searchParams.get('statut') && this.filter.statut.length > 0) 
+                else
+                    urlObj.searchParams.set("type", this.filter.type)
+                //On modifie le statut à l'url
+                if(!urlObj.searchParams.get('statut') && this.filter.statut.length < 0) 
                     urlObj.searchParams.append("statut", this.filter.statut)
-                if(!urlObj.searchParams.get('start') && this.filter.start.length > 0) 
+                else
+                    urlObj.searchParams.set("statut", this.filter.statut)
+                //On modifie la date de début à l'url
+                if(!urlObj.searchParams.get('start') && this.filter.start.length < 0) 
                     urlObj.searchParams.append("start", this.filter.start)
-                if(!urlObj.searchParams.get('end') && this.filter.end.length > 0) 
+                else
+                    urlObj.searchParams.set("start", this.filter.start)
+                //On modifie la date de fin à l'url
+                if(!urlObj.searchParams.get('end') && this.filter.end.length < 0) 
                     urlObj.searchParams.append("end", this.filter.end)
+                else
+                    urlObj.searchParams.set("end", this.filter.end)
 
+                //On actualise l'url
                 window.history.pushState("", "", urlObj.href);
 
 
@@ -685,5 +717,8 @@
 <style scoped>
 .vertical-align{
     vertical-align: middle;
+}
+.info-box{
+    min-height: 0px;
 }
 </style>

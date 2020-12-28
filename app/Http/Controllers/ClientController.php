@@ -39,6 +39,11 @@ class ClientController extends Controller
         // if (!Gate::allows('isAdmin')) {
         //     abort(403, 'Désolé, vous ne pouvez pas executer cette action');
         // }
+        if($request->has('sort')) $sort = $request->sort;
+        else $sort= 'raison_sociale';
+
+        if($request->has('order')) $order = $request->order;
+        else $order= 'asc';
 
         $clients = Client::where(function ($query) use ($request){
             $query
@@ -46,7 +51,7 @@ class ClientController extends Controller
                 ->orWhere('nif', 'like', '%' . $request->keyword . '%');
 
             })
-            ->orderBy('raison_sociale', 'asc')->paginate($limit);
+            ->orderBy($sort, $order)->paginate($limit);
 
         return ClientResource::collection($clients);
     }
@@ -233,12 +238,62 @@ class ClientController extends Controller
     public function getFacturesByClient(Request $request, Client $client){
         $factures = Facture::whereDeleted(false)
                     ->where('statut', '!=', 'cancelled')
+                    ->where('statut', '!=', 'credit_note')
                     ->where('deleted', false)
                     ->where('client_id', $client->id)
                     ->orderBy('id', 'desc')
                     ->paginate(10);
 
         return FactureResource::collection($factures);
+    }
+
+    /**
+     * Détails du client
+     * Montant payé
+     * Montant non payé
+     * Montant non payé en retard
+     * Montant en attente de paiement
+     * Montant annulé
+     */
+    public function detailsClient(Client $client){
+        $facturesPaye = Facture::where('client_id', $client->id)
+            ->whereDeleted(false)
+            ->where('statut', 'paid')
+            ->get()
+            ->sum('montant');
+        
+        $facturesNonPaye = Facture::where('client_id', $client->id)
+            ->whereDeleted(false)
+            ->where('statut', '!=', 'paid')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', 'validated')
+            ->get()
+            ->sum('montant');
+        
+        $facturesNonPayeEnRetard = Facture::where('client_id', $client->id)
+            ->whereDeleted(false)
+            ->where('statut', '!=', 'paid')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', 'validated')
+            ->where('date_echeance', '<', now())
+            ->get()
+            ->sum('montant');
+        
+        $facturesNonPayeEnAttente= Facture::where('client_id', $client->id)
+            ->whereDeleted(false)
+            ->where('statut', '!=', 'paid')
+            ->where('statut', '!=', 'credit_note')
+            ->where('state', 'validated')
+            ->where('date_echeance', '>=', now())
+            ->get()
+            ->sum('montant');
+
+        return response()->json([
+            'm_paye' => $facturesPaye,
+            'm_non_paye' => $facturesNonPaye,
+            'm_non_paye_en_retard' => $facturesNonPayeEnRetard,
+            'm_non_paye_en_attente' => $facturesNonPayeEnAttente
+        ], 200);
     }
 
     /**
@@ -254,4 +309,5 @@ class ClientController extends Controller
             return new ClientResource($client);
         }
     }
+
 }

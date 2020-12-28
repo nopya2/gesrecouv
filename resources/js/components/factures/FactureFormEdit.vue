@@ -23,7 +23,8 @@
                                             :filterable="false"
                                             v-model="facture.client"
                                             @input="setFactureClient"
-                                            @search="onSearchClients">
+                                            @search="onSearchClients"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                             <template slot="no-options">
                                                 Sélectionnez un client
                                             </template>
@@ -47,7 +48,8 @@
                                             :filterable="false"
                                             v-model="facture.parent"
                                             @input="setFactureParent"
-                                            @search="onSearchFac">
+                                            @search="onSearchFac"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                             <template slot="no-options">
                                                 Sélectionnez une facture parent
                                             </template>
@@ -66,7 +68,8 @@
                                             placeholder="Entrez le n° de facture"
                                             v-model.trim="$v.facture.num_facture.$model"
                                             name="num_facture"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                         <small class="form-text text-danger" v-if="!$v.facture.num_facture.required">Champs requis.</small>
                                         <!-- <small class="form-text text-danger" v-if="!$v.facture.num_facture.minLength">{{$v.facture.num_facture.$params.minLength.min}} caractères minimum.</small>
                                         <small class="form-text text-danger" v-if="!$v.facture.num_facture.maxLength">{{$v.facture.num_facture.$params.maxLength.max}} caractères maximum.</small> -->
@@ -76,7 +79,8 @@
                                     <div class="form-group">
                                         <label for="type_id">Type</label>
                                         <v-select label="libelle" :options="types" v-model="facture.type_id" value="id"
-                                            :reduce="type => type.id">
+                                            :reduce="type => type.id"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                         </v-select>
                                         <small class="form-text text-danger" v-if="!$v.facture.type_id.required">Champs requis.</small>
                                     </div>
@@ -86,7 +90,12 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="montant">Montant</label>
-                                        <input type="number" class="form-control" placeholder="Entrez le montant" v-model="$v.facture.montant.$model" name="montant">
+                                        <input type="number" 
+                                            class="form-control" 
+                                            placeholder="Entrez le montant" 
+                                            v-model="$v.facture.montant.$model" 
+                                            name="montant"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                         <small class="form-text text-danger" v-if="!$v.facture.montant.required">Champs requis.</small>
                                     </div>
                                 </div>
@@ -97,7 +106,8 @@
                                             placeholder="Entrez le n° de dossier"
                                             v-model="$v.facture.num_dossier.$model"
                                             name="num_dossier"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'">
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +119,8 @@
                                             v-model="$v.facture.date_creation.$model"
                                             value-type="YYYY-MM-DD"
                                             format="DD/MM/YYYY"
-                                            placeholder="Selectionnez une date"></date-picker>
+                                            placeholder="Selectionnez une date"
+                                            :disabled="facture.state == 'cancelled' || facture.state == 'validated'"></date-picker>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -120,7 +131,8 @@
                                             value-type="YYYY-MM-DD"
                                             format="DD/MM/YYYY"
                                             placeholder="Selectionnez une date"
-                                            @input="updateDateEcheance($event)"></date-picker>
+                                            @input="updateDateEcheance($event)"
+                                            :disabled="facture.date_depot != null"></date-picker>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -130,7 +142,8 @@
                                             v-model="$v.facture.date_echeance.$model"
                                             value-type="YYYY-MM-DD"
                                             format="DD/MM/YYYY"
-                                            placeholder="Selectionnez une date"></date-picker>
+                                            placeholder="Selectionnez une date"
+                                            :disabled="facture.date_depot != null"></date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -146,9 +159,9 @@
                                             <i class="fas fa-times mr-1"></i>Annuler
                                         </button>
                                     </a>
-                                    <button class="btn btn-primary shadow-2" type="button" disabled="" v-if="btnLoading">
+                                    <button class="btn btn-warning shadow-2" type="button" disabled="" v-if="btnLoading">
                                         <span class="spinner-grow spinner-grow-sm" role="status"></span>
-                                        Création en cours...
+                                        Enregistrement en cours...
                                     </button>
                                 </div>
                             </div>

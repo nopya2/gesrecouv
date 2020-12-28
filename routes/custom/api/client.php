@@ -8,3 +8,4 @@ Route::middleware('auth:api')->put('clients', 'ClientController@update'); //Modi
 Route::middleware('auth:api')->delete('clients/{client}', 'ClientController@destroy'); //Suppression client
 //Liste des factures pour un client
 Route::middleware('auth:api')->get('/clients/{client}/factures-client', 'ClientController@getFacturesByClient');
+Route::middleware('auth:api')->get('/clients/{client}/details-client', 'ClientController@detailsClient');

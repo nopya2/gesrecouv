@@ -37,13 +37,13 @@
                         </ul> -->
                     </div>
                     <div class="card-body">
-                        <p class="text-muted" style="font-size: 1.75rem">Somme due : {{ client.m_not_paid|numFormat }} Fcfa</p>
+                        <p class="text-muted" style="font-size: 1.75rem">Somme due : {{ detailsClient.m_non_paye|numFormat }} Fcfa</p>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="card card-warning card-outline orange">
                                     <div class="card-body text-muted">
                                         En retard<br>
-                                        <strong class="text-lg">{{ client.m_not_paid_late|numFormat }} Fcfa</strong>
+                                        <strong class="text-lg">{{ detailsClient.m_non_paye_en_retard|numFormat }} Fcfa</strong>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                 <div class="card card-primary card-outline bleu">
                                     <div class="card-body text-muted">
                                         En attente<br>
-                                        <strong class="text-lg">{{ client.m_not_paid_waiting|numFormat }} Fcfa</strong>
+                                        <strong class="text-lg">{{ detailsClient.m_non_paye_en_attente|numFormat }} Fcfa</strong>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                                 <div class="card card-success card-outline vert">
                                     <div class="card-body text-muted">
                                         Payé<br>
-                                        <strong class="text-lg">{{ client.m_paid|numFormat }} Fcfa</strong>
+                                        <strong class="text-lg">{{ detailsClient.m_paye|numFormat }} Fcfa</strong>
                                     </div>
                                 </div>
                             </div>
@@ -180,10 +180,17 @@
         data(){
             return{
                 client: new Client(),
+                detailsClient: {
+                    m_non_paye: 0,
+                    m_non_paye_en_attente: 0,
+                    m_non_paye_en_retard: 0,
+                    m_paye: 0
+                }
             }
         },
         created(){
             this.fetchClient()
+            this.getDetailsClient()
         },
 
         methods: {
@@ -193,6 +200,17 @@
                 axios.get(`/api/clients/${this.client_id}`)
                     .then(res => {
                         vm.client = res.data.data
+                    })
+                    .catch(error => {
+                        toastr.error('Erreur chargement du client!')
+                    });
+            },
+            getDetailsClient(){
+                let vm = this;
+
+                axios.get(`/api/clients/${this.client_id}/details-client`)
+                    .then(res => {
+                        vm.detailsClient = res.data
                     })
                     .catch(error => {
                         toastr.error('Erreur chargement du client!')

@@ -117,7 +117,23 @@ class FactureController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($limit);
 
-        return FactureResource::collection($factures);
+        //Total facturé sur une période
+        $totalQueriesBuilder = Facture::whereDeleted(false)
+            ->where('state', 'validated')
+            ->where('statut', '!=', 'cancelled')
+            ->where('statut', '!=', 'credit_note');
+        if($request->has('start') && $request->has('end') && $request->start != "" && $request->end != ""){
+            $totalQueriesBuilder
+                ->whereBetween('date_creation', [$request->start, $request->end]);
+        }
+        $totalFacturesParPeriode = $totalQueriesBuilder
+            ->get()
+            ->sum('montant');
+
+        // $customAttributes = collect(['total_facture' => $totalFacturesParPeriode]);
+        // $data = $customAttributes->merge($factures);
+
+        return FactureResource::collection($factures)->data();
     }
 
     /**
